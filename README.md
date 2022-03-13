@@ -1,2 +1,2 @@
 # Glee_no_mess
-2D Adventure Game made with educational purpouses
+2D Adventure Game
