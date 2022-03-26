@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
-project(Project)
+project(Glee-no-mess)
+
+# default path is ~/Qt/6.2.3/gcc_64/lib/cmake
+#set(CMAKE_PREFIX_PATH "/opt/Qt/6.2.3/gcc_64/lib/cmake")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
@@ -12,8 +15,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(
-        Project
+add_executable(default-target
 
         main.cpp
         model.cpp
@@ -25,10 +27,11 @@ add_executable(
         main_character.cpp
         main_character.h
         visitor.cpp
-        visitor.h club_level.cpp club_level.h)
+        visitor.h
+        club_level.cpp
+        club_level.h)
 
-target_link_libraries(
-        Project
+target_link_libraries(default-target
 
         Qt::Core
         Qt::Gui
