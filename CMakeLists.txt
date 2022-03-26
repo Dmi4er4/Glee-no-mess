@@ -25,7 +25,7 @@ add_executable(
         main_character.cpp
         main_character.h
         visitor.cpp
-        visitor.h)
+        visitor.h club_level.cpp club_level.h)
 
 target_link_libraries(
         Project
