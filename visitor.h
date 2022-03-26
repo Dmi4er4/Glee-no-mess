@@ -7,6 +7,8 @@ class Visitor {
  public:
   Visitor();
 
+  [[nodiscard]] bool Good() const;
+
  public:
   enum class SkinColor {
     kBlack,

@@ -17,3 +17,7 @@ Visitor::Visitor() : random_engine_(std::random_device()()),
     std::uniform_int_distribution<int>(0,2)(random_engine_))) {
 
 }
+
+bool Visitor::Good() const {
+  return sex_ == Sex::kMale;
+}
