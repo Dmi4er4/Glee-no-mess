@@ -1,4 +1,5 @@
 #include "mvc.h"
+#include "view.h"
 
 #include <QGraphicsProxyWidget>
 #include <QVBoxLayout>
@@ -52,4 +53,8 @@ void View::RenderQueue(const std::deque<Visitor*>& queue) {
 
 void View::SetErrorCount(int value) {
   errors_->setText(QString("Errors: ") + std::to_string(value).c_str());
+}
+
+void View::keyPressEvent(QKeyEvent* event) {
+  controller_->keyPressEvent(event);
 }

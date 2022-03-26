@@ -10,6 +10,8 @@ class Controller {
 public:
   Controller();
 
+  void keyPressEvent(QKeyEvent* event);
+
 private:
   void ConnectSignals();
 

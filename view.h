@@ -18,6 +18,8 @@ class View : public QMainWindow {
  public:
   explicit View(Controller* controller);
 
+  void keyPressEvent(QKeyEvent* event) override;
+
   void RenderActiveVisitor(Visitor* current);
   void RenderQueue(const std::deque<Visitor*>& queue);
   void SetErrorCount(int value);
