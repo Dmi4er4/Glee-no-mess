@@ -12,10 +12,24 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(Project main.cpp main_window.cpp main_window.h model.cpp model.h view.cpp view.h controller.cpp controller.h)
-target_link_libraries(Project
+add_executable(
+        Project
+
+        main.cpp
+        model.cpp
+        model.h
+        view.cpp
+        view.h
+        controller.cpp
+        controller.h
+        main_character.cpp
+        main_character.h
+        visitor.cpp
+        visitor.h)
+
+target_link_libraries(
+        Project
+
         Qt::Core
         Qt::Gui
-        Qt::Widgets
-        )
-
+        Qt::Widgets)
