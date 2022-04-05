@@ -16,6 +16,7 @@ class Controller;
 
 class View : public QMainWindow {
   Q_OBJECT
+
  public:
   explicit View(Controller* controller);
 
