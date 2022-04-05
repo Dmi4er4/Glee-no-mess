@@ -26,12 +26,17 @@ add_executable(default-target
         visitor.cpp
         visitor.h
         level.cpp
-        level.h typedefs.h BadCharacteristic.cpp BadCharacteristic.h random.cpp random.h tools.h)
+        level.h
+        typedefs.h
+        bad_characteristic.cpp
+        bad_characteristic.h
+        random.cpp
+        random.h
+        tools.h
+        resources.qrc)
 
 target_link_libraries(default-target
 
         Qt::Core
         Qt::Gui
         Qt::Widgets)
-
-add_executable(only_main main.cpp random.cpp random.h)

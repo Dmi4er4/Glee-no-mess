@@ -1,23 +1,30 @@
-#ifndef CLUB_LEVEL_H_
-#define CLUB_LEVEL_H_
+#ifndef LEVEL_H_
+#define LEVEL_H_
+
+#include "bad_characteristic.h"
+#include "visitor.h"
+#include "typedefs.h"
+
+#include <QFile>
+#include <QString>
+#include <QStringList>
 
 #include <cassert>
 #include <cstdint>
-
-#include "visitor.h"
-#include "BadCharacteristic.h"
-#include "typedefs.h"
-
 #include <vector>
 
-class ClubLevel {
+/*
+ * days_
+ * money_
+ * count_guests_
+ * count_characteristic_
+ *
+ * :/club_level.txt
+ */
+
+class Level {
  public:
-
-  ClubLevel() = delete;
-  ClubLevel(Days days, Money money);
-
-  static constexpr int32_t kVisitorsCount = 10;
-  static constexpr int32_t kCharacteristicCount = 4;
+  explicit Level(const QString& file_name);
 
   Days GetDays() const {
     return days_;
@@ -27,7 +34,7 @@ class ClubLevel {
     return money_;
   }
 
-  std::vector<Visitor> GetAllVisitorsInDay(int day) const {
+  const std::vector<Visitor>& GetAllVisitorsInDay(int day) const {
     return all_visitors_[day];
   }
 
@@ -41,13 +48,17 @@ class ClubLevel {
 
   std::vector<BadCharacteristic> GetAllBadCharacteristics() const {
     return characteristic_;
-  };
+  }
 
  private:
+  void GenerateVisitors();
+
+  Visitors visitors_count_;
+  Characteristics characteristic_count_;
   Days days_;
   Money money_;
   std::vector<std::vector<Visitor>> all_visitors_;
   std::vector<BadCharacteristic> characteristic_;
 };
 
-#endif  // CLUB_LEVEL_H_
+#endif  // LEVEL_H_

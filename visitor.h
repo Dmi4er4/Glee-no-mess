@@ -1,5 +1,5 @@
-#ifndef VISITOR_H
-#define VISITOR_H
+#ifndef VISITOR_H_
+#define VISITOR_H_
 
 #include <random>
 
@@ -40,4 +40,4 @@ class Visitor {
   Neatness neatness_;
 };
 
-#endif //  VISITOR_H
+#endif  // VISITOR_H_

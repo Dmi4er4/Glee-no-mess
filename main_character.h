@@ -1,10 +1,10 @@
 #ifndef MAIN_CHARACTER_H_
 #define MAIN_CHARACTER_H_
 
+#include "typedefs.h"
+
 #include <cstdint>
 #include <vector>
-
-#include "typedefs.h"
 
 class MainCharacter {
  public:

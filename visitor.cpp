@@ -6,6 +6,7 @@
 //                      neatness_(Neatness::kState1) {
 //
 // }
+
 Visitor::Visitor() : random_engine_(std::random_device()()),
                      skin_color_(static_cast<SkinColor>(
     std::uniform_int_distribution<int>(0,1)(random_engine_))),
