@@ -1,4 +1,4 @@
-#include "mvc.h"
+#include "../model/tools/mvc.h"
 #include "view.h"
 
 #include <QGraphicsProxyWidget>
@@ -32,7 +32,7 @@ View::View(Controller* controller)
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void View::RenderActiveVisitor(Visitor* current) {
+void View::RenderActiveVisitor(Guest* current) {
   const QBrush& brush = current->Good()
       ? kBluePolygonBrush : kYellowPolygonBrush;
   scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
@@ -40,7 +40,7 @@ void View::RenderActiveVisitor(Visitor* current) {
                   QPen(), brush);
 }
 
-void View::RenderQueue(const std::deque<Visitor*>& queue) {
+void View::RenderQueue(const std::deque<Guest*>& queue) {
   for (int i = 0; i < queue.size(); ++i) {
     const QBrush& brush = queue[i]->Good()
         ? kBluePolygonBrush : kYellowPolygonBrush;

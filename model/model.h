@@ -1,9 +1,8 @@
-#ifndef MODEL_H_
-#define MODEL_H_
+#pragma once
 
 #include <deque>
 #include <QObject>
-#include "visitor.h"
+#include "guest/guest.h"
 
 class View;
 class Controller;
@@ -17,8 +16,8 @@ class Model : public QObject {
   void ShiftQueue();
   void UpdateErrors();
 
-  std::deque<Visitor*> queue_;
-  Visitor* current_;
+  std::deque<Guest*> queue_;
+  Guest* current_;
   int errors_{};
 
   static constexpr int kQueueLength = 3;
@@ -29,5 +28,3 @@ class Model : public QObject {
   Controller* controller_;
   View* view_{};
 };
-
-#endif  // MODEL_H_

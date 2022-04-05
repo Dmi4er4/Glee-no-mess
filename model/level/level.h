@@ -1,26 +1,18 @@
-#ifndef LEVEL_H_
-#define LEVEL_H_
+#pragma once
 
 #include "bad_characteristic.h"
-#include "visitor.h"
-#include "typedefs.h"
+#include "../guest/guest.h"
+#include "../tools/typedefs.h"
 
 #include <QFile>
 #include <QString>
 #include <QStringList>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 #include <cassert>
 #include <cstdint>
 #include <vector>
-
-/*
- * days_
- * money_
- * count_guests_
- * count_characteristic_
- *
- * :/club_level.txt
- */
 
 class Level {
  public:
@@ -34,12 +26,12 @@ class Level {
     return money_;
   }
 
-  const std::vector<Visitor>& GetAllVisitorsInDay(int day) const {
-    return all_visitors_[day];
+  const std::vector<Guest>& GetAllVisitorsInDay(int day) const {
+    return all_guests_[day];
   }
 
-  Visitor GetKthVisitorInDay(int visitor_number, int day) const {
-    return all_visitors_[day][visitor_number];
+  Guest GetKthVisitorInDay(int visitor_number, int day) const {
+    return all_guests_[day][visitor_number];
   }
 
   BadCharacteristic GetBadCharacteristicsInDay(int day) const {
@@ -51,14 +43,12 @@ class Level {
   }
 
  private:
-  void GenerateVisitors();
+  void GenerateGuests();
 
-  Visitors visitors_count_;
-  Characteristics characteristic_count_;
+  Visitors guests_count_;
+  Characteristics characteristics_count_;
   Days days_;
   Money money_;
-  std::vector<std::vector<Visitor>> all_visitors_;
+  std::vector<std::vector<Guest>> all_guests_;
   std::vector<BadCharacteristic> characteristic_;
 };
-
-#endif  // LEVEL_H_

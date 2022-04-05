@@ -1,4 +1,4 @@
-#include "mvc.h"
+#include "../model/tools/mvc.h"
 #include "controller.h"
 
 #include <QPushButton>

@@ -1,8 +1,7 @@
-#ifndef BAD_CHARACTERISTIC_H_
-#define BAD_CHARACTERISTIC_H_
+#pragma once
 
-#include "tools.h"
-#include "visitor.h"
+#include "../tools/tools.h"
+#include "../guest/guest.h"
 
 #include <vector>
 
@@ -13,8 +12,6 @@ struct BadCharacteristic {
 
  private:
   Random rand;
-  Visitor visitor_;
+  Guest visitor_;
   std::vector<bool> is_valid_characteristic_;
 };
-
-#endif  // BAD_CHARACTERISTIC_H_

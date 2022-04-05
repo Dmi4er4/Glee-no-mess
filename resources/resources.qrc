@@ -1,5 +1,5 @@
 <RCC>
     <qresource>
-        <file>club_level.txt</file>
+        <file>club_level.json</file>
     </qresource>
 </RCC>

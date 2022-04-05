@@ -1,11 +1,10 @@
-#ifndef VISITOR_H_
-#define VISITOR_H_
+#pragma once
 
 #include <random>
 
-class Visitor {
+class Guest {
  public:
-  Visitor();
+  Guest();
 
   bool Good() const;
 
@@ -39,5 +38,3 @@ class Visitor {
   EyeColor eye_color_;
   Neatness neatness_;
 };
-
-#endif  // VISITOR_H_

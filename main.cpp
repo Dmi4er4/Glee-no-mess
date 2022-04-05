@@ -1,15 +1,9 @@
-// #include <QApplication>
-//
-// #include "mvc.h"
+#include <QApplication>
 
-// int main(int argc, char* argv[]) {
-//   QApplication a(argc, argv);
-//   Controller controller;
-//   return QApplication::exec();
-// }
-
-#include "level.h"
+#include "model/tools/mvc.h"
 
 int main(int argc, char* argv[]) {
-  Level x(":/club_level.txt");
+  QApplication a(argc, argv);
+  Controller controller;
+  return QApplication::exec();
 }

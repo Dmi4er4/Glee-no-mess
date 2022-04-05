@@ -12,31 +12,28 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(default-target
+file(GLOB CONTROLLER controller/*)
+file(GLOB VIEW view/*)
+file(GLOB RESOURCES resources/*)
+file(GLOB MODEL model/*)
+file(GLOB MODEL_MAINCHARACTER model/main_character/*)
+file(GLOB MODEL_GUEST model/guest/*)
+file(GLOB MODEL_LEVEL model/level/*)
+file(GLOB MODEL_TOOLS model/tools/*)
 
+add_executable(default-target
+        ${CONTROLLER}
+        ${RESOURCES}
+        ${VIEW}
+        ${MODEL}
+        ${MODEL_MAINCHARACTER}
+        ${MODEL_GUEST}
+        ${MODEL_LEVEL}
+        ${MODEL_TOOLS}
         main.cpp
-        model.cpp
-        model.h
-        view.cpp
-        view.h
-        controller.cpp
-        controller.h
-        main_character.cpp
-        main_character.h
-        visitor.cpp
-        visitor.h
-        level.cpp
-        level.h
-        typedefs.h
-        bad_characteristic.cpp
-        bad_characteristic.h
-        random.cpp
-        random.h
-        tools.h
-        resources.qrc)
+        )
 
 target_link_libraries(default-target
-
         Qt::Core
         Qt::Gui
         Qt::Widgets)

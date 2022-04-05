@@ -1,7 +1,6 @@
-#ifndef VIEW_H_
-#define VIEW_H_
+#pragma once
 
-#include "visitor.h"
+#include "../model/guest/guest.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -22,8 +21,8 @@ class View : public QMainWindow {
 
   void keyPressEvent(QKeyEvent* event) override;
 
-  void RenderActiveVisitor(Visitor* current);
-  void RenderQueue(const std::deque<Visitor*>& queue);
+  void RenderActiveVisitor(Guest* current);
+  void RenderQueue(const std::deque<Guest*>& queue);
   void SetErrorCount(int value);
 
   QGraphicsScene* scene_;
@@ -46,5 +45,3 @@ class View : public QMainWindow {
   Model* model_;
   Controller* controller_;
 };
-
-#endif  // VIEW_H_

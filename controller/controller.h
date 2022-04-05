@@ -1,5 +1,4 @@
-#ifndef CONTROLLER_H_
-#define CONTROLLER_H_
+#pragma once
 
 #include <memory>
 
@@ -18,5 +17,3 @@ class Controller {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 };
-
-#endif  // CONTROLLER_H_
