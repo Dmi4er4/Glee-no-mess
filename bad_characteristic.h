@@ -1,5 +1,5 @@
-#ifndef BADCHARACTERISTIC_H_
-#define BADCHARACTERISTIC_H_
+#ifndef BAD_CHARACTERISTIC_H_
+#define BAD_CHARACTERISTIC_H_
 
 #include "tools.h"
 #include "visitor.h"
@@ -17,4 +17,4 @@ struct BadCharacteristic {
   std::vector<bool> is_valid_characteristic_;
 };
 
-#endif  // BADCHARACTERISTIC_H_
+#endif  // BAD_CHARACTERISTIC_H_

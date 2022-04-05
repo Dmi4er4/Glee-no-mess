@@ -7,12 +7,12 @@ class View;
 class Model;
 
 class Controller {
-public:
+ public:
   Controller();
 
   void keyPressEvent(QKeyEvent* event);
 
-private:
+ private:
   void ConnectSignals();
 
   std::unique_ptr<Model> model_;

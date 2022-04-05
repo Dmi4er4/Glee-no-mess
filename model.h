@@ -9,7 +9,7 @@ class View;
 class Controller;
 
 class Model : public QObject {
-public:
+ public:
   explicit Model(Controller* controller);
   void Paint();
   void Permit();
@@ -23,7 +23,7 @@ public:
 
   static constexpr int kQueueLength = 3;
 
-private:
+ private:
   friend class Controller;
 
   Controller* controller_;

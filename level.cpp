@@ -14,7 +14,7 @@ Level::Level(const QString& file_name) {
 
 void Level::GenerateVisitors() {
   all_visitors_.resize(days_);
-  for (auto& day: all_visitors_) {
+  for (auto& day : all_visitors_) {
     day.resize(visitors_count_);
   }
   characteristic_.resize(days_,
