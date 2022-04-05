@@ -7,7 +7,7 @@ class Visitor {
  public:
   Visitor();
 
-  [[nodiscard]] bool Good() const;
+  bool Good() const;
 
  public:
   enum class SkinColor {
@@ -40,4 +40,4 @@ class Visitor {
   Neatness neatness_;
 };
 
-#endif //VISITOR_H
+#endif //  VISITOR_H

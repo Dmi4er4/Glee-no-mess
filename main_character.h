@@ -4,9 +4,11 @@
 #include <cstdint>
 #include <vector>
 
+#include "typedefs.h"
+
 class MainCharacter {
  public:
-  enum class inventory_items {
+  enum class InventoryItems {
     kItem1,
     kItem2,
     kItem3,
@@ -16,9 +18,8 @@ class MainCharacter {
   MainCharacter();
 
  private:
-  int64_t money_{};
+  Money money_{};
   std::vector<bool> inventory_{};
-
 };
 
 #endif  // MAIN_CHARACTER_H_
