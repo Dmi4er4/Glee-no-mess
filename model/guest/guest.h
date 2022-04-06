@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <random>
 #include "random.h"
 
 class Guest {
@@ -33,7 +32,6 @@ class Guest {
   };
 
  private:
-  // std::default_random_engine random_engine_;
   Random rand;
   SkinColor skin_color_;
   Sex sex_;
