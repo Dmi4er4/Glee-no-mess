@@ -1,7 +1,8 @@
+#include "mvc.h"
 #include "model.h"
 
-Model::Model(Controller* controller)
-    : controller_(controller) {
+Model::Model() {
+  Controller::Init();
   for (int i = 0; i < kQueueLength; ++i) {
     queue_.push_back(new Guest);
   }
@@ -9,8 +10,8 @@ Model::Model(Controller* controller)
 }
 
 void Model::Paint() {
-  view_->RenderActiveVisitor(current_);
-  view_->RenderQueue(queue_);
+  View::Instance().RenderActiveVisitor(current_);
+  View::Instance().RenderQueue(queue_);
 }
 
 void Model::Permit() {
@@ -35,5 +36,10 @@ void Model::ShiftQueue() {
 }
 
 void Model::UpdateErrors() {
-  view_->SetErrorCount(errors_);
+  View::Instance().SetErrorCount(errors_);
+}
+
+Model& Model::Instance() {
+  static Model instance;
+  return instance;
 }

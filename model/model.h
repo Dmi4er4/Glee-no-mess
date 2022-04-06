@@ -1,7 +1,6 @@
 #pragma once
 
 #include "guest.h"
-#include "mvc.h"
 
 #include <QObject>
 
@@ -12,9 +11,10 @@ class Controller;
 
 class Model : public QObject {
  public:
+  static Model& Instance();
+
   static constexpr int kQueueLength = 3;
 
-  explicit Model(Controller* controller);
   void Paint();
   void Permit();
   void Reject();
@@ -23,12 +23,10 @@ class Model : public QObject {
   void UpdateErrors();
 
  private:
+  Model();
+
   int errors_{};
-  friend class Controller;
 
   std::deque<Guest*> queue_;
   Guest* current_;
-
-  Controller* controller_;
-  View* view_{};
 };
