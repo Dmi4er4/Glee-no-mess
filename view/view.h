@@ -11,7 +11,6 @@
 #include <QGraphicsProxyWidget>
 #include <QVBoxLayout>
 #include <QGraphicsView>
-#include <QGraphicsProxyWidget>
 
 #include <deque>
 
