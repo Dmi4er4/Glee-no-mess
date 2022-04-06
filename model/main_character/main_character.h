@@ -1,10 +1,9 @@
-#ifndef MAIN_CHARACTER_H_
-#define MAIN_CHARACTER_H_
+#pragma once
+
+#include "typedefs.h"
 
 #include <cstdint>
 #include <vector>
-
-#include "typedefs.h"
 
 class MainCharacter {
  public:
@@ -21,5 +20,3 @@ class MainCharacter {
   Money money_{};
   std::vector<bool> inventory_{};
 };
-
-#endif  // MAIN_CHARACTER_H_

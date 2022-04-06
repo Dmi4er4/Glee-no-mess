@@ -1,5 +1,4 @@
-#ifndef RANDOM_H_
-#define RANDOM_H_
+#pragma once
 
 #include <random>
 
@@ -9,5 +8,3 @@ class Random {
  private:
   std::mt19937 mersenne_twister_{std::random_device()()};
 };
-
-#endif  // RANDOM_H_

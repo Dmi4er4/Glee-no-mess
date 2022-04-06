@@ -1,13 +1,12 @@
-#ifndef VISITOR_H
-#define VISITOR_H
+#pragma once
 
-#include <random>
+#include "random.h"
 
-class Visitor {
+class Guest {
  public:
-  Visitor();
+  Guest();
 
-  bool Good() const;
+  bool IsMale() const;
 
  public:
   enum class SkinColor {
@@ -33,11 +32,9 @@ class Visitor {
   };
 
  private:
-  std::default_random_engine random_engine_;
+  Random rand;
   SkinColor skin_color_;
   Sex sex_;
   EyeColor eye_color_;
   Neatness neatness_;
 };
-
-#endif //  VISITOR_H

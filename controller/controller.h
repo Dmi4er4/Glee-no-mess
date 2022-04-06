@@ -1,5 +1,9 @@
-#ifndef CONTROLLER_H_
-#define CONTROLLER_H_
+#pragma once
+
+#include "mvc.h"
+
+#include <QKeyEvent>
+#include <QPushButton>
 
 #include <memory>
 
@@ -7,16 +11,14 @@ class View;
 class Model;
 
 class Controller {
-public:
+ public:
   Controller();
 
   void keyPressEvent(QKeyEvent* event);
 
-private:
+ private:
   void ConnectSignals();
 
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 };
-
-#endif  // CONTROLLER_H_

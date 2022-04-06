@@ -1,4 +1,4 @@
-#include "BadCharacteristic.h"
+#include "bad_characteristic.h"
 
 BadCharacteristic::BadCharacteristic(int32_t characteristic_count) {
   is_valid_characteristic_.resize(characteristic_count);

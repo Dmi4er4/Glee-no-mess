@@ -1,8 +1,4 @@
-#include "mvc.h"
 #include "controller.h"
-
-#include <QPushButton>
-#include <QKeyEvent>
 
 Controller::Controller()
     : view_(new View(this)),

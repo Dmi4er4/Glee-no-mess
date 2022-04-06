@@ -1,33 +1,34 @@
-#ifndef MODEL_H_
-#define MODEL_H_
+#pragma once
+
+#include "guest.h"
+#include "mvc.h"
+
+#include <QObject>
 
 #include <deque>
-#include <QObject>
-#include "visitor.h"
 
 class View;
 class Controller;
 
 class Model : public QObject {
-public:
+ public:
+  static constexpr int kQueueLength = 3;
+
   explicit Model(Controller* controller);
   void Paint();
   void Permit();
   void Reject();
   void ShiftQueue();
+
   void UpdateErrors();
 
-  std::deque<Visitor*> queue_;
-  Visitor* current_;
+ private:
   int errors_{};
-
-  static constexpr int kQueueLength = 3;
-
-private:
   friend class Controller;
+
+  std::deque<Guest*> queue_;
+  Guest* current_;
 
   Controller* controller_;
   View* view_{};
 };
-
-#endif  // MODEL_H_
