@@ -12,27 +12,26 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-include_directories(model)
-include_directories(model/guest)
-include_directories(model/level)
-include_directories(model/main_character)
-include_directories(model/tools)
-include_directories(view)
-include_directories(controller)
-include_directories(resources)
-
-file(GLOB_RECURSE CONTROLLER controller/*)
-file(GLOB_RECURSE VIEW view/*)
-file(GLOB_RECURSE RESOURCES resources/*)
-file(GLOB_RECURSE MODEL model/*)
+file(GLOB CONTROLLER controller/*)
+file(GLOB VIEW view/*)
+file(GLOB RESOURCES resources/*)
+file(GLOB MODEL model/*)
+file(GLOB MODEL_MAINCHARACTER model/main_character/*)
+file(GLOB MODEL_GUEST model/guest/*)
+file(GLOB MODEL_LEVEL model/level/*)
+file(GLOB MODEL_TOOLS model/tools/*)
 
 add_executable(default-target
         ${CONTROLLER}
         ${RESOURCES}
         ${VIEW}
         ${MODEL}
+        ${MODEL_MAINCHARACTER}
+        ${MODEL_GUEST}
+        ${MODEL_LEVEL}
+        ${MODEL_TOOLS}
         main.cpp
-        model/tools/mvc.h
+        mvc.h
         )
 
 target_link_libraries(default-target
