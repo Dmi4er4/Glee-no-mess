@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstddef>
 
-typedef int64_t Money;
-typedef size_t Days;
-typedef size_t Visitors;
-typedef size_t Characteristics;
+using Money = int64_t;
+using Days = size_t;
+using GuestsCount = size_t;
+using CharacteristicsCount = size_t;

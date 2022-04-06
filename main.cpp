@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "model/tools/mvc.h"
+#include "mvc.h"
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);

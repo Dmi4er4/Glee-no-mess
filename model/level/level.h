@@ -45,8 +45,8 @@ class Level {
  private:
   void GenerateGuests();
 
-  Visitors guests_count_;
-  Characteristics characteristics_count_;
+  GuestsCount guests_count_;
+  CharacteristicsCount characteristics_count_;
   Days days_;
   Money money_;
   std::vector<std::vector<Guest>> all_guests_;

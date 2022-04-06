@@ -1,5 +1,5 @@
 #include "model.h"
-#include "tools/mvc.h"
+#include "../mvc.h"
 
 Model::Model(Controller* controller)
     : controller_(controller) {
@@ -15,14 +15,14 @@ void Model::Paint() {
 }
 
 void Model::Permit() {
-  errors_ += !current_->Good();
+  errors_ += !current_->IsMale();
   ShiftQueue();
   Paint();
   UpdateErrors();
 }
 
 void Model::Reject() {
-  errors_ += current_->Good();
+  errors_ += current_->IsMale();
   ShiftQueue();
   Paint();
   UpdateErrors();

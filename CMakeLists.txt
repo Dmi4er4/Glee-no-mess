@@ -31,6 +31,7 @@ add_executable(default-target
         ${MODEL_LEVEL}
         ${MODEL_TOOLS}
         main.cpp
+        mvc.h
         )
 
 target_link_libraries(default-target

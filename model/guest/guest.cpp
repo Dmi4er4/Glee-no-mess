@@ -22,6 +22,6 @@ Guest::Guest() : random_engine_(std::random_device()()),
                                        random_engine_))) {
 }
 
-bool Guest::Good() const {
+bool Guest::IsMale() const {
   return sex_ == Sex::kMale;
 }

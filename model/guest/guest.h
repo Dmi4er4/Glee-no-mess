@@ -6,7 +6,7 @@ class Guest {
  public:
   Guest();
 
-  bool Good() const;
+  bool IsMale() const;
 
  public:
   enum class SkinColor {

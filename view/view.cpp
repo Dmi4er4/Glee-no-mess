@@ -1,4 +1,4 @@
-#include "../model/tools/mvc.h"
+#include "../mvc.h"
 #include "view.h"
 
 #include <QGraphicsProxyWidget>
@@ -33,7 +33,7 @@ View::View(Controller* controller)
 }
 
 void View::RenderActiveVisitor(Guest* current) {
-  const QBrush& brush = current->Good()
+  const QBrush& brush = current->IsMale()
       ? kBluePolygonBrush : kYellowPolygonBrush;
   scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
                   kSquareSize, kSquareSize,
@@ -42,7 +42,7 @@ void View::RenderActiveVisitor(Guest* current) {
 
 void View::RenderQueue(const std::deque<Guest*>& queue) {
   for (int i = 0; i < queue.size(); ++i) {
-    const QBrush& brush = queue[i]->Good()
+    const QBrush& brush = queue[i]->IsMale()
         ? kBluePolygonBrush : kYellowPolygonBrush;
     scene_->addRect(kWidth - (kSquareSize + 5) * (queue.size() - i),
                     kHeight / 2 - kSquareSize / 2,
