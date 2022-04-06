@@ -1,5 +1,4 @@
 #include "model.h"
-#include "../mvc.h"
 
 Model::Model(Controller* controller)
     : controller_(controller) {

@@ -1,12 +1,19 @@
 #pragma once
 
-#include "../model/guest/guest.h"
+#include "guest.h"
+#include "mvc.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QPushButton>
 #include <QWidget>
 #include <QLabel>
+#include <QGraphicsProxyWidget>
+#include <QVBoxLayout>
+#include <QGraphicsView>
+#include <QGraphicsProxyWidget>
+#include <QVBoxLayout>
+#include <QGraphicsView>
 
 #include <deque>
 

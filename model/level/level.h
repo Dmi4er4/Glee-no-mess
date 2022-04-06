@@ -1,8 +1,8 @@
 #pragma once
 
 #include "bad_characteristic.h"
-#include "../guest/guest.h"
-#include "../tools/typedefs.h"
+#include "guest.h"
+#include "typedefs.h"
 
 #include <QFile>
 #include <QString>

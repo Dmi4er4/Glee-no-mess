@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../tools/tools.h"
-#include "../guest/guest.h"
+#include "tools.h"
+#include "guest.h"
 
 #include <vector>
 

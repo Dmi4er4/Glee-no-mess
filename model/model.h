@@ -1,6 +1,7 @@
 #pragma once
 
-#include "guest/guest.h"
+#include "guest.h"
+#include "mvc.h"
 
 #include <QObject>
 

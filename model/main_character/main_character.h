@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../tools/typedefs.h"
+#include "typedefs.h"
 
 #include <cstdint>
 #include <vector>

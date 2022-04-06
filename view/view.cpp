@@ -1,9 +1,4 @@
-#include "../mvc.h"
 #include "view.h"
-
-#include <QGraphicsProxyWidget>
-#include <QVBoxLayout>
-#include <QGraphicsView>
 
 View::View(Controller* controller)
     : scene_(new QGraphicsScene),
