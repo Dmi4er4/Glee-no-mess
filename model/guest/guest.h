@@ -1,6 +1,7 @@
 #pragma once
 
-#include <random>
+// #include <random>
+#include "random.h"
 
 class Guest {
  public:
@@ -32,7 +33,8 @@ class Guest {
   };
 
  private:
-  std::default_random_engine random_engine_;
+  // std::default_random_engine random_engine_;
+  Random rand;
   SkinColor skin_color_;
   Sex sex_;
   EyeColor eye_color_;

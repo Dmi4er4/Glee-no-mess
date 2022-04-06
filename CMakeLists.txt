@@ -6,30 +6,26 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+#set(CMAKE_PREFIX_PATH "~/Qt/6.2.3/gcc_64/lib/cmake")
+
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
         REQUIRED)
 
-file(GLOB CONTROLLER controller/*)
-file(GLOB VIEW view/*)
-file(GLOB RESOURCES resources/*)
-file(GLOB MODEL model/*)
-file(GLOB MODEL_MAINCHARACTER model/main_character/*)
-file(GLOB MODEL_GUEST model/guest/*)
-file(GLOB MODEL_LEVEL model/level/*)
-file(GLOB MODEL_TOOLS model/tools/*)
+include_directories(model/tools)
+
+file(GLOB_RECURSE CONTROLLER controller/*)
+file(GLOB_RECURSE VIEW view/*)
+file(GLOB_RECURSE RESOURCES resources/*)
+file(GLOB_RECURSE MODEL model/*)
 
 add_executable(default-target
         ${CONTROLLER}
         ${RESOURCES}
         ${VIEW}
         ${MODEL}
-        ${MODEL_MAINCHARACTER}
-        ${MODEL_GUEST}
-        ${MODEL_LEVEL}
-        ${MODEL_TOOLS}
         main.cpp
         mvc.h
         )
