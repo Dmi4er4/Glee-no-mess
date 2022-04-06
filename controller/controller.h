@@ -1,10 +1,11 @@
 #pragma once
 
-#include <memory>
 #include "mvc.h"
 
-#include <QPushButton>
 #include <QKeyEvent>
+#include <QPushButton>
+
+#include <memory>
 
 class View;
 class Model;
