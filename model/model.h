@@ -21,9 +21,9 @@ class Model : public QObject {
   void ShiftQueue();
 
   void UpdateErrors();
-  int errors_{};
 
  private:
+  int errors_{};
   friend class Controller;
 
   std::deque<Guest*> queue_;
