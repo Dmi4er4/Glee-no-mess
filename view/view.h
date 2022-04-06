@@ -33,8 +33,8 @@ class View : public QMainWindow {
   void RenderQueue(const std::deque<Guest*>& queue);
 
   void SetErrorCount(int value);
- private:
 
+ private:
   friend class Controller;
   QGraphicsScene* scene_;
   QPushButton* ok_;
