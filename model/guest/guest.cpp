@@ -1,9 +1,9 @@
 #include "guest.h"
 
-Guest::Guest() : skin_color_(static_cast<SkinColor>(rand(0, 1))),
-                 sex_(static_cast<Sex>(rand(0, 1))),
-                 eye_color_(static_cast<EyeColor>(rand(0, 2))),
-                 neatness_(static_cast<Neatness>(rand(0, 2))) {
+Guest::Guest() : skin_color_(Random::EnumChoose<SkinColor>()),
+                 sex_(Random::EnumChoose<Sex>()),
+                 eye_color_(Random::EnumChoose<EyeColor>()),
+                 neatness_(Random::EnumChoose<Neatness>()) {
 }
 
 bool Guest::IsMale() const {
