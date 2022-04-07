@@ -1,5 +1,4 @@
 #include "mvc.h"
-#include "view.h"
 
 View::View()
     : scene_(new QGraphicsScene),
