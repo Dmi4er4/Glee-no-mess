@@ -20,8 +20,9 @@ View::View()
   scene_->addLine(0, 0, 0, kHeight, transparent_pen);
   scene_->addLine(0, kHeight, kWidth, kHeight, transparent_pen);
   scene_->addLine(kWidth, 0, kWidth, kHeight, transparent_pen);
-  permit_button_->setGeometry(5, 5, 130, 30); // TODO remove kludge
+  permit_button_->setGeometry(5, 5, 130, 30);
   reject_button_->setGeometry(5, 40, 130, 30);
+  // TODO(shandomruffle): remove kludge
   errors_->setGeometry(5, 75, 130, 23);
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
