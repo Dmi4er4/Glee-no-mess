@@ -1,9 +1,7 @@
-#include "mvc.h"
+#include "controller.h"
 #include "random.h"
 
-Random::Random() {
-  Controller::Init();
-}
+Random::Random() {}
 
 Random& Random::Instance() {
   static Random instance;
