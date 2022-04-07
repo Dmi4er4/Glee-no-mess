@@ -20,7 +20,7 @@ class Model : public QObject {
   static void Reject();
   static void ShiftQueue();
 
-  static void UpdateErrors();
+  static void ErrorsPlusPlus();
 
  private:
   Model();

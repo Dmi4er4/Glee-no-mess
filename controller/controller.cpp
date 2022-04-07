@@ -5,7 +5,7 @@
 Controller::Controller() {
   ConnectSignals();
   Model::Paint();
-  Model::UpdateErrors();
+  Model::ErrorsPlusPlus();
   View::Instance().setWindowTitle("Glee, no mess!");
   View::Instance().show();
 }

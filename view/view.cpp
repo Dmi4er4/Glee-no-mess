@@ -20,7 +20,7 @@ View::View()
   scene_->addLine(0, 0, 0, kHeight, transparent_pen);
   scene_->addLine(0, kHeight, kWidth, kHeight, transparent_pen);
   scene_->addLine(kWidth, 0, kWidth, kHeight, transparent_pen);
-  permit_button_->setGeometry(5, 5, 130, 30);
+  permit_button_->setGeometry(5, 5, 130, 30); // TODO remove kludge
   reject_button_->setGeometry(5, 40, 130, 30);
   errors_->setGeometry(5, 75, 130, 23);
 

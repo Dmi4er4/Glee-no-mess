@@ -15,19 +15,19 @@ void Model::Paint() {
 }
 
 void Model::Permit() {
-  auto& m = Instance();
-  m.errors_ += !m.current_->IsMale();
+  if (!Instance().current_->IsMale()) {
+    ErrorsPlusPlus();
+  }
   ShiftQueue();
   Paint();
-  UpdateErrors();
 }
 
 void Model::Reject() {
-  auto& m = Instance();
-  m.errors_ += m.current_->IsMale();
+  if (Instance().current_->IsMale()) {
+    ErrorsPlusPlus();
+  }
   ShiftQueue();
   Paint();
-  UpdateErrors();
 }
 
 void Model::ShiftQueue() {
@@ -38,8 +38,8 @@ void Model::ShiftQueue() {
   m.queue_.push_back(new Guest);
 }
 
-void Model::UpdateErrors() {
-  View::SetErrorCount(Instance().errors_);
+void Model::ErrorsPlusPlus() {
+  View::SetErrorCount(++Instance().errors_);
 }
 
 Model& Model::Instance() {
