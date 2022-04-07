@@ -32,13 +32,14 @@ class View : public QMainWindow {
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
-  void RenderActiveVisitor(Guest* current);
-  void RenderQueue(const std::deque<Guest*>& queue);
 
-  void SetErrorCount(int value);
+  static void RenderActiveVisitor(Guest* current);
+  static void RenderQueue(const std::deque<Guest*>& queue);
 
-  auto GetPermitButton() const { return permit_button_; }
-  auto GetRejectButton() const { return reject_button_; }
+  static void SetErrorCount(int value);
+
+  static auto GetPermitButton() { return Instance().permit_button_; }
+  static auto GetRejectButton() { return Instance().reject_button_; }
 
  private:
   View();

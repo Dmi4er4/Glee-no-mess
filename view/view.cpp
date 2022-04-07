@@ -7,8 +7,6 @@ View::View()
       proxy_widget_(scene_->addWidget(permit_button_)),
       graphics_(new QGraphicsView(scene_)),
       errors_(new QLabel("Placeholder")) {
-  Controller::Init();
-
   scene_->addWidget(reject_button_);
 
   scene_->addWidget(errors_);
@@ -31,28 +29,29 @@ View::View()
 void View::RenderActiveVisitor(Guest* current) {
   const QBrush& brush = current->IsMale()
       ? kBluePolygonBrush : kYellowPolygonBrush;
-  scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
-                  kSquareSize, kSquareSize,
-                  QPen(), brush);
+  Instance().scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
+                             kSquareSize, kSquareSize,
+                             QPen(), brush);
 }
 
 void View::RenderQueue(const std::deque<Guest*>& queue) {
   for (int i = 0; i < queue.size(); ++i) {
     const QBrush& brush = queue[i]->IsMale()
         ? kBluePolygonBrush : kYellowPolygonBrush;
-    scene_->addRect(kWidth - (kSquareSize + 5) * (queue.size() - i),
-                    kHeight / 2 - kSquareSize / 2,
-                    kSquareSize, kSquareSize,
-                    QPen(), brush);
+    Instance().scene_->addRect(kWidth - (kSquareSize + 5) * (queue.size() - i),
+                               kHeight / 2 - kSquareSize / 2,
+                               kSquareSize, kSquareSize,
+                               QPen(), brush);
   }
 }
 
 void View::SetErrorCount(int value) {
-  errors_->setText(QString("Errors: ") + std::to_string(value).c_str());
+  Instance().errors_->setText(
+      QString("Errors: ") + std::to_string(value).c_str());
 }
 
 void View::keyPressEvent(QKeyEvent* event) {
-  Controller::Instance().keyPressEvent(event);
+  Controller::keyPressEvent(event);
 }
 
 View& View::Instance() {

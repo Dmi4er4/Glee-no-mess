@@ -15,12 +15,12 @@ class Model : public QObject {
 
   static constexpr int kQueueLength = 3;
 
-  void Paint();
-  void Permit();
-  void Reject();
-  void ShiftQueue();
+  static void Paint();
+  static void Permit();
+  static void Reject();
+  static void ShiftQueue();
 
-  void UpdateErrors();
+  static void UpdateErrors();
 
  private:
   Model();
