@@ -1,4 +1,6 @@
-#include "mvc.h"
+#include "model.h"
+#include "controller.h"
+#include "view.h"
 
 Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {

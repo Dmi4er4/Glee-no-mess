@@ -1,4 +1,6 @@
-#include "mvc.h"
+#include "controller.h"
+#include "model.h"
+#include "view.h"
 
 Controller::Controller() {
   ConnectSignals();
