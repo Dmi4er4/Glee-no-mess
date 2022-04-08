@@ -6,16 +6,16 @@ Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {
     queue_.emplace_back(new Guest);
   }
-  current_ = std::make_unique<Guest>();
+  current_guest_ = std::make_unique<Guest>();
 }
 
 void Model::Paint() {
-  View::RenderActiveVisitor(Instance().current_.get());
+  View::RenderActiveVisitor(Instance().current_guest_.get());
   View::RenderQueue(Instance().queue_);
 }
 
 void Model::Permit() {
-  if (!Instance().current_->IsMale()) {
+  if (!Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
@@ -23,7 +23,7 @@ void Model::Permit() {
 }
 
 void Model::Reject() {
-  if (Instance().current_->IsMale()) {
+  if (Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
@@ -32,7 +32,7 @@ void Model::Reject() {
 
 void Model::ShiftQueue() {
   auto& m = Instance();
-  m.current_ = std::move(m.queue_.front());
+  m.current_guest_ = std::move(m.queue_.front());
   m.queue_.pop_front();
   m.queue_.emplace_back(new Guest);
 }

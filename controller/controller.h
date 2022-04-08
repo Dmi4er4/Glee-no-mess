@@ -16,5 +16,5 @@ class Controller {
 
  private:
   Controller();
-  void ConnectSignals();
+  static void ConnectSignals();
 };

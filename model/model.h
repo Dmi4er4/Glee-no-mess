@@ -27,5 +27,5 @@ class Model : public QObject {
   int errors_{};
 
   std::deque<std::unique_ptr<Guest>> queue_;
-  std::unique_ptr<Guest> current_;
+  std::unique_ptr<Guest> current_guest_;
 };
