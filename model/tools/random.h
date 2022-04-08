@@ -1,10 +1,16 @@
 #pragma once
 
+#include "controller.h"
+#include "random.h"
+
 #include <random>
 
 class Random {
  public:
-  static Random& Instance();
+  static Random& Instance() {
+    static Random instance;
+    return instance;
+  }
 
   static int32_t RandomInt(int32_t l, int32_t r) {
     return std::uniform_int_distribution<int32_t>(l, r)(
@@ -25,7 +31,7 @@ class Random {
   }
 
  private:
-  Random();
+  Random() {}
 
   std::mt19937 mersenne_twister_{std::random_device()()};
 };
