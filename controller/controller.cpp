@@ -1,33 +1,42 @@
 #include "controller.h"
+#include "model.h"
+#include "view.h"
 
-Controller::Controller()
-    : view_(new View(this)),
-      model_(new Model(this)) {
-  view_->model_ = model_.get();
-  model_->view_ = view_.get();
+Controller::Controller() {
   ConnectSignals();
-  model_->Paint();
-  model_->UpdateErrors();
-  view_->setWindowTitle("Glee, no mess!");
-  view_->show();
+  auto& view = View::Instance();
+  Model::Instance().Paint();
+  view.SetErrorCount(0);
+  view.setWindowTitle("Glee, no mess!");
+  view.show();
 }
 
 void Controller::ConnectSignals() {
-  QAbstractButton::connect(view_->ok_, &QPushButton::pressed,
-                           model_.get(), &Model::Permit);
-  QAbstractButton::connect(view_->not_ok_, &QPushButton::pressed,
-                           model_.get(), &Model::Reject);
+  auto& view = View::Instance();
+  auto& model = Model::Instance();
+  QAbstractButton::connect(
+      view.GetPermitButton(), &QPushButton::pressed,
+      &model, &Model::Permit);
+  QAbstractButton::connect(
+      view.GetRejectButton(), &QPushButton::pressed,
+      &model, &Model::Reject);
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
+  auto& model = Model::Instance();
   switch (event->key()) {
   case Qt::Key::Key_D: {
-    model_->Reject();
+    model.Reject();
     break;
   }
   case Qt::Key::Key_A: {
-    model_->Permit();
+    model.Permit();
     break;
   }
   }
+}
+
+Controller& Controller::Instance() {
+  static Controller instance;
+  return instance;
 }

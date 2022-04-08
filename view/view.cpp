@@ -1,14 +1,15 @@
 #include "view.h"
+#include "controller.h"
+#include "model.h"
 
-View::View(Controller* controller)
+View::View()
     : scene_(new QGraphicsScene),
-      ok_(new QPushButton("OK")),
-      not_ok_(new QPushButton("NOT OK")),
-      proxy_widget_(scene_->addWidget(ok_)),
+      permit_button_(new QPushButton("OK")),
+      reject_button_(new QPushButton("NOT OK")),
+      proxy_widget_(scene_->addWidget(permit_button_)),
       graphics_(new QGraphicsView(scene_)),
-      errors_(new QLabel("Placeholder")),
-      controller_(controller) {
-  scene_->addWidget(not_ok_);
+      errors_(new QLabel("Placeholder")) {
+  scene_->addWidget(reject_button_);
 
   scene_->addWidget(errors_);
 
@@ -19,15 +20,16 @@ View::View(Controller* controller)
   scene_->addLine(0, 0, 0, kHeight, transparent_pen);
   scene_->addLine(0, kHeight, kWidth, kHeight, transparent_pen);
   scene_->addLine(kWidth, 0, kWidth, kHeight, transparent_pen);
-  ok_->setGeometry(5, 5, 130, 30);
-  not_ok_->setGeometry(5, 40, 130, 30);
+  permit_button_->setGeometry(5, 5, 130, 30);
+  reject_button_->setGeometry(5, 40, 130, 30);
+  // TODO(shandomruffle): remove kludge
   errors_->setGeometry(5, 75, 130, 23);
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void View::RenderActiveVisitor(Guest* current) {
+void View::RenderActiveGuest(Guest* current) {
   const QBrush& brush = current->IsMale()
       ? kBluePolygonBrush : kYellowPolygonBrush;
   scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
@@ -35,7 +37,7 @@ void View::RenderActiveVisitor(Guest* current) {
                   QPen(), brush);
 }
 
-void View::RenderQueue(const std::deque<Guest*>& queue) {
+void View::RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue) {
   for (int i = 0; i < queue.size(); ++i) {
     const QBrush& brush = queue[i]->IsMale()
         ? kBluePolygonBrush : kYellowPolygonBrush;
@@ -51,5 +53,10 @@ void View::SetErrorCount(int value) {
 }
 
 void View::keyPressEvent(QKeyEvent* event) {
-  controller_->keyPressEvent(event);
+  Controller::Instance().keyPressEvent(event);
+}
+
+View& View::Instance() {
+  static View instance;
+  return instance;
 }

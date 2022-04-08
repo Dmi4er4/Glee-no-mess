@@ -1,7 +1,5 @@
 #pragma once
 
-#include "mvc.h"
-
 #include <QKeyEvent>
 #include <QPushButton>
 
@@ -12,13 +10,11 @@ class Model;
 
 class Controller {
  public:
-  Controller();
+  static Controller& Instance();
 
   void keyPressEvent(QKeyEvent* event);
 
  private:
+  Controller();
   void ConnectSignals();
-
-  std::unique_ptr<Model> model_;
-  std::unique_ptr<View> view_;
 };

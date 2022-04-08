@@ -1,7 +1,6 @@
 #pragma once
 
 #include "guest.h"
-#include "mvc.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -13,6 +12,7 @@
 #include <QGraphicsView>
 
 #include <deque>
+#include <memory>
 
 class Model;
 class Controller;
@@ -21,6 +21,8 @@ class View : public QMainWindow {
   Q_OBJECT
 
  public:
+  static View& Instance();
+
   static constexpr int kWidth = 1000;
   static constexpr int kHeight = 800;
 
@@ -30,23 +32,22 @@ class View : public QMainWindow {
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
-  explicit View(Controller* controller);
-
   void keyPressEvent(QKeyEvent* event) override;
-  void RenderActiveVisitor(Guest* current);
-  void RenderQueue(const std::deque<Guest*>& queue);
+
+  void RenderActiveGuest(Guest* current);
+  void RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue);
 
   void SetErrorCount(int value);
 
+  auto GetPermitButton() { return Instance().permit_button_; }
+  auto GetRejectButton() { return Instance().reject_button_; }
+
  private:
-  friend class Controller;
+  View();
   QGraphicsScene* scene_;
-  QPushButton* ok_;
-  QPushButton* not_ok_;
+  QPushButton* permit_button_;
+  QPushButton* reject_button_;
   QGraphicsProxyWidget* proxy_widget_;
   QGraphicsView* graphics_;
   QLabel* errors_;
-
-  Model* model_;
-  Controller* controller_;
 };

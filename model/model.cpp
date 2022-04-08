@@ -1,39 +1,50 @@
 #include "model.h"
 
-Model::Model(Controller* controller)
-    : controller_(controller) {
+#include "controller.h"
+#include "view.h"
+
+#include <utility>
+
+Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {
-    queue_.push_back(new Guest);
+    queue_.emplace_back(new Guest);
   }
-  current_ = new Guest;
+  current_guest_ = std::make_unique<Guest>();
 }
 
 void Model::Paint() {
-  view_->RenderActiveVisitor(current_);
-  view_->RenderQueue(queue_);
+  auto& view = View::Instance();
+  view.RenderActiveGuest(current_guest_.get());
+  view.RenderQueue(queue_);
 }
 
 void Model::Permit() {
-  errors_ += !current_->IsMale();
+  if (!Instance().current_guest_->IsMale()) {
+    IncreaseErrorsCount();
+  }
   ShiftQueue();
   Paint();
-  UpdateErrors();
 }
 
 void Model::Reject() {
-  errors_ += current_->IsMale();
+  if (Instance().current_guest_->IsMale()) {
+    IncreaseErrorsCount();
+  }
   ShiftQueue();
   Paint();
-  UpdateErrors();
 }
 
 void Model::ShiftQueue() {
-  delete current_;
-  current_ = queue_.front();
+  current_guest_ = std::move(queue_.front());
   queue_.pop_front();
-  queue_.push_back(new Guest);
+  queue_.emplace_back(new Guest);
 }
 
-void Model::UpdateErrors() {
-  view_->SetErrorCount(errors_);
+void Model::IncreaseErrorsCount() {
+  View::Instance().SetErrorCount(++errors_);
+}
+
+Model& Model::Instance() {
+  static Model instance;
+  return instance;
 }

@@ -11,28 +11,31 @@ class Guest {
  public:
   enum class SkinColor {
     kBlack,
-    kWhite
+    kWhite,
+    kCount
   };
 
   enum class Sex {
     kMale,
-    kFemale
+    kFemale,
+    kCount
   };
 
   enum class EyeColor {
     kGreen,
     kBlue,
-    kBrown
+    kBrown,
+    kCount
   };
 
   enum class Neatness {
     kState1,
     kState2,
-    kState3
+    kState3,
+    kCount
   };
 
  private:
-  Random rand;
   SkinColor skin_color_;
   Sex sex_;
   EyeColor eye_color_;
