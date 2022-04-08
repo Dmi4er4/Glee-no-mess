@@ -19,14 +19,13 @@ class Model : public QObject {
   static void Permit();
   static void Reject();
   static void ShiftQueue();
-
-  static void ErrorsPlusPlus();
+  static void IncreaseErrorsCount();
 
  private:
   Model();
 
   int errors_{};
 
-  std::deque<Guest*> queue_;
-  Guest* current_;
+  std::deque<std::unique_ptr<Guest>> queue_;
+  std::unique_ptr<Guest> current_;
 };

@@ -34,7 +34,7 @@ class View : public QMainWindow {
   void keyPressEvent(QKeyEvent* event) override;
 
   static void RenderActiveVisitor(Guest* current);
-  static void RenderQueue(const std::deque<Guest*>& queue);
+  static void RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue);
 
   static void SetErrorCount(int value);
 

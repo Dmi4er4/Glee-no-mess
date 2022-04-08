@@ -37,7 +37,7 @@ void View::RenderActiveVisitor(Guest* current) {
                              QPen(), brush);
 }
 
-void View::RenderQueue(const std::deque<Guest*>& queue) {
+void View::RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue) {
   for (int i = 0; i < queue.size(); ++i) {
     const QBrush& brush = queue[i]->IsMale()
         ? kBluePolygonBrush : kYellowPolygonBrush;
