@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.21)
 project(Glee-no-mess)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -fsanitize=address,leak,undefined")
+#set(CMAKE_PREFIX_PATH "/opt/Qt/6.2.3/gcc_64/")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,leak,undefined")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
