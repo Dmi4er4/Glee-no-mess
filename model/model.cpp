@@ -1,8 +1,11 @@
 #include "model.h"
+
 #include "controller.h"
 #include "view.h"
 
 #include <utility>
+
+int Model::errors_ = 0;
 
 Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {
@@ -40,7 +43,7 @@ void Model::ShiftQueue() {
 }
 
 void Model::IncreaseErrorsCount() {
-  View::SetErrorCount(++Instance().errors_);
+  View::SetErrorCount(++errors_);
 }
 
 Model& Model::Instance() {
