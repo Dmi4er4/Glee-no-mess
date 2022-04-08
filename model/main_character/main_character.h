@@ -16,7 +16,11 @@ class MainCharacter {
 
   MainCharacter();
 
+  money_t GetMoney() const {
+    return money_;
+  }
+
  private:
-  Money money_{};
+  money_t money_{};
   std::vector<bool> inventory_{};
 };

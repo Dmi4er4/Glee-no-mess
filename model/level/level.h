@@ -18,11 +18,11 @@ class Level {
  public:
   explicit Level(const QString& file_name);
 
-  Days GetDays() const {
+  days_t GetDays() const {
     return days_;
   }
 
-  Money GetMoneyPerDayCount() const {
+  money_t GetMoneyPerDayCount() const {
     return money_;
   }
 
@@ -45,10 +45,10 @@ class Level {
  private:
   void GenerateGuests();
 
-  GuestsCount guests_count_;
-  CharacteristicsCount characteristics_count_;
-  Days days_;
-  Money money_;
+  guests_t guests_count_;
+  characteristics_t characteristics_count_;
+  days_t days_;
+  money_t money_;
   std::vector<std::vector<Guest>> all_guests_;
   std::vector<BadCharacteristic> characteristic_;
 };
