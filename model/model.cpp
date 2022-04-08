@@ -5,8 +5,6 @@
 
 #include <utility>
 
-int Model::errors_ = 0;
-
 Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {
     queue_.emplace_back(new Guest);
@@ -15,8 +13,9 @@ Model::Model() {
 }
 
 void Model::Paint() {
-  View::RenderActiveVisitor(Instance().current_guest_.get());
-  View::RenderQueue(Instance().queue_);
+  auto& view = View::Instance();
+  view.RenderActiveGuest(current_guest_.get());
+  view.RenderQueue(queue_);
 }
 
 void Model::Permit() {
@@ -36,14 +35,13 @@ void Model::Reject() {
 }
 
 void Model::ShiftQueue() {
-  auto& m = Instance();
-  m.current_guest_ = std::move(m.queue_.front());
-  m.queue_.pop_front();
-  m.queue_.emplace_back(new Guest);
+  current_guest_ = std::move(queue_.front());
+  queue_.pop_front();
+  queue_.emplace_back(new Guest);
 }
 
 void Model::IncreaseErrorsCount() {
-  View::SetErrorCount(++errors_);
+  View::Instance().SetErrorCount(++errors_);
 }
 
 Model& Model::Instance() {

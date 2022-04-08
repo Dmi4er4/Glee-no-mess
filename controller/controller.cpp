@@ -4,29 +4,33 @@
 
 Controller::Controller() {
   ConnectSignals();
-  Model::Paint();
-  View::SetErrorCount(0);
-  View::Instance().setWindowTitle("Glee, no mess!");
-  View::Instance().show();
+  auto& view = View::Instance();
+  Model::Instance().Paint();
+  view.SetErrorCount(0);
+  view.setWindowTitle("Glee, no mess!");
+  view.show();
 }
 
 void Controller::ConnectSignals() {
+  auto& view = View::Instance();
+  auto& model = Model::Instance();
   QAbstractButton::connect(
-      View::GetPermitButton(), &QPushButton::pressed,
-      &Model::Instance(), &Model::Permit);
+      view.GetPermitButton(), &QPushButton::pressed,
+      &model, &Model::Permit);
   QAbstractButton::connect(
-      View::GetRejectButton(), &QPushButton::pressed,
-      &Model::Instance(), &Model::Reject);
+      view.GetRejectButton(), &QPushButton::pressed,
+      &model, &Model::Reject);
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
+  auto& model = Model::Instance();
   switch (event->key()) {
   case Qt::Key::Key_D: {
-    Model::Reject();
+    model.Reject();
     break;
   }
   case Qt::Key::Key_A: {
-    Model::Permit();
+    model.Permit();
     break;
   }
   }

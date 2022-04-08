@@ -34,13 +34,13 @@ class View : public QMainWindow {
 
   void keyPressEvent(QKeyEvent* event) override;
 
-  static void RenderActiveVisitor(Guest* current);
-  static void RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue);
+  void RenderActiveGuest(Guest* current);
+  void RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue);
 
-  static void SetErrorCount(int value);
+  void SetErrorCount(int value);
 
-  static auto GetPermitButton() { return Instance().permit_button_; }
-  static auto GetRejectButton() { return Instance().reject_button_; }
+  auto GetPermitButton() { return Instance().permit_button_; }
+  auto GetRejectButton() { return Instance().reject_button_; }
 
  private:
   View();

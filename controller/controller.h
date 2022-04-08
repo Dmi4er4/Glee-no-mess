@@ -12,9 +12,9 @@ class Controller {
  public:
   static Controller& Instance();
 
-  static void keyPressEvent(QKeyEvent* event);
+  void keyPressEvent(QKeyEvent* event);
 
  private:
   Controller();
-  static void ConnectSignals();
+  void ConnectSignals();
 };
