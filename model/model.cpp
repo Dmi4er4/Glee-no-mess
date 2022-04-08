@@ -2,6 +2,8 @@
 #include "controller.h"
 #include "view.h"
 
+#include <utility>
+
 Model::Model() {
   for (int i = 0; i < kQueueLength; ++i) {
     queue_.emplace_back(new Guest);

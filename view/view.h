@@ -12,6 +12,7 @@
 #include <QGraphicsView>
 
 #include <deque>
+#include <memory>
 
 class Model;
 class Controller;

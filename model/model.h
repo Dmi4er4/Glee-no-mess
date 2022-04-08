@@ -5,6 +5,7 @@
 #include <QObject>
 
 #include <deque>
+#include <memory>
 
 class View;
 class Controller;
