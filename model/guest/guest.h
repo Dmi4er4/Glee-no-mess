@@ -2,11 +2,22 @@
 
 #include "random.h"
 
+#include <QGraphicsItem>
+
+#include <memory>
+
 class Guest {
  public:
   Guest();
+  ~Guest();
 
   bool IsMale() const;
+
+  static QRect GetRectWaiting(int index);
+  static QRect GetRectActive();
+
+  void SetActive();
+  void SetIndex(int index);
 
  public:
   enum class SkinColor {
@@ -35,9 +46,12 @@ class Guest {
     kCount
   };
 
+  auto GetSprite() { return sprite_.get(); }
+
  private:
   SkinColor skin_color_;
   Sex sex_;
   EyeColor eye_color_;
   Neatness neatness_;
+  std::unique_ptr<QGraphicsRectItem> sprite_;
 };

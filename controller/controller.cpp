@@ -5,8 +5,6 @@
 Controller::Controller() {
   ConnectSignals();
   auto& view = View::Instance();
-  Model::Instance().Paint();
-  view.SetErrorCount(0);
   view.setWindowTitle("Glee, no mess!");
   view.show();
 }

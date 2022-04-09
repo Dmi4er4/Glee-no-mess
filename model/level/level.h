@@ -30,15 +30,15 @@ class Level {
     return all_guests_[day];
   }
 
-  Guest GetKthVisitorInDay(int visitor_number, int day) const {
+  const Guest& GetKthVisitorInDay(int visitor_number, int day) const {
     return all_guests_[day][visitor_number];
   }
 
-  BadCharacteristic GetBadCharacteristicsInDay(int day) const {
+  const BadCharacteristic& GetBadCharacteristicsInDay(int day) const {
     return characteristic_[day];
   }
 
-  std::vector<BadCharacteristic> GetAllBadCharacteristics() const {
+  const std::vector<BadCharacteristic>& GetAllBadCharacteristics() const {
     return characteristic_;
   }
 

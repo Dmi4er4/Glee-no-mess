@@ -16,7 +16,6 @@ class Model : public QObject {
 
   static constexpr int kQueueLength = 3;
 
-  void Paint();
   void Permit();
   void Reject();
   void ShiftQueue();

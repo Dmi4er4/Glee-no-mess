@@ -15,7 +15,7 @@ Level::Level(const QString& file_name) {
 }
 
 void Level::GenerateGuests() {
-  all_guests_.resize(days_, std::vector<Guest>(guests_count_));
-  characteristic_.resize(days_,
-                         BadCharacteristic(characteristics_count_));
+  // all_guests_.resize(days_, std::vector<Guest>(guests_count_));
+  // characteristic_.resize(days_,
+  //                        BadCharacteristic(characteristics_count_));
 }

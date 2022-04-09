@@ -6,16 +6,13 @@
 #include <utility>
 
 Model::Model() {
+  auto& view = View::Instance();
   for (int i = 0; i < kQueueLength; ++i) {
-    queue_.emplace_back(new Guest);
+    queue_.emplace_back(std::make_unique<Guest>());
+    queue_.back()->SetIndex(i);
   }
   current_guest_ = std::make_unique<Guest>();
-}
-
-void Model::Paint() {
-  auto& view = View::Instance();
-  view.RenderActiveGuest(current_guest_.get());
-  view.RenderQueue(queue_);
+  current_guest_->SetActive();
 }
 
 void Model::Permit() {
@@ -23,7 +20,6 @@ void Model::Permit() {
     IncreaseErrorsCount();
   }
   ShiftQueue();
-  Paint();
 }
 
 void Model::Reject() {
@@ -31,17 +27,20 @@ void Model::Reject() {
     IncreaseErrorsCount();
   }
   ShiftQueue();
-  Paint();
 }
 
 void Model::ShiftQueue() {
   current_guest_ = std::move(queue_.front());
   queue_.pop_front();
-  queue_.emplace_back(new Guest);
+  queue_.emplace_back(std::make_unique<Guest>());
+  for (int i = 0; i < queue_.size(); ++i) {
+    queue_[i]->SetIndex(i);
+  }
+  current_guest_->SetActive();
 }
 
 void Model::IncreaseErrorsCount() {
-  View::Instance().SetErrorCount(++errors_);
+  View::Instance().SetErrorsCount(++errors_);
 }
 
 Model& Model::Instance() {

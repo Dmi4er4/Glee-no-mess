@@ -29,18 +29,17 @@ class View : public QMainWindow {
   static constexpr int kBlue = 0x0dc1fb;
   static constexpr int kYellow = 0xfdff73;
   static constexpr int kSquareSize = 80;
+  static constexpr int kMargin = 5;
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
 
-  void RenderActiveGuest(Guest* current);
-  void RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue);
+  void SetErrorsCount(int value);
 
-  void SetErrorCount(int value);
-
-  auto GetPermitButton() { return Instance().permit_button_; }
-  auto GetRejectButton() { return Instance().reject_button_; }
+  auto GetPermitButton() { return permit_button_; }
+  auto GetRejectButton() { return reject_button_; }
+  auto GetScene() { return scene_; }
 
  private:
   View();

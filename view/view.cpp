@@ -24,31 +24,13 @@ View::View()
   reject_button_->setGeometry(5, 40, 130, 30);
   // TODO(shandomruffle): remove kludge
   errors_->setGeometry(5, 75, 130, 23);
+  SetErrorsCount(0);
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void View::RenderActiveGuest(Guest* current) {
-  const QBrush& brush = current->IsMale()
-      ? kBluePolygonBrush : kYellowPolygonBrush;
-  scene_->addRect(5, kHeight / 2 - kSquareSize / 2,
-                  kSquareSize, kSquareSize,
-                  QPen(), brush);
-}
-
-void View::RenderQueue(const std::deque<std::unique_ptr<Guest>>& queue) {
-  for (int i = 0; i < queue.size(); ++i) {
-    const QBrush& brush = queue[i]->IsMale()
-        ? kBluePolygonBrush : kYellowPolygonBrush;
-    scene_->addRect(kWidth - (kSquareSize + 5) * (queue.size() - i),
-                    kHeight / 2 - kSquareSize / 2,
-                    kSquareSize, kSquareSize,
-                    QPen(), brush);
-  }
-}
-
-void View::SetErrorCount(int value) {
+void View::SetErrorsCount(int value) {
   errors_->setText(QString("Errors: ") + std::to_string(value).c_str());
 }
 
