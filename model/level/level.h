@@ -31,7 +31,8 @@ class Level {
     return all_guests_[day];
   }
 
-  const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number, int day) const {
+  const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number,
+                                                 int day) const {
     return all_guests_[day][visitor_number];
   }
 
@@ -39,8 +40,9 @@ class Level {
     return characteristic_[day];
   }
 
-  const std::vector<std::shared_ptr<BadCharacteristic>>& GetAllBadCharacteristics() const {
-    return characteristic_;
+  const std::vector<std::shared_ptr<BadCharacteristic>>&
+    GetAllBadCharacteristics() const {
+      return characteristic_;
   }
 
  private:

@@ -46,7 +46,9 @@ class Guest {
     kCount
   };
 
-  auto GetSprite() { return sprite_.get(); }
+  auto GetSprite() {
+    return sprite_.get();
+  }
 
  private:
   SkinColor skin_color_;
