@@ -1,7 +1,7 @@
 #include "file_loader.h"
 
-std::map<QString, QJsonDocument> FileLoader::container_json_ = {};
-std::map<QString, QPixmap> FileLoader::container_image_ = {};
+std::unordered_map<QString, QJsonDocument> FileLoader::container_json_ = {};
+std::unordered_map<QString, QPixmap> FileLoader::container_image_ = {};
 
 std::variant<QJsonDocument,
              QPixmap> FileLoader::GetFile(const QString& file_name) {
@@ -13,13 +13,11 @@ std::variant<QJsonDocument,
 }
 
 bool FileLoader::IsJsonFile(const QString& file_name) {
-  return file_name.endsWith(".json");
+  return endsWith(file_name, ".json");
 }
 
 bool FileLoader::IsImageFile(const QString& file_name) {
-  return file_name.endsWith(".jpg") ||
-      file_name.endsWith(".jpeg") ||
-      file_name.endsWith(".png");
+  return endsWith(file_name, ".jpeg", ".png", ".jpg");
 }
 
 QJsonDocument& FileLoader::GetJsonFile(const QString& file_name) {
