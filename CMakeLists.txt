@@ -44,7 +44,7 @@ add_executable(default-target
         ${MODEL_LEVEL}
         ${MODEL_TOOLS}
         main.cpp
-        tools/file_controller.cpp tools/file_controller.h)
+        )
 
 target_link_libraries(default-target
         Qt::Core
