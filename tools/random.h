@@ -25,7 +25,7 @@ class Random {
   static T EnumChoose() {
     return static_cast<T>(
         std::uniform_int_distribution<int32_t>
-            (0, static_cast<int>(T::kCount))(
+            (0, static_cast<int>(T::kCount) - 1)(
             Instance().mersenne_twister_));
   }
 

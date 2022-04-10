@@ -15,7 +15,13 @@ Level::Level(const QString& file_name) {
 }
 
 void Level::GenerateGuests() {
-  // all_guests_.resize(days_, std::vector<Guest>(guests_count_));
-  // characteristic_.resize(days_,
-  //                        BadCharacteristic(characteristics_count_));
+  all_guests_.resize(days_);
+  for (int i = 0; i < days_; ++i) {
+    all_guests_[i] =
+        std::vector<std::shared_ptr<Guest>>(guests_count_,
+                                            std::shared_ptr<Guest>(new Guest));
+  }
+  characteristic_.resize(days_,
+                         std::make_shared<BadCharacteristic>(BadCharacteristic(
+                             characteristics_count_)));
 }

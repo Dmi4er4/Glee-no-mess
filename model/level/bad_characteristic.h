@@ -3,6 +3,7 @@
 #include "tools.h"
 #include "guest.h"
 
+#include <memory>
 #include <vector>
 
 struct BadCharacteristic {
@@ -11,6 +12,6 @@ struct BadCharacteristic {
   explicit BadCharacteristic(int32_t characteristic_count);
 
  private:
-  Guest visitor_;
+  std::shared_ptr<Guest> guest_;
   std::vector<bool> is_valid_characteristic_;
 };

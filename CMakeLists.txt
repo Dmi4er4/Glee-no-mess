@@ -20,7 +20,7 @@ include_directories(model)
 include_directories(model/guest)
 include_directories(model/level)
 include_directories(model/main_character)
-include_directories(model/tools)
+include_directories(tools)
 include_directories(view)
 include_directories(controller)
 include_directories(resources)
@@ -32,7 +32,7 @@ file(GLOB MODEL model/*)
 file(GLOB MODEL_MAINCHARACTER model/main_character/*)
 file(GLOB MODEL_GUEST model/guest/*)
 file(GLOB MODEL_LEVEL model/level/*)
-file(GLOB MODEL_TOOLS model/tools/*)
+file(GLOB MODEL_TOOLS tools/*)
 
 add_executable(default-target
         ${CONTROLLER}

@@ -12,6 +12,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 class Level {
@@ -26,19 +27,19 @@ class Level {
     return money_;
   }
 
-  const std::vector<Guest>& GetAllVisitorsInDay(int day) const {
+  const std::vector<std::shared_ptr<Guest>>& GetAllGuestsInDay(int day) const {
     return all_guests_[day];
   }
 
-  const Guest& GetKthVisitorInDay(int visitor_number, int day) const {
+  const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number, int day) const {
     return all_guests_[day][visitor_number];
   }
 
-  const BadCharacteristic& GetBadCharacteristicsInDay(int day) const {
+  std::shared_ptr<BadCharacteristic> GetBadCharacteristicsInDay(int day) const {
     return characteristic_[day];
   }
 
-  const std::vector<BadCharacteristic>& GetAllBadCharacteristics() const {
+  const std::vector<std::shared_ptr<BadCharacteristic>>& GetAllBadCharacteristics() const {
     return characteristic_;
   }
 
@@ -49,6 +50,6 @@ class Level {
   characteristics_t characteristics_count_;
   days_t days_;
   money_t money_;
-  std::vector<std::vector<Guest>> all_guests_;
-  std::vector<BadCharacteristic> characteristic_;
+  std::vector<std::vector<std::shared_ptr<Guest>>> all_guests_;
+  std::vector<std::shared_ptr<BadCharacteristic>> characteristic_;
 };
