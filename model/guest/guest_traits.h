@@ -1,7 +1,6 @@
 #pragma once
 
-class VisitorTraits {
- public:
+namespace guest_traits {
   enum class SkinColor {
     kBlack,
     kWhite,

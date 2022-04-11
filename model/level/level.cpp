@@ -16,11 +16,10 @@ void Level::GenerateGuests() {
   for (int i = 0; i < days_; ++i) {
     all_guests_[i].resize(guests_count_);
     for (int j = 0; j < guests_count_; ++j) {
-      all_guests_[i][j] = std::shared_ptr<Guest>(new Guest);
+      all_guests_[i][j] = std::make_shared<Guest>();
     }
 
     characteristic_[i] =
-        std::make_shared<BadCharacteristic>
-            (BadCharacteristic(characteristics_count_));
+        std::make_shared<BadCharacteristic>(characteristics_count_);
   }
 }

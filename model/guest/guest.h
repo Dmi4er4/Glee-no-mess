@@ -1,7 +1,7 @@
 #pragma once
 
 #include "random.h"
-#include "visitor_traits.h"
+#include "guest_traits.h"
 
 #include <QGraphicsItem>
 
@@ -23,9 +23,9 @@ class Guest {
   auto GetSprite() { return sprite_.get(); }
 
  private:
-  VisitorTraits::SkinColor skin_color_;
-  VisitorTraits::Sex sex_;
-  VisitorTraits::EyeColor eye_color_;
-  VisitorTraits::Neatness neatness_;
+  guest_traits::SkinColor skin_color_;
+  guest_traits::Sex sex_;
+  guest_traits::EyeColor eye_color_;
+  guest_traits::Neatness neatness_;
   std::unique_ptr<QGraphicsRectItem> sprite_;
 };
