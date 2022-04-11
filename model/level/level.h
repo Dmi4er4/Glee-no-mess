@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bad_characteristic.h"
+#include "file_loader.h"
 #include "guest.h"
 #include "typedefs.h"
 

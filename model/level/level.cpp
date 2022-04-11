@@ -1,12 +1,8 @@
 #include "level.h"
 
 Level::Level(const QString& file_name) {
-  QFile file(file_name);
-  file.open(QIODevice::ReadOnly);
-  QString s = file.readAll();
-  file.close();
-
-  QJsonDocument source = QJsonDocument::fromJson(s.toUtf8());
+  QJsonDocument source =
+      std::get<QJsonDocument>(FileLoader::GetFile(file_name));
   days_ = source["days"].toInt();
   money_ = source["money"].toInt();
   guests_count_ = source["guests_count"].toInt();

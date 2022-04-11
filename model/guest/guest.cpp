@@ -4,10 +4,10 @@
 #include "model.h"
 
 Guest::Guest()
-    : skin_color_(Random::EnumChoose<SkinColor>()),
-      sex_(Random::EnumChoose<Sex>()),
-      eye_color_(Random::EnumChoose<EyeColor>()),
-      neatness_(Random::EnumChoose<Neatness>()),
+    : skin_color_(Random::EnumChoose<VisitorTraits::SkinColor>()),
+      sex_(Random::EnumChoose<VisitorTraits::Sex>()),
+      eye_color_(Random::EnumChoose<VisitorTraits::EyeColor>()),
+      neatness_(Random::EnumChoose<VisitorTraits::Neatness>()),
       sprite_(new QGraphicsRectItem) {
   sprite_->setBrush(IsMale()
                     ? View::kBluePolygonBrush
@@ -20,7 +20,7 @@ Guest::~Guest() {
 }
 
 bool Guest::IsMale() const {
-  return sex_ == Sex::kMale;
+  return sex_ == VisitorTraits::Sex::kMale;
 }
 
 void Guest::SetActive() {
