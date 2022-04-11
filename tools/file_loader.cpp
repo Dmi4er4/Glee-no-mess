@@ -42,5 +42,6 @@ QString FileLoader::CastFileToString(const QString& file_name) {
   if (file.isOpen()) {
     source = file.readAll();
   }
+  file.close();
   return source;
 }
