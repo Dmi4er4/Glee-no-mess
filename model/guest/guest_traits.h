@@ -26,4 +26,4 @@ namespace guest_traits {
     kState3,
     kCount
   };
-};
+} // namespace guest_traits
