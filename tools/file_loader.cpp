@@ -9,6 +9,8 @@ std::variant<QJsonDocument,
     return GetJsonFile(file_name);
   } else if (IsImageFile(file_name)) {
     return GetImageFile(file_name);
+  } else {
+    throw std::invalid_argument("Unknown file format");
   }
 }
 
