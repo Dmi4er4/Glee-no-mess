@@ -20,9 +20,7 @@ class Guest {
   static QRect GetRectWaiting(int index);
   static QRect GetRectActive();
 
-  auto GetSprite() {
-    return sprite_.get();
-  }
+  auto GetSprite() { return sprite_.get(); }
 
  private:
   VisitorTraits::SkinColor skin_color_;
