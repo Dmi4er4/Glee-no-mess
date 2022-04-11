@@ -13,13 +13,12 @@ class Guest {
 
   bool IsMale() const;
 
-  static QRect GetRectWaiting(int index);
-  static QRect GetRectActive();
-
   void SetActive();
   void SetIndex(int index);
 
- public:
+  static QRect GetRectWaiting(int index);
+  static QRect GetRectActive();
+
   enum class SkinColor {
     kBlack,
     kWhite,

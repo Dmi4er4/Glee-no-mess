@@ -15,8 +15,20 @@ Guest::Guest()
   View::Instance().GetScene()->addItem(sprite_.get());
 }
 
+Guest::~Guest() {
+  View::Instance().GetScene()->removeItem(sprite_.get());
+}
+
 bool Guest::IsMale() const {
   return sex_ == Sex::kMale;
+}
+
+void Guest::SetActive() {
+  sprite_->setRect(GetRectActive());
+}
+
+void Guest::SetIndex(int index) {
+  sprite_->setRect(GetRectWaiting(index));
 }
 
 QRect Guest::GetRectWaiting(int index) {
@@ -36,16 +48,4 @@ QRect Guest::GetRectActive() {
       View::kSquareSize,
       View::kSquareSize,
   };
-}
-
-Guest::~Guest() {
-  View::Instance().GetScene()->removeItem(sprite_.get());
-}
-
-void Guest::SetActive() {
-  sprite_->setRect(GetRectActive());
-}
-
-void Guest::SetIndex(int index) {
-  sprite_->setRect(GetRectWaiting(index));
 }
