@@ -1,0 +1,52 @@
+cmake_minimum_required(VERSION 3.21)
+project(Glee-no-mess)
+
+#set(CMAKE_PREFIX_PATH "/opt/Qt/6.2.3/gcc_64/")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,leak,undefined")
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt6 COMPONENTS
+        Core
+        Gui
+        Widgets
+        REQUIRED)
+
+include_directories(model)
+include_directories(model/guest)
+include_directories(model/level)
+include_directories(model/main_character)
+include_directories(tools)
+include_directories(view)
+include_directories(controller)
+include_directories(resources)
+
+file(GLOB CONTROLLER controller/*)
+file(GLOB VIEW view/*)
+file(GLOB RESOURCES resources/*)
+file(GLOB MODEL model/*)
+file(GLOB MODEL_MAINCHARACTER model/main_character/*)
+file(GLOB MODEL_GUEST model/guest/*)
+file(GLOB MODEL_LEVEL model/level/*)
+file(GLOB MODEL_TOOLS tools/*)
+
+add_executable(default-target
+        ${CONTROLLER}
+        ${RESOURCES}
+        ${VIEW}
+        ${MODEL}
+        ${MODEL_MAINCHARACTER}
+        ${MODEL_GUEST}
+        ${MODEL_LEVEL}
+        ${MODEL_TOOLS}
+        main.cpp
+        )
+
+target_link_libraries(default-target
+        Qt::Core
+        Qt::Gui
+        Qt::Widgets)
