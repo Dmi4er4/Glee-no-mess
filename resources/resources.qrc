@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
-        <file>club_level.json</file>
+        <file>club_level/club_level.json</file>
+        <file>club_level/background.png</file>
     </qresource>
 </RCC>
