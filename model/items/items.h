@@ -7,7 +7,7 @@
 
 class Items {
  public:
-  Items(const QString& name);
+  explicit Items(const QString& name);
 
   const QPixmap& GetSprite() const {
     return sprite_;

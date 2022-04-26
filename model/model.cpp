@@ -62,15 +62,15 @@ void Model::ForgiveFirstMistake() {
 
 void Model::UpdateMistake() {
   errors_count_++;
-  for (auto item: all_items_) {
+  for (auto item : all_items_) {
     item->MistakeTrigger();
   }
   is_first_mistake_ = false;
-  // TODO
+  // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddIgnoreFirstMistakeItem() {
-  for (auto item: all_items_) {
+  for (auto item : all_items_) {
     if (item->GetName() == "ignore_first_mistake") {
       return;
     }
@@ -83,7 +83,7 @@ void Model::StartNewLevel() {
   is_first_mistake_ = true;
   // time_lest =
   was_added_time_ = false;
-  // TODO
+  // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddTime(size_t time) {
@@ -94,13 +94,13 @@ void Model::AddTime(size_t time) {
 }
 
 void Model::UpdateTimeLeft() {
-  for (auto item: all_items_) {
+  for (auto item : all_items_) {
     item->TimeTrigger();
   }
 }
 
 void Model::AddTimeItem() {
-  for (auto item: all_items_) {
+  for (auto item : all_items_) {
     if (item->GetName() == "add_time") {
       return;
     }

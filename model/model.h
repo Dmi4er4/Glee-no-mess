@@ -9,6 +9,7 @@
 
 #include <deque>
 #include <memory>
+#include <vector>
 
 class View;
 class Controller;
