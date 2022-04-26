@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
         <file>club_level.json</file>
+        <file>items.json</file>
     </qresource>
 </RCC>

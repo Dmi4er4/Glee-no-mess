@@ -5,6 +5,12 @@
 
 #include <utility>
 
+size_t Model::errors_count_ = 0;
+size_t Model::time_left_ = 0;
+bool Model::is_first_mistake_ = true;
+bool Model::was_added_time_ = false;
+std::vector<Items*> Model::all_items_ = {};
+
 Model::Model() {
   auto& view = View::Instance();
   for (int i = 0; i < kQueueLength; ++i) {
@@ -46,4 +52,58 @@ void Model::IncreaseErrorsCount() {
 Model& Model::Instance() {
   static Model instance;
   return instance;
+}
+
+void Model::ForgiveFirstMistake() {
+  if (is_first_mistake_) {
+    errors_count_--;
+  }
+}
+
+void Model::UpdateMistake() {
+  errors_count_++;
+  for (auto item: all_items_) {
+    item->MistakeTrigger();
+  }
+  is_first_mistake_ = false;
+  // TODO
+}
+
+void Model::AddIgnoreFirstMistakeItem() {
+  for (auto item: all_items_) {
+    if (item->GetName() == "ignore_first_mistake") {
+      return;
+    }
+  }
+  all_items_.push_back(new IgnoreFirstMistakeItem);
+}
+
+void Model::StartNewLevel() {
+  errors_count_ = 0;
+  is_first_mistake_ = true;
+  // time_lest =
+  was_added_time_ = false;
+  // TODO
+}
+
+void Model::AddTime(size_t time) {
+  if (!was_added_time_) {
+    time_left_ += time;
+    was_added_time_ = true;
+  }
+}
+
+void Model::UpdateTimeLeft() {
+  for (auto item: all_items_) {
+    item->TimeTrigger();
+  }
+}
+
+void Model::AddTimeItem() {
+  for (auto item: all_items_) {
+    if (item->GetName() == "add_time") {
+      return;
+    }
+  }
+  all_items_.push_back(new TimeItem);
 }
