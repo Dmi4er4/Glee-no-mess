@@ -2,8 +2,10 @@
 
 #include "guest.h"
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QRect>
 #include <QPushButton>
 #include <QPalette>
 #include <QWidget>
@@ -21,14 +23,10 @@ class Model;
 class Controller;
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   static View& Instance();
-
-  static constexpr int kWidth = 700;
-  static constexpr int kHeight = 560;
-
   static constexpr int kBlue = 0x0dc1fb;
   static constexpr int kYellow = 0xfdff73;
   static constexpr int kSquareSize = 80;
@@ -40,7 +38,7 @@ class View : public QMainWindow {
 
   void SetErrorsCount(int value);
   void SetTimer();
-  void SetBackgroundImage(const QString&);
+  void SetBackgroundImage(const QPixmap&);
   void ChangeFrame();
 
   auto GetPermitButton() { return permit_button_; }
@@ -56,5 +54,7 @@ class View : public QMainWindow {
   QGraphicsView* graphics_;
   QLabel* errors_;
 
-  int current_frame_;
+  uint8_t current_frame_;
+
+  const uint8_t kFrameRate = 75;
 };

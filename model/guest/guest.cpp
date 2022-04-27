@@ -33,9 +33,9 @@ void Guest::SetIndex(int index) {
 
 QRect Guest::GetRectWaiting(int index) {
   return {
-      View::kWidth - (View::kSquareSize + View::kMargin) *
+      View::Instance().width() - (View::kSquareSize + View::kMargin) *
           (Model::kQueueLength - index),
-      (View::kHeight + View::kSquareSize) / 2,
+      (View::Instance().height() + View::kSquareSize) / 2,
       View::kSquareSize,
       View::kSquareSize,
   };
@@ -44,7 +44,7 @@ QRect Guest::GetRectWaiting(int index) {
 QRect Guest::GetRectActive() {
   return {
       -View::kMargin,
-      (View::kHeight + View::kSquareSize) / 2,
+      (View::Instance().height() + View::kSquareSize) / 2,
       View::kSquareSize,
       View::kSquareSize,
   };

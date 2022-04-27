@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(Glee-no-mess)
 
-set(CMAKE_PREFIX_PATH "D:/QT/6.3.0/mingw_64//lib/cmake")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,leak,undefined")
 
 set(CMAKE_CXX_STANDARD 17)
