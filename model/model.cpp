@@ -1,5 +1,6 @@
 #include "model.h"
 
+#include "all_items.h"
 #include "controller.h"
 #include "view.h"
 
@@ -54,12 +55,6 @@ Model& Model::Instance() {
   return instance;
 }
 
-void Model::ForgiveFirstMistake() {
-  if (is_first_mistake) {
-    errors_count--;
-  }
-}
-
 void Model::UpdateMistake() {
   errors_count++;
   for (auto item : all_items) {
@@ -67,12 +62,6 @@ void Model::UpdateMistake() {
   }
   is_first_mistake = false;
   // TODO(Adamenko-Vladislav)
-}
-
-void Model::AddIgnoreFirstMistakeItem() {
-  if (!HasItem("ignore_first_mistake")) {
-    all_items.emplace_back(new IgnoreFirstMistakeItem);
-  }
 }
 
 void Model::StartNewLevel() {
@@ -90,18 +79,6 @@ void Model::AddTime(size_t time) {
   }
 }
 
-void Model::UpdateTimeLeft() {
-  for (auto item : all_items) {
-    item->TimeTrigger();
-  }
-}
-
-void Model::AddTimeItem() {
-  if (!HasItem("add_time")) {
-    all_items.emplace_back(new TimeItem);
-  }
-}
-
 bool Model::HasItem(const QString& name) {
   for (auto item : all_items) {
     if (item->GetName() == name) {
@@ -109,4 +86,16 @@ bool Model::HasItem(const QString& name) {
     }
   }
   return false;
+}
+
+void Model::AddTimeItem() {
+  if (!HasItem(kAddTime)) {
+    all_items.emplace_back(new TimeItem);
+  }
+}
+
+void Model::AddIgnoreFirstMistakeItem() {
+  if (!HasItem(kIgnoreFirstMistake)) {
+    all_items.emplace_back(new IgnoreFirstMistakeItem);
+  }
 }

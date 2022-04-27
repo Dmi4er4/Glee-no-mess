@@ -1,5 +1,6 @@
 #pragma once
 
+#include "all_items.h"
 #include "guest.h"
 #include "item.h"
 #include "ignore_first_mistake_item.h"
@@ -26,14 +27,22 @@ class Model : public QObject {
   void IncreaseErrorsCount();
 
   static void StartNewLevel();
-
   static void AddIgnoreFirstMistakeItem();
   static void AddTimeItem();
-
   static void UpdateMistake();
-  static void UpdateTimeLeft();
 
-  static void ForgiveFirstMistake();
+  static void UpdateTimeLeft() {
+    for (auto item : all_items) {
+      item->TimeTrigger();
+    }
+  }
+
+  static void ForgiveFirstMistake() {
+    if (is_first_mistake) {
+      errors_count--;
+    }
+  }
+
   static void AddTime(size_t time);
 
   static bool HasItem(const QString& name);

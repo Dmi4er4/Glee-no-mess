@@ -1,7 +1,5 @@
 #pragma once
 
-#include "file_loader.h"
-
 #include <QPixmap>
 #include <QString>
 

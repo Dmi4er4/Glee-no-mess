@@ -1,7 +1,9 @@
 #include "ignore_first_mistake_item.h"
 
+#include "all_items.h"
+
 IgnoreFirstMistakeItem::IgnoreFirstMistakeItem() :
-    Item("ignore_first_mistake") {
+    Item(kIgnoreFirstMistake) {
 }
 
 void IgnoreFirstMistakeItem::MistakeTrigger() {
