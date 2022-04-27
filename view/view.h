@@ -2,14 +2,19 @@
 
 #include "guest.h"
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QRect>
 #include <QPushButton>
+#include <QPalette>
 #include <QWidget>
 #include <QLabel>
 #include <QGraphicsProxyWidget>
 #include <QVBoxLayout>
 #include <QGraphicsView>
+#include <QFile>
+#include <QTimer>
 
 #include <deque>
 #include <memory>
@@ -22,10 +27,6 @@ class View : public QMainWindow {
 
  public:
   static View& Instance();
-
-  static constexpr int kWidth = 1000;
-  static constexpr int kHeight = 800;
-
   static constexpr int kBlue = 0x0dc1fb;
   static constexpr int kYellow = 0xfdff73;
   static constexpr int kSquareSize = 80;
@@ -36,6 +37,9 @@ class View : public QMainWindow {
   void keyPressEvent(QKeyEvent* event) override;
 
   void SetErrorsCount(int value);
+  void SetTimer();
+  void SetBackgroundImage(const QPixmap&);
+  void ChangeFrame();
 
   auto GetPermitButton() { return permit_button_; }
   auto GetRejectButton() { return reject_button_; }
@@ -49,4 +53,8 @@ class View : public QMainWindow {
   QGraphicsProxyWidget* proxy_widget_;
   QGraphicsView* graphics_;
   QLabel* errors_;
+
+  uint8_t current_frame_;
+
+  const uint8_t kFrameRate = 75;
 };
