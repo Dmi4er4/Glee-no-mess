@@ -5,11 +5,11 @@
 
 #include <utility>
 
-size_t Model::errors_count_ = 0;
-size_t Model::time_left_ = 0;
-bool Model::is_first_mistake_ = true;
-bool Model::was_added_time_ = false;
-std::vector<Items*> Model::all_items_ = {};
+size_t Model::errors_count = 0;
+size_t Model::time_left = 0;
+bool Model::is_first_mistake = true;
+bool Model::was_added_time = false;
+std::vector<std::shared_ptr<Item>> Model::all_items = {};
 
 Model::Model() {
   auto& view = View::Instance();
@@ -55,55 +55,58 @@ Model& Model::Instance() {
 }
 
 void Model::ForgiveFirstMistake() {
-  if (is_first_mistake_) {
-    errors_count_--;
+  if (is_first_mistake) {
+    errors_count--;
   }
 }
 
 void Model::UpdateMistake() {
-  errors_count_++;
-  for (auto item : all_items_) {
+  errors_count++;
+  for (auto item : all_items) {
     item->MistakeTrigger();
   }
-  is_first_mistake_ = false;
+  is_first_mistake = false;
   // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddIgnoreFirstMistakeItem() {
-  for (auto item : all_items_) {
-    if (item->GetName() == "ignore_first_mistake") {
-      return;
-    }
+  if (!HasItem("ignore_first_mistake")) {
+    all_items.emplace_back(new IgnoreFirstMistakeItem);
   }
-  all_items_.push_back(new IgnoreFirstMistakeItem);
 }
 
 void Model::StartNewLevel() {
-  errors_count_ = 0;
-  is_first_mistake_ = true;
+  errors_count = 0;
+  is_first_mistake = true;
   // time_lest =
-  was_added_time_ = false;
+  was_added_time = false;
   // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddTime(size_t time) {
-  if (!was_added_time_) {
-    time_left_ += time;
-    was_added_time_ = true;
+  if (!was_added_time) {
+    time_left += time;
+    was_added_time = true;
   }
 }
 
 void Model::UpdateTimeLeft() {
-  for (auto item : all_items_) {
+  for (auto item : all_items) {
     item->TimeTrigger();
   }
 }
 
 void Model::AddTimeItem() {
-  for (auto item : all_items_) {
-    if (item->GetName() == "add_time") {
-      return;
+  if (!HasItem("add_time")) {
+    all_items.emplace_back(new TimeItem);
+  }
+}
+
+bool Model::HasItem(const QString& name) {
+  for (auto item : all_items) {
+    if (item->GetName() == name) {
+      return true;
     }
   }
-  all_items_.push_back(new TimeItem);
+  return false;
 }

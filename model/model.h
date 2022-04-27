@@ -1,7 +1,7 @@
 #pragma once
 
 #include "guest.h"
-#include "items.h"
+#include "item.h"
 #include "ignore_first_mistake_item.h"
 #include "time_item.h"
 
@@ -36,17 +36,19 @@ class Model : public QObject {
   static void ForgiveFirstMistake();
   static void AddTime(size_t time);
 
+  static bool HasItem(const QString& name);
+
  private:
   Model();
 
-  int errors_;
-  static size_t errors_count_;
-  static size_t time_left_;
+  static size_t errors_count;
+  static size_t time_left;
+  static bool was_added_time;
+  static bool is_first_mistake;
 
+  static std::vector<std::shared_ptr<Item>> all_items;
+
+  int errors_;
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;
-
-  static bool was_added_time_;
-  static bool is_first_mistake_;
-  static std::vector<Items*> all_items_;
 };

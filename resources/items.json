@@ -2,9 +2,8 @@
   "ignore_first_mistake" : {
     "sprite" : "file_with_sprite_TODO_.jped"
   },
-
   "add_time" : {
     "sprite" : "file_with_sprite_TODO.jped",
-    "time" : "10"
+    "time" : "9"
   }
 }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "items.h"
+#include "item.h"
 #include "model.h"
 
-class IgnoreFirstMistakeItem : public Items {
+class IgnoreFirstMistakeItem : public Item {
  public:
   IgnoreFirstMistakeItem();
   void MistakeTrigger() override;

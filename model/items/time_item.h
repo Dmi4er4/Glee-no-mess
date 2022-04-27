@@ -1,10 +1,10 @@
 #pragma once
 
-#include "items.h"
+#include "item.h"
 #include "model.h"
 #include "file_loader.h"
 
-class TimeItem : public Items {
+class TimeItem : public Item {
  public:
   TimeItem();
 

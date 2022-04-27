@@ -5,9 +5,9 @@
 #include <QPixmap>
 #include <QString>
 
-class Items {
+class Item {
  public:
-  explicit Items(const QString& name);
+  explicit Item(const QString& name);
 
   const QPixmap& GetSprite() const {
     return sprite_;
