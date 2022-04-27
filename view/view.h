@@ -27,7 +27,7 @@ class View : public QMainWindow {
   static View& Instance();
 
   static constexpr int kWidth = 700;
-  static constexpr int kHeight = 700;
+  static constexpr int kHeight = 560;
 
   static constexpr int kBlue = 0x0dc1fb;
   static constexpr int kYellow = 0xfdff73;

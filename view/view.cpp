@@ -28,7 +28,7 @@ View::View()
   errors_->setGeometry(5, 75, 130, 23);
   SetErrorsCount(0);
   SetTimer();
-  SetBackgroundImage(":/club_level/background/background_frame_1.png");
+  SetBackgroundImage(":/club_level/background/background_frame_0.png");
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -39,26 +39,26 @@ void View::SetErrorsCount(int value) {
 }
 
 void View::SetTimer() {
-  QTimer* timer = new QTimer(this);
-  connect(timer, &QTimer::timeout, this, [this]() {
-    ChangeFrame();
-  });
+  auto* timer = new QTimer(this);
+  connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
   timer->start(75);
 }
 
 void View::SetBackgroundImage(const QString& path) {
-  QPixmap path1(path);
-  path1 = path1.scaled(this->size(), Qt::IgnoreAspectRatio);
+  QPixmap pixmap(path);
+  pixmap = pixmap.scaled(size(), Qt::IgnoreAspectRatio);
   QPalette palette;
-  palette.setBrush(QPalette::Base, path1);
+  palette.setBrush(QPalette::Base, pixmap);
   graphics_->setPalette(palette);
 }
+
 void View::ChangeFrame() {
   current_frame_++;
   current_frame_ %= 16;
   SetBackgroundImage(":/club_level/background/background_frame_"
-                         + QString::number(current_frame_ + 1) + ".png");
+                         + QString::number(current_frame_) + ".png");
 }
+
 void View::keyPressEvent(QKeyEvent* event) {
   Controller::Instance().keyPressEvent(event);
 }
