@@ -12,6 +12,7 @@
 #include <QVBoxLayout>
 #include <QGraphicsView>
 #include <QFile>
+#include <QTimer>
 
 #include <deque>
 #include <memory>
@@ -26,7 +27,7 @@ class View : public QMainWindow {
   static View& Instance();
 
   static constexpr int kWidth = 700;
-  static constexpr int kHeight = 560;
+  static constexpr int kHeight = 700;
 
   static constexpr int kBlue = 0x0dc1fb;
   static constexpr int kYellow = 0xfdff73;
@@ -38,7 +39,9 @@ class View : public QMainWindow {
   void keyPressEvent(QKeyEvent* event) override;
 
   void SetErrorsCount(int value);
+  void SetTimer();
   void SetBackgroundImage(const QString&);
+  void ChangeFrame();
 
   auto GetPermitButton() { return permit_button_; }
   auto GetRejectButton() { return reject_button_; }
@@ -52,4 +55,6 @@ class View : public QMainWindow {
   QGraphicsProxyWidget* proxy_widget_;
   QGraphicsView* graphics_;
   QLabel* errors_;
+
+  int current_frame_;
 };

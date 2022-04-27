@@ -15,7 +15,7 @@ View::View()
 
   scene_->addWidget(errors_);
 
-   setCentralWidget(graphics_);
+  setCentralWidget(graphics_);
   setFixedSize(kWidth, kHeight);
   const QPen transparent_pen(QColor(QColor::fromRgb(0, 0, 0, 0)));
   scene_->addLine(0, 0, kWidth, 0, transparent_pen);
@@ -27,8 +27,8 @@ View::View()
   // TODO(shandomruffle): remove kludge
   errors_->setGeometry(5, 75, 130, 23);
   SetErrorsCount(0);
-
-  SetBackgroundImage(":/club_level/background.png");
+  SetTimer();
+  SetBackgroundImage(":/club_level/background/background_frame_1.png");
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -38,6 +38,14 @@ void View::SetErrorsCount(int value) {
   errors_->setText(QString("Errors: ") + std::to_string(value).c_str());
 }
 
+void View::SetTimer() {
+  QTimer* timer = new QTimer(this);
+  connect(timer, &QTimer::timeout, this, [this]() {
+    ChangeFrame();
+  });
+  timer->start(75);
+}
+
 void View::SetBackgroundImage(const QString& path) {
   QPixmap path1(path);
   path1 = path1.scaled(this->size(), Qt::IgnoreAspectRatio);
@@ -45,7 +53,12 @@ void View::SetBackgroundImage(const QString& path) {
   palette.setBrush(QPalette::Base, path1);
   graphics_->setPalette(palette);
 }
-
+void View::ChangeFrame() {
+  current_frame_++;
+  current_frame_ %= 16;
+  SetBackgroundImage(":/club_level/background/background_frame_"
+                         + QString::number(current_frame_ + 1) + ".png");
+}
 void View::keyPressEvent(QKeyEvent* event) {
   Controller::Instance().keyPressEvent(event);
 }
