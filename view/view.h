@@ -23,7 +23,7 @@ class Model;
 class Controller;
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   static View& Instance();

@@ -51,8 +51,9 @@ void View::SetBackgroundImage(const QPixmap& pixmap) {
 }
 
 void View::ChangeFrame() {
+  static constexpr uint8_t number_of_frames = 16;
   current_frame_++;
-  current_frame_ %= 16;
+  current_frame_ %= number_of_frames;
   SetBackgroundImage(std::get<QPixmap>(FileLoader::GetFile(
       ":/club_level/background/background_frame_"
           + QString::number(current_frame_) + ".png")));
