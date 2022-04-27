@@ -14,7 +14,7 @@ View::View()
   scene_->addWidget(errors_);
 
   setCentralWidget(graphics_);
-  setWindowState(Qt::WindowMaximized);
+  setWindowState(Qt::WindowFullScreen);
   const QPen transparent_pen(QColor(QColor::fromRgb(0, 0, 0, 0)));
   scene_->addLine(0, 0, width(), 0, transparent_pen);
   scene_->addLine(0, 0, 0, height(), transparent_pen);
