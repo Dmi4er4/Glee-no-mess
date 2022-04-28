@@ -2,6 +2,8 @@
 #include "controller.h"
 #include "file_loader.h"
 
+#include <QGuiApplication>
+
 View::View()
     : scene_(new QGraphicsScene),
       permit_button_(new QPushButton("OK")),
@@ -9,12 +11,14 @@ View::View()
       proxy_widget_(scene_->addWidget(permit_button_)),
       graphics_(new QGraphicsView(scene_)),
       errors_(new QLabel("Placeholder")) {
-  scene_->addWidget(reject_button_);
-
-  scene_->addWidget(errors_);
+  auto screen_size = QGuiApplication::primaryScreen()->size();
+  setFixedSize(screen_size);
+  setWindowState(windowState() | Qt::WindowFullScreen);
 
   setCentralWidget(graphics_);
-  setWindowState(Qt::WindowFullScreen);
+
+  scene_->addWidget(reject_button_);
+  scene_->addWidget(errors_);
   const QPen transparent_pen(QColor(QColor::fromRgb(0, 0, 0, 0)));
   scene_->addLine(0, 0, width(), 0, transparent_pen);
   scene_->addLine(0, 0, 0, height(), transparent_pen);
