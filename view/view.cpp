@@ -20,11 +20,7 @@ View::View()
 
   scene_->addWidget(reject_button_);
   scene_->addWidget(errors_);
-  const QPen transparent_pen(QColor(QColor::fromRgb(0, 0, 0, 0)));
-  scene_->addLine(0, 0, width(), 0, transparent_pen);
-  scene_->addLine(0, 0, 0, height(), transparent_pen);
-  scene_->addLine(0, height(), width(), height(), transparent_pen);
-  scene_->addLine(width(), 0, width(), height(), transparent_pen);
+  scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
   permit_button_->setGeometry(kMargin,
                               kMargin,
                               permit_button_->width(),
