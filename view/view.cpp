@@ -11,6 +11,7 @@ View::View()
       proxy_widget_(scene_->addWidget(permit_button_)),
       graphics_(new QGraphicsView(scene_)),
       errors_(new QLabel("Placeholder")) {
+  qApp->setStyleSheet(FileLoader::CastFileToString(":main.qss"));
   auto screen_size = QGuiApplication::primaryScreen()->size();
   setFixedSize(screen_size);
   setWindowState(windowState() | Qt::WindowFullScreen);
@@ -24,10 +25,18 @@ View::View()
   scene_->addLine(0, 0, 0, height(), transparent_pen);
   scene_->addLine(0, height(), width(), height(), transparent_pen);
   scene_->addLine(width(), 0, width(), height(), transparent_pen);
-  permit_button_->setGeometry(5, 5, 130, 30);
-  reject_button_->setGeometry(5, 40, 130, 30);
-  // TODO(shandomruffle): remove kludge
-  errors_->setGeometry(5, 75, 130, 23);
+  permit_button_->setGeometry(kMargin,
+                              kMargin,
+                              permit_button_->width(),
+                              permit_button_->height());
+  reject_button_->setGeometry(kMargin,
+                              permit_button_->geometry().bottom() + kMargin,
+                              reject_button_->width(),
+                              reject_button_->height());
+  errors_->setGeometry(kMargin,
+                       reject_button_->geometry().bottom() + kMargin,
+                       errors_->width(),
+                       errors_->height());
   SetErrorsCount(0);
   SetTimer();
   SetBackgroundImage(std::get<QPixmap>(FileLoader::GetFile(
