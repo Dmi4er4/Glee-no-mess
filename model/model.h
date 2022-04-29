@@ -26,36 +26,35 @@ class Model : public QObject {
   void ShiftQueue();
   void IncreaseErrorsCount();
 
-  static void StartNewLevel();
-  static void AddIgnoreFirstMistakeItem();
-  static void AddTimeItem();
-  static void UpdateMistake();
+  void StartNewLevel();
+  void AddIgnoreFirstMistakeItem();
+  void AddTimeItem();
+  void UpdateMistake();
 
-  static void UpdateTimeLeft() {
+  void UpdateTimeLeft() {
     for (auto item : all_items) {
       item->TimeTrigger();
     }
   }
 
-  static void ForgiveFirstMistake() {
+  void ForgiveFirstMistake() {
     if (is_first_mistake) {
       errors_count--;
     }
   }
 
-  static void AddTime(size_t time);
-
-  static bool HasItem(const QString& name);
+  void AddTime(size_t time);
+  bool HasItem(const QString& name);
 
  private:
   Model();
 
-  static size_t errors_count;
-  static size_t time_left;
-  static bool was_added_time;
-  static bool is_first_mistake;
+  size_t errors_count{0};
+  size_t time_left{0};
+  bool was_added_time{false};
+  bool is_first_mistake{true};
 
-  static std::vector<std::shared_ptr<Item>> all_items;
+  std::vector<std::shared_ptr<Item>> all_items{};
 
   int errors_;
   std::deque<std::unique_ptr<Guest>> queue_;

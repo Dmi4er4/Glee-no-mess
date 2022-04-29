@@ -1,16 +1,9 @@
 #include "model.h"
 
 #include "all_items.h"
-#include "controller.h"
 #include "view.h"
 
 #include <utility>
-
-size_t Model::errors_count = 0;
-size_t Model::time_left = 0;
-bool Model::is_first_mistake = true;
-bool Model::was_added_time = false;
-std::vector<std::shared_ptr<Item>> Model::all_items = {};
 
 Model::Model() {
   auto& view = View::Instance();

@@ -10,5 +10,5 @@ TimeItem::TimeItem() :
 }
 
 void TimeItem::TimeTrigger() {
-  Model::AddTime(time_);
+  Model::Instance().AddTime(time_);
 }
