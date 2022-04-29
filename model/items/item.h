@@ -15,8 +15,11 @@ class Item {
     return name_;
   }
 
-  virtual void MistakeTrigger();
-  virtual void TimeTrigger();
+  virtual void MistakeTrigger() {
+  }
+
+  virtual void TimeTrigger() {
+  }
 
  private:
   QString name_;

@@ -7,9 +7,3 @@ Item::Item(const QString& name) : name_(name) {
   sprite_ =
       std::get<QPixmap>(FileLoader::GetFile(file[name_]["sprite"].toString()));
 }
-
-void Item::MistakeTrigger() {
-}
-
-void Item::TimeTrigger() {
-}
