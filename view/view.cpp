@@ -35,8 +35,8 @@ View::View()
                        errors_->height());
   SetErrorsCount(0);
   SetTimer();
-  SetBackgroundImage(std::get<QPixmap>(FileLoader::GetFile(
-      ":/club_level/background/background_frame_0.png")));
+  SetBackgroundImage(FileLoader::GetFile<QPixmap>(
+      ":/club_level/background/background_frame_0.png"));
 
   graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -63,9 +63,9 @@ void View::ChangeFrame() {
   static constexpr uint8_t number_of_frames = 16;
   current_frame_++;
   current_frame_ %= number_of_frames;
-  SetBackgroundImage(std::get<QPixmap>(FileLoader::GetFile(
+  SetBackgroundImage(FileLoader::GetFile<QPixmap>(
       ":/club_level/background/background_frame_"
-          + QString::number(current_frame_) + ".png")));
+          + QString::number(current_frame_) + ".png"));
 }
 
 void View::keyPressEvent(QKeyEvent* event) {
