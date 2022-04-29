@@ -1,0 +1,20 @@
+QLabel {
+    background-color: transparent;
+    font-size: 40px;
+    color: darkgrey;
+}
+
+QPushButton {
+    background: white;
+    color: hotpink;
+    border: none;
+    padding: 10px;
+}
+
+QPushButton:hover {
+    background: lightgray;
+}
+
+QPushButton:pressed {
+    background: darkgrey;
+}

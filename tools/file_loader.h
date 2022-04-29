@@ -13,14 +13,14 @@ class FileLoader {
   FileLoader() = delete;
   static std::variant<QJsonDocument,
                       QPixmap> GetFile(const QString& file_name);
+  static QString CastFileToString(const QString& file_name);
 
  private:
   static bool IsJsonFile(const QString& file_name);
-  static bool IsImageFile(const QString& file_name);
 
+  static bool IsImageFile(const QString& file_name);
   static QJsonDocument& GetJsonFile(const QString& file_name);
   static QPixmap& GetImageFile(const QString& file_name);
-  static QString CastFileToString(const QString& file_name);
 
   static bool endsWith(const QString& filename, const QString& suffix) {
     return filename.endsWith(suffix);

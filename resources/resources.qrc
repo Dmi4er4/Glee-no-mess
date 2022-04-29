@@ -1,6 +1,25 @@
 <RCC>
     <qresource>
-        <file>club_level.json</file>
         <file>items.json</file>
+        <file>club_level/club_level.json</file>
+        <file>club_level/background/background_frame_1.png</file>
+        <file>club_level/background/background_frame_2.png</file>
+        <file>club_level/background/background_frame_3.png</file>
+        <file>club_level/background/background_frame_4.png</file>
+        <file>club_level/background/background_frame_5.png</file>
+        <file>club_level/background/background_frame_6.png</file>
+        <file>club_level/background/background_frame_7.png</file>
+        <file>club_level/background/background_frame_8.png</file>
+        <file>club_level/background/background_frame_9.png</file>
+        <file>club_level/background/background_frame_10.png</file>
+        <file>club_level/background/background_frame_11.png</file>
+        <file>club_level/background/background_frame_12.png</file>
+        <file>club_level/background/background_frame_13.png</file>
+        <file>club_level/background/background_frame_14.png</file>
+        <file>club_level/background/background_frame_15.png</file>
+        <file>club_level/background/background_frame_0.png</file>
+    </qresource>
+    <qresource>
+        <file>main.qss</file>
     </qresource>
 </RCC>
