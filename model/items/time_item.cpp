@@ -5,7 +5,7 @@
 
 TimeItem::TimeItem() :
     Item(kAddTime) {
-  auto file = std::get<QJsonDocument>(FileLoader::GetFile("items.json"));
+  auto file = FileLoader::GetFile<QJsonDocument>("items.json");
   time_ = file[kAddTime]["time"].toInt();
 }
 
