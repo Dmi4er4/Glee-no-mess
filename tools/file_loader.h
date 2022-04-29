@@ -11,11 +11,15 @@
 class FileLoader {
  public:
   FileLoader() = delete;
-  static std::variant<QJsonDocument,
-                      QPixmap> GetFile(const QString& file_name);
+
+  template<typename T>
+  static T GetFile(const QString&);
   static QString CastFileToString(const QString& file_name);
 
  private:
+  static std::variant<QJsonDocument,
+                      QPixmap> GetFile(const QString& file_name);
+
   static bool IsJsonFile(const QString& file_name);
 
   static bool IsImageFile(const QString& file_name);
