@@ -1,6 +1,6 @@
 #include "model.h"
 
-#include "controller.h"
+#include "all_items.h"
 #include "view.h"
 
 #include <utility>
@@ -46,4 +46,49 @@ void Model::IncreaseErrorsCount() {
 Model& Model::Instance() {
   static Model instance;
   return instance;
+}
+
+void Model::UpdateMistake() {
+  errors_count++;
+  for (auto item : all_items) {
+    item->MistakeTrigger();
+  }
+  is_first_mistake = false;
+  // TODO(Adamenko-Vladislav)
+}
+
+void Model::StartNewLevel() {
+  errors_count = 0;
+  is_first_mistake = true;
+  // time_lest =
+  was_added_time = false;
+  // TODO(Adamenko-Vladislav)
+}
+
+void Model::AddTime(size_t time) {
+  if (!was_added_time) {
+    time_left += time;
+    was_added_time = true;
+  }
+}
+
+bool Model::HasItem(const QString& name) {
+  for (auto item : all_items) {
+    if (item->GetName() == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void Model::AddTimeItem() {
+  if (!HasItem(kAddTime)) {
+    all_items.emplace_back(new TimeItem);
+  }
+}
+
+void Model::AddIgnoreFirstMistakeItem() {
+  if (!HasItem(kIgnoreFirstMistake)) {
+    all_items.emplace_back(new IgnoreFirstMistakeItem);
+  }
 }

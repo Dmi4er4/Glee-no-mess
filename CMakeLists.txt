@@ -17,6 +17,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 include_directories(model)
+include_directories(model/items)
 include_directories(model/guest)
 include_directories(model/level)
 include_directories(model/main_character)
@@ -32,7 +33,8 @@ file(GLOB MODEL model/*)
 file(GLOB MODEL_MAINCHARACTER model/main_character/*)
 file(GLOB MODEL_GUEST model/guest/*)
 file(GLOB MODEL_LEVEL model/level/*)
-file(GLOB MODEL_TOOLS tools/*)
+file(GLOB TOOLS tools/*)
+file(GLOB MODEL_ITEMS model/items/*)
 
 add_executable(default-target
         ${CONTROLLER}
@@ -42,7 +44,8 @@ add_executable(default-target
         ${MODEL_MAINCHARACTER}
         ${MODEL_GUEST}
         ${MODEL_LEVEL}
-        ${MODEL_TOOLS}
+        ${TOOLS}
+        ${MODEL_ITEMS}
         main.cpp
         )
 
