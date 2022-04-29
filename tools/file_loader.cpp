@@ -47,8 +47,3 @@ QString FileLoader::CastFileToString(const QString& file_name) {
   file.close();
   return source;
 }
-
-template<typename T>
-T FileLoader::GetFile(const QString& file_name) {
-  return std::get<T>(LoadFile(file_name));
-}

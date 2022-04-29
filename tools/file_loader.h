@@ -13,7 +13,10 @@ class FileLoader {
   FileLoader() = delete;
 
   template<typename T>
-  static T GetFile(const QString&);
+  static T GetFile(const QString& file_name) {
+    return std::get<T>(LoadFile(file_name));
+  }
+
   static QString CastFileToString(const QString& file_name);
 
  private:
