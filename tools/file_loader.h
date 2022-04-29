@@ -18,7 +18,7 @@ class FileLoader {
 
  private:
   static std::variant<QJsonDocument,
-                      QPixmap> GetFile(const QString& file_name);
+                      QPixmap> LoadFile(const QString& file_name);
 
   static bool IsJsonFile(const QString& file_name);
 
