@@ -46,8 +46,7 @@ add_executable(default-target
         ${MODEL_LEVEL}
         ${TOOLS}
         ${MODEL_ITEMS}
-        main.cpp
-        )
+        main.cpp)
 
 target_link_libraries(default-target
         Qt::Core

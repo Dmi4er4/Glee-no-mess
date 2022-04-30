@@ -1,7 +1,9 @@
 #include "model.h"
 
 #include "all_items.h"
+#include "file_loader.h"
 #include "view.h"
+#include "settings.h"
 
 #include <utility>
 
@@ -13,6 +15,9 @@ Model::Model() {
   }
   current_guest_ = std::make_unique<Guest>();
   current_guest_->SetActive();
+  settings_ = new QSettings("GameMasters", "Glee-no-mess");
+  SetDefaultSettings();
+  SetComplexitySettings();
 }
 
 void Model::Permit() {
@@ -49,26 +54,26 @@ Model& Model::Instance() {
 }
 
 void Model::UpdateMistake() {
-  errors_count++;
+  errors_count_++;
   for (auto item : all_items) {
     item->MistakeTrigger();
   }
-  is_first_mistake = false;
+  is_first_mistake_ = false;
   // TODO(Adamenko-Vladislav)
 }
 
 void Model::StartNewLevel() {
-  errors_count = 0;
-  is_first_mistake = true;
+  errors_count_ = 0;
+  is_first_mistake_ = true;
   // time_lest =
-  was_added_time = false;
+  was_added_time_ = false;
   // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddTime(size_t time) {
-  if (!was_added_time) {
-    time_left += time;
-    was_added_time = true;
+  if (!was_added_time_) {
+    time_left_ += time;
+    was_added_time_ = true;
   }
 }
 
@@ -91,4 +96,34 @@ void Model::AddIgnoreFirstMistakeItem() {
   if (!HasItem(kIgnoreFirstMistake)) {
     all_items.emplace_back(new IgnoreFirstMistakeItem);
   }
+}
+
+void Model::SetDefaultSettings() {
+  QJsonDocument file =
+      FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
+  SetDefaultSettings(file, kMoney);
+  SetDefaultSettings(file, kSound);
+  SetDefaultSettings(file, kComplexity);
+  size_limit_ = View::Instance().maximumSize();
+}
+
+void Model::SetDefaultSettings(const QJsonDocument& file, const QString& name) {
+  if (!settings_->contains(name)) {
+    settings_->setValue(name, file[name].toVariant());
+  }
+}
+
+void Model::SetComplexitySettings() {
+  QJsonDocument file;
+  QString complexity = settings_->value(kComplexity).toString();
+  if (complexity == kEasy) {
+    file = FileLoader::GetFile<QJsonDocument>(kEasySettings);
+  } else if (complexity == kMedium) {
+    file = FileLoader::GetFile<QJsonDocument>(kMediumSettings);
+  } else {
+    file = FileLoader::GetFile<QJsonDocument>(kHardSettings);
+  }
+  errors_limit_ = file[kErrorsCount].toInt();
+  guest_limit_ = file[kGuestCount].toInt();
+  time_limit_ = file[kTime].toInt();
 }

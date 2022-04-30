@@ -47,6 +47,12 @@ class View : public QMainWindow {
 
  private:
   View();
+
+  void ShowGame();
+  void ShowMainMenu();
+
+  // Game
+
   QGraphicsScene* scene_;
   QPushButton* permit_button_;
   QPushButton* reject_button_;
@@ -57,4 +63,8 @@ class View : public QMainWindow {
   uint8_t current_frame_;
 
   const uint8_t kFrameRate = 75;
+
+  // Menu
+
+  QPushButton* start_game_;
 };

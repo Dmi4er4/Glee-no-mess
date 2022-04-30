@@ -10,36 +10,15 @@ View::View()
       reject_button_(new QPushButton("NOT OK")),
       proxy_widget_(scene_->addWidget(permit_button_)),
       graphics_(new QGraphicsView(scene_)),
-      errors_(new QLabel("Placeholder")) {
-  qApp->setStyleSheet(FileLoader::CastFileToString(":main.qss"));
-  auto screen_size = QGuiApplication::primaryScreen()->size();
-  setFixedSize(screen_size);
-  setWindowState(windowState() | Qt::WindowFullScreen);
+      errors_(new QLabel("Placeholder")),
+      start_game_(new QPushButton) {
+  // qApp->setStyleSheet(FileLoader::CastFileToString(":/main.qss"));
+  qApp->setStyleSheet(FileLoader::CastFileToString(":/start_menu.qss"));
+  ShowMainMenu();
+  // ShowGame();
 
-  setCentralWidget(graphics_);
-
-  scene_->addWidget(reject_button_);
-  scene_->addWidget(errors_);
-  scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
-  permit_button_->setGeometry(kMargin,
-                              kMargin,
-                              permit_button_->width(),
-                              permit_button_->height());
-  reject_button_->setGeometry(kMargin,
-                              permit_button_->geometry().bottom() + kMargin,
-                              reject_button_->width(),
-                              reject_button_->height());
-  errors_->setGeometry(kMargin,
-                       reject_button_->geometry().bottom() + kMargin,
-                       errors_->width(),
-                       errors_->height());
-  SetErrorsCount(0);
-  SetTimer();
-  SetBackgroundImage(FileLoader::GetFile<QPixmap>(
-      ":/club_level/background/background_frame_0.png"));
-
-  graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  // start_game_ = new QPushButton(this);
+  // start_game_.
 }
 
 void View::SetErrorsCount(int value) {
@@ -75,4 +54,41 @@ void View::keyPressEvent(QKeyEvent* event) {
 View& View::Instance() {
   static View instance;
   return instance;
+}
+
+void View::ShowGame() {
+  auto screen_size = QGuiApplication::primaryScreen()->size();
+  setFixedSize(screen_size);
+  setWindowState(windowState() | Qt::WindowFullScreen);
+
+  setCentralWidget(graphics_);
+
+  scene_->addWidget(reject_button_);
+  scene_->addWidget(errors_);
+  scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+  permit_button_->setGeometry(kMargin,
+                              kMargin,
+                              permit_button_->width(),
+                              permit_button_->height());
+  reject_button_->setGeometry(kMargin,
+                              permit_button_->geometry().bottom() + kMargin,
+                              reject_button_->width(),
+                              reject_button_->height());
+  errors_->setGeometry(kMargin,
+                       reject_button_->geometry().bottom() + kMargin,
+                       errors_->width(),
+                       errors_->height());
+  SetErrorsCount(0);
+  SetTimer();
+  SetBackgroundImage(FileLoader::GetFile<QPixmap>(
+      ":/club_level/background/background_frame_0.png"));
+
+  graphics_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  graphics_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
+void View::ShowMainMenu() {
+
+  SetBackgroundImage(FileLoader::GetFile<QPixmap>(
+      ":/club_level/background/background_frame_0.png"));
 }

@@ -7,6 +7,7 @@
 #include "time_item.h"
 
 #include <QObject>
+#include <QSettings>
 
 #include <deque>
 #include <memory>
@@ -38,8 +39,8 @@ class Model : public QObject {
   }
 
   void ForgiveFirstMistake() {
-    if (is_first_mistake) {
-      errors_count--;
+    if (is_first_mistake_) {
+      errors_count_--;
     }
   }
 
@@ -49,14 +50,25 @@ class Model : public QObject {
  private:
   Model();
 
-  size_t errors_count{0};
-  size_t time_left{0};
-  bool was_added_time{false};
-  bool is_first_mistake{true};
+  void SetDefaultSettings();
+  void SetDefaultSettings(const QJsonDocument&, const QString&);
+  void SetComplexitySettings();
+
+  size_t errors_count_{0};
+  size_t time_left_{0};
+  bool was_added_time_{false};
+  bool is_first_mistake_{true};
 
   std::vector<std::shared_ptr<Item>> all_items{};
 
   int errors_;
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;
+
+  QSettings* settings_;
+
+  size_t errors_limit_;
+  size_t guest_limit_;
+  size_t time_limit_;
+  QSize size_limit_;
 };
