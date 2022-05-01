@@ -5,9 +5,12 @@
 #include "item.h"
 #include "ignore_first_mistake_item.h"
 #include "time_item.h"
+#include "settings.h"
 
 #include <QObject>
 #include <QSettings>
+#include <QShortcut>
+#include <QKeySequence>
 
 #include <deque>
 #include <memory>
@@ -33,7 +36,7 @@ class Model : public QObject {
   void UpdateMistake();
 
   void UpdateTimeLeft() {
-    for (auto item : all_items) {
+    for (auto item: all_items) {
       item->TimeTrigger();
     }
   }
@@ -47,11 +50,34 @@ class Model : public QObject {
   void AddTime(size_t time);
   bool HasItem(const QString& name);
 
+  // Sound
+
+  bool IsSoundOn() {
+    return settings_->value(kSound).toString() == kOn;
+  }
+
+  void ChangeSoundStatus();
+
+  // Complexity
+
+  QString GetComplexity() {
+    return settings_->value(kComplexity).toString();
+  }
+
+  void ChangeComplexity();
+
+  // Shortcut
+
+  void SetExitShortcut(const QString& keys);
+  QShortcut* GetExitShortcut() { return exit_shortcut_; }
+
+  void SetDefaultSettings();
+
  private:
   Model();
 
-  void SetDefaultSettings();
-  void SetDefaultSettings(const QJsonDocument&, const QString&);
+  void SetStartSettings();
+  void SetStartSettings(const QJsonDocument&, const QString&);
   void SetComplexitySettings();
 
   size_t errors_count_{0};
@@ -70,5 +96,6 @@ class Model : public QObject {
   size_t errors_limit_;
   size_t guest_limit_;
   size_t time_limit_;
-  QSize size_limit_;
+
+  QShortcut* exit_shortcut_;
 };

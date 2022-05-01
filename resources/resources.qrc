@@ -21,12 +21,16 @@
     </qresource>
     <qresource>
         <file>main.qss</file>
-        <file>start_menu.qss</file>
+        <file>menu/start_menu.qss</file>
+        <file>settings/settings.qss</file>
     </qresource>
     <qresource>
         <file>settings/default_settings.json</file>
         <file>settings/easy_mod_settings.json</file>
         <file>settings/medium_mod_settings.json</file>
         <file>settings/hard_mod_settings.json</file>
+    </qresource>
+    <qresource>
+        <file>menu/main_menu_background.jpg</file>
     </qresource>
 </RCC>

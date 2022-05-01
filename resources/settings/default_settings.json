@@ -1,5 +1,6 @@
 {
   "money": 0,
   "sound": "on",
-  "complexity": "easy"
+  "complexity": "easy",
+  "exit_shortcut" : "Ctrl+W"
 }

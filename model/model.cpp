@@ -3,7 +3,6 @@
 #include "all_items.h"
 #include "file_loader.h"
 #include "view.h"
-#include "settings.h"
 
 #include <utility>
 
@@ -16,7 +15,7 @@ Model::Model() {
   current_guest_ = std::make_unique<Guest>();
   current_guest_->SetActive();
   settings_ = new QSettings("GameMasters", "Glee-no-mess");
-  SetDefaultSettings();
+  SetStartSettings();
   SetComplexitySettings();
 }
 
@@ -55,7 +54,7 @@ Model& Model::Instance() {
 
 void Model::UpdateMistake() {
   errors_count_++;
-  for (auto item : all_items) {
+  for (auto item: all_items) {
     item->MistakeTrigger();
   }
   is_first_mistake_ = false;
@@ -78,7 +77,7 @@ void Model::AddTime(size_t time) {
 }
 
 bool Model::HasItem(const QString& name) {
-  for (auto item : all_items) {
+  for (auto item: all_items) {
     if (item->GetName() == name) {
       return true;
     }
@@ -98,16 +97,27 @@ void Model::AddIgnoreFirstMistakeItem() {
   }
 }
 
-void Model::SetDefaultSettings() {
+void Model::SetStartSettings() {
   QJsonDocument file =
       FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
-  SetDefaultSettings(file, kMoney);
-  SetDefaultSettings(file, kSound);
-  SetDefaultSettings(file, kComplexity);
-  size_limit_ = View::Instance().maximumSize();
+  SetStartSettings(file, kMoney);
+  SetStartSettings(file, kSound);
+  SetStartSettings(file, kComplexity);
+  SetStartSettings(file, kExitShortcut);
+  View::Instance().SetComplexityButton(
+      settings_->value(kComplexity).toString()
+  );
+  View::Instance().SetExitShortcut(
+      "Exit shortcut: " + settings_->value(kExitShortcut).toString()
+  );
+  View::Instance().SetSound(settings_->value(kSound).toString());
+  exit_shortcut_ = new QShortcut(
+      QKeySequence(settings_->value(kExitShortcut).toString()),
+      &View::Instance()
+  );
 }
 
-void Model::SetDefaultSettings(const QJsonDocument& file, const QString& name) {
+void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
   if (!settings_->contains(name)) {
     settings_->setValue(name, file[name].toVariant());
   }
@@ -126,4 +136,58 @@ void Model::SetComplexitySettings() {
   errors_limit_ = file[kErrorsCount].toInt();
   guest_limit_ = file[kGuestCount].toInt();
   time_limit_ = file[kTime].toInt();
+}
+
+void Model::ChangeComplexity() {
+  if (settings_->value(kComplexity).toString() == kEasy) {
+    settings_->setValue(kComplexity, kMedium);
+  } else if (settings_->value(kComplexity).toString() == kMedium) {
+    settings_->setValue(kComplexity, kHard);
+  } else {
+    settings_->setValue(kComplexity, kEasy);
+  }
+  View::Instance().SetComplexityButton(
+      settings_->value(kComplexity).toString()
+  );
+  SetComplexitySettings();
+}
+
+void Model::SetExitShortcut(const QString& keys) {
+  auto controller = Controller::Instance();
+  controller.DisconnectShortcutSignals(View::Instance(), Model::Instance());
+  settings_->setValue(kExitShortcut, keys);
+  exit_shortcut_ = new QShortcut(QKeySequence(keys), &View::Instance());
+  controller.ConnectShortcutSignals(View::Instance(), Model::Instance());
+}
+
+void Model::ChangeSoundStatus() {
+  if (settings_->value(kSound).toString() == kOff) {
+    settings_->setValue(kSound, kOn);
+  } else {
+    settings_->setValue(kSound, kOff);
+  }
+  View::Instance().SetSound(settings_->value(kSound).toString());
+}
+
+void Model::SetDefaultSettings() {
+  settings_->setValue(kComplexity, kEasy);
+  settings_->setValue(kSound, kOn);
+  settings_->setValue(kExitShortcut, kDefaultExitShortcut);
+  View::Instance().SetComplexityButton(
+      settings_->value(kComplexity).toString()
+  );
+  View::Instance().SetExitShortcut(
+      "Exit shortcut: " + settings_->value(kExitShortcut).toString()
+  );
+  View::Instance().SetSound(settings_->value(kSound).toString());
+  Controller::Instance().DisconnectShortcutSignals(
+      View::Instance(),
+      Model::Instance());
+  exit_shortcut_ = new QShortcut(
+      QKeySequence(kDefaultExitShortcut),
+      &View::Instance()
+  );
+  Controller::Instance().ConnectShortcutSignals(
+      View::Instance(),
+      Model::Instance());
 }
