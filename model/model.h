@@ -51,7 +51,6 @@ class Model : public QObject {
   bool HasItem(const QString& name);
 
   // Sound
-
   bool IsSoundOn() {
     return settings_->value(kSound).toString() == kOn;
   }
@@ -59,7 +58,6 @@ class Model : public QObject {
   void ChangeSoundStatus();
 
   // Complexity
-
   QString GetComplexity() {
     return settings_->value(kComplexity).toString();
   }
@@ -67,7 +65,6 @@ class Model : public QObject {
   void ChangeComplexity();
 
   // Shortcut
-
   void SetExitShortcut(const QString& keys);
   QShortcut* GetExitShortcut() { return exit_shortcut_; }
 
@@ -85,17 +82,14 @@ class Model : public QObject {
   bool was_added_time_{false};
   bool is_first_mistake_{true};
 
-  std::vector<std::shared_ptr<Item>> all_items{};
-
-  int errors_;
-  std::deque<std::unique_ptr<Guest>> queue_;
-  std::unique_ptr<Guest> current_guest_;
-
-  QSettings* settings_;
-
   size_t errors_limit_;
   size_t guest_limit_;
   size_t time_limit_;
 
+  std::deque<std::unique_ptr<Guest>> queue_;
+  std::unique_ptr<Guest> current_guest_;
+  std::vector<std::shared_ptr<Item>> all_items;
+
   QShortcut* exit_shortcut_;
+  QSettings* settings_;
 };

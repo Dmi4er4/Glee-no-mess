@@ -38,7 +38,6 @@ class View : public QMainWindow {
   void keyPressEvent(QKeyEvent* event) override;
 
   // Game
-
   bool IsGame() const { return centralWidget() == game_graphics_; }
 
   void SetErrorsCount(int value);
@@ -51,14 +50,12 @@ class View : public QMainWindow {
   auto GetScene() const { return game_scene_; }
 
   // Menu
-
   bool IsMenu() const { return centralWidget() == menu_graphics_; }
 
   auto GetOpenSettingsButton() const { return open_settings_; }
   auto GetStartGameButton() const { return start_game_; }
 
   // Settings
-
   bool IsSettings() const { return centralWidget() == settings_graphics_; }
 
   void SetComplexityButton(const QString& text) {
@@ -84,13 +81,11 @@ class View : public QMainWindow {
   QPushButton* GetDefaultSettingsButton() { return default_settings_; }
 
   // Show Scene
-
   void ShowGame();
   void ShowMainMenu();
   void ShowSettings();
 
   // Central Widget
-
   QWidget* GetCentralWidget() { return centralWidget(); }
 
  private:
@@ -103,7 +98,6 @@ class View : public QMainWindow {
   void SetUpGraphicsView(QGraphicsView* graphics);
 
   // Game
-
   QGraphicsScene* game_scene_;
   QGraphicsView* game_graphics_;
 
@@ -117,11 +111,9 @@ class View : public QMainWindow {
   QGraphicsProxyWidget* proxy_errors_;
 
   int32_t current_frame_;
-
   const int32_t kFrameRate = 75;
 
   // Menu
-
   QGraphicsScene* menu_scene_;
   QGraphicsView* menu_graphics_;
 
@@ -132,7 +124,6 @@ class View : public QMainWindow {
   QGraphicsProxyWidget* proxy_open_settings_;
 
   // Settings
-
   QGraphicsScene* settings_scene_;
   QGraphicsView* settings_graphics_;
 

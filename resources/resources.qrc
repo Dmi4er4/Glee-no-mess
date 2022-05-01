@@ -26,9 +26,7 @@
     </qresource>
     <qresource>
         <file>settings/default_settings.json</file>
-        <file>settings/easy_mod_settings.json</file>
-        <file>settings/medium_mod_settings.json</file>
-        <file>settings/hard_mod_settings.json</file>
+        <file>settings/complexity_settings.json</file>
     </qresource>
     <qresource>
         <file>menu/main_menu_background.jpg</file>

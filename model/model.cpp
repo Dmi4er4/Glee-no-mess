@@ -44,7 +44,7 @@ void Model::ShiftQueue() {
 }
 
 void Model::IncreaseErrorsCount() {
-  View::Instance().SetErrorsCount(++errors_);
+  View::Instance().SetErrorsCount(++errors_count_);
 }
 
 Model& Model::Instance() {
@@ -121,18 +121,11 @@ void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
 }
 
 void Model::SetComplexitySettings() {
-  QJsonDocument file;
-  QString complexity = settings_->value(kComplexity).toString();
-  if (complexity == kEasy) {
-    file = FileLoader::GetFile<QJsonDocument>(kEasySettings);
-  } else if (complexity == kMedium) {
-    file = FileLoader::GetFile<QJsonDocument>(kMediumSettings);
-  } else {
-    file = FileLoader::GetFile<QJsonDocument>(kHardSettings);
-  }
-  errors_limit_ = file[kErrorsCount].toInt();
-  guest_limit_ = file[kGuestCount].toInt();
-  time_limit_ = file[kTime].toInt();
+  auto file = FileLoader::GetFile<QJsonDocument>(kComplexitySettings);
+  auto complexity = settings_->value(kComplexity).toString();
+  errors_limit_ = file[complexity][kErrorsCount].toInt();
+  guest_limit_ = file[complexity][kGuestCount].toInt();
+  time_limit_ = file[complexity][kTime].toInt();
 }
 
 void Model::ChangeComplexity() {
@@ -150,8 +143,7 @@ void Model::ChangeComplexity() {
 
 void Model::SetExitShortcut(const QString& keys) {
   settings_->setValue(kExitShortcut, keys);
-  exit_shortcut_ ->setKey(keys);
-  Controller::Instance().ConnectShortcutSignals();
+  exit_shortcut_->setKey(keys);
 }
 
 void Model::ChangeSoundStatus() {

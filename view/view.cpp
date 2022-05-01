@@ -98,8 +98,8 @@ void View::ShowGame() {
 void View::ShowMainMenu() {
   menu_graphics_ = new QGraphicsView(menu_scene_);
   SetUpGraphicsView(menu_graphics_);
-  SetBackgroundImage(menu_graphics_, FileLoader::GetFile<QPixmap>(
-      ":/menu/main_menu_background.jpg"));
+  // SetBackgroundImage(menu_graphics_, FileLoader::GetFile<QPixmap>(
+  //     ":/menu/main_menu_background.jpg"));
   // TODO(Adamenko-Vladislav) set correct image
   setCentralWidget(menu_graphics_);
   qApp->setStyleSheet(FileLoader::CastFileToString(":/menu/start_menu.qss"));

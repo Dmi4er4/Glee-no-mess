@@ -11,9 +11,7 @@ class Model;
 class Controller {
  public:
   static Controller& Instance();
-
   void keyPressEvent(QKeyEvent* event);
-
   void ConnectShortcutSignals();
 
  private:

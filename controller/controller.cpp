@@ -21,7 +21,6 @@ void Controller::ConnectSignals() {
 void Controller::keyPressEvent(QKeyEvent* event) {
   auto& model = Model::Instance();
   auto& view = View::Instance();
-
   if (view.IsGame()) {
     switch (event->key()) {
       case Qt::Key_D: {

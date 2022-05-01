@@ -13,9 +13,7 @@ const QString kComplexity = "complexity";
 const QString kEasy = "easy";
 const QString kHard = "hard";
 const QString kMedium = "medium";
-const QString kEasySettings = ":/settings/easy_mod_settings.json";
-const QString kMediumSettings = ":/settings/medium_mod_settings.json";
-const QString kHardSettings = ":/settings/hard_mod_settings.json";
+const QString kComplexitySettings = ":/settings/complexity_settings.json";
 const QString kDefaultSettings = ":/settings/default_settings.json";
 // Errors
 const QString kErrorsCount = "errors_count";

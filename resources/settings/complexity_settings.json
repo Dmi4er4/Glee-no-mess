@@ -1,0 +1,17 @@
+{
+  "easy" : {
+    "errors_count": 10,
+    "guests_count": 6,
+    "time": 300
+  },
+  "medium" : {
+    "errors_count": 6,
+    "guests_count": 10,
+    "time": 200
+  },
+  "hard" : {
+    "errors_count": 2,
+    "guests_count": 5,
+    "time": 150
+  }
+}
