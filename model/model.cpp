@@ -54,7 +54,7 @@ Model& Model::Instance() {
 
 void Model::UpdateMistake() {
   errors_count_++;
-  for (auto item: all_items) {
+  for (auto item : all_items) {
     item->MistakeTrigger();
   }
   is_first_mistake_ = false;
@@ -77,7 +77,7 @@ void Model::AddTime(size_t time) {
 }
 
 bool Model::HasItem(const QString& name) {
-  for (auto item: all_items) {
+  for (auto item : all_items) {
     if (item->GetName() == name) {
       return true;
     }
@@ -105,16 +105,13 @@ void Model::SetStartSettings() {
   SetStartSettings(file, kComplexity);
   SetStartSettings(file, kExitShortcut);
   View::Instance().SetComplexityButton(
-      settings_->value(kComplexity).toString()
-  );
+      settings_->value(kComplexity).toString());
   View::Instance().SetExitShortcut(
-      "Exit shortcut: " + settings_->value(kExitShortcut).toString()
-  );
+      "Exit shortcut: " + settings_->value(kExitShortcut).toString());
   View::Instance().SetSound(settings_->value(kSound).toString());
   exit_shortcut_ = new QShortcut(
       QKeySequence(settings_->value(kExitShortcut).toString()),
-      &View::Instance()
-  );
+      &View::Instance());
 }
 
 void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
@@ -147,17 +144,14 @@ void Model::ChangeComplexity() {
     settings_->setValue(kComplexity, kEasy);
   }
   View::Instance().SetComplexityButton(
-      settings_->value(kComplexity).toString()
-  );
+      settings_->value(kComplexity).toString());
   SetComplexitySettings();
 }
 
 void Model::SetExitShortcut(const QString& keys) {
-  auto controller = Controller::Instance();
-  controller.DisconnectShortcutSignals(View::Instance(), Model::Instance());
   settings_->setValue(kExitShortcut, keys);
-  exit_shortcut_ = new QShortcut(QKeySequence(keys), &View::Instance());
-  controller.ConnectShortcutSignals(View::Instance(), Model::Instance());
+  exit_shortcut_ ->setKey(keys);
+  Controller::Instance().ConnectShortcutSignals();
 }
 
 void Model::ChangeSoundStatus() {
@@ -171,23 +165,10 @@ void Model::ChangeSoundStatus() {
 
 void Model::SetDefaultSettings() {
   settings_->setValue(kComplexity, kEasy);
-  settings_->setValue(kSound, kOn);
   settings_->setValue(kExitShortcut, kDefaultExitShortcut);
-  View::Instance().SetComplexityButton(
-      settings_->value(kComplexity).toString()
-  );
-  View::Instance().SetExitShortcut(
-      "Exit shortcut: " + settings_->value(kExitShortcut).toString()
-  );
-  View::Instance().SetSound(settings_->value(kSound).toString());
-  Controller::Instance().DisconnectShortcutSignals(
-      View::Instance(),
-      Model::Instance());
-  exit_shortcut_ = new QShortcut(
-      QKeySequence(kDefaultExitShortcut),
-      &View::Instance()
-  );
-  Controller::Instance().ConnectShortcutSignals(
-      View::Instance(),
-      Model::Instance());
+  settings_->setValue(kSound, kOn);
+  View::Instance().SetComplexityButton(kEasy);
+  View::Instance().SetExitShortcut("Exit shortcut: " + kDefaultExitShortcut);
+  View::Instance().SetSound(kOn);
+  exit_shortcut_->setKey(QKeySequence(kDefaultExitShortcut));
 }

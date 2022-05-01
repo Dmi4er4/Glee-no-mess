@@ -36,7 +36,6 @@ View::View() :
     proxy_exit_shortcut_(settings_scene_->addWidget(exit_shortcut_)),
     proxy_sound_(settings_scene_->addWidget(sound_)),
     proxy_default_settings_(settings_scene_->addWidget(default_settings_)) {
-
   // full screen mod
   auto screen_size = QGuiApplication::primaryScreen()->size();
   setFixedSize(screen_size);

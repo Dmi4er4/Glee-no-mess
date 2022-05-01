@@ -14,15 +14,13 @@ class Controller {
 
   void keyPressEvent(QKeyEvent* event);
 
-  void ConnectShortcutSignals(View& view, Model& model);
-  void DisconnectShortcutSignals(View& view, Model& model);
+  void ConnectShortcutSignals();
 
  private:
-
   Controller();
 
   void ConnectSignals();
-  void ConnectGameSignals(View& view, Model& model);
-  void ConnectSettingsMenuSignals(View& view, Model& model);
-  void ConnectMainMenuSignals(View& view, Model& model);
+  void ConnectGameSignals();
+  void ConnectSettingsMenuSignals();
+  void ConnectMainMenuSignals();
 };

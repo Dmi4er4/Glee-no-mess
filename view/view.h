@@ -24,7 +24,7 @@ class Model;
 class Controller;
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   static View& Instance();
@@ -75,8 +75,7 @@ class View : public QMainWindow {
 
   bool IsCursorOnExitShortcut() const {
     return exit_shortcut_->geometry().contains(
-        cursor().pos().x(), cursor().pos().y()
-    );
+        cursor().pos().x(), cursor().pos().y());
   }
 
   QPushButton* GetExitSettingsButton() { return exit_settings_; }

@@ -36,7 +36,7 @@ class Model : public QObject {
   void UpdateMistake();
 
   void UpdateTimeLeft() {
-    for (auto item: all_items) {
+    for (auto item : all_items) {
       item->TimeTrigger();
     }
   }

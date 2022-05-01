@@ -12,12 +12,10 @@ Controller::Controller() {
 }
 
 void Controller::ConnectSignals() {
-  auto& view = View::Instance();
-  auto& model = Model::Instance();
-  ConnectGameSignals(view, model);
-  ConnectSettingsMenuSignals(view, model);
-  ConnectMainMenuSignals(view, model);
-  ConnectShortcutSignals(view, model);
+  ConnectGameSignals();
+  ConnectSettingsMenuSignals();
+  ConnectMainMenuSignals();
+  ConnectShortcutSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -38,16 +36,9 @@ void Controller::keyPressEvent(QKeyEvent* event) {
   } else if (view.IsSettings()) {
     if (view.IsCursorOnExitShortcut()) {
       switch (event->key()) {
+        case Qt::Key_Alt:
+        case Qt::Key_Shift:
         case Qt::Key_Control: {
-          view.SetExitShortcut("Exit shortcut: Ctrl");
-          break;
-        }
-        case Qt::Key_Shift: {
-          view.SetExitShortcut("Exit shortcut: Shift");
-          break;
-        }
-        case Qt::Key_Alt: {
-          view.SetExitShortcut("Exit shortcut: Alt");
           break;
         }
         default: {
@@ -82,55 +73,48 @@ Controller& Controller::Instance() {
   return instance;
 }
 
-void Controller::ConnectSettingsMenuSignals(View& view, Model& model) {
-  QPushButton::connect(view.GetComplexityButton(),
+void Controller::ConnectSettingsMenuSignals() {
+  QPushButton::connect(View::Instance().GetComplexityButton(),
                        &QPushButton::pressed,
-                       &model,
+                       &Model::Instance(),
                        &Model::ChangeComplexity);
-  QPushButton::connect(view.GetExitSettingsButton(),
+  QPushButton::connect(View::Instance().GetExitSettingsButton(),
                        &QPushButton::pressed,
-                       &view,
+                       &View::Instance(),
                        &View::ShowMainMenu);
-  QPushButton::connect(view.GetSoundButton(),
+  QPushButton::connect(View::Instance().GetSoundButton(),
                        &QPushButton::pressed,
-                       &model,
+                       &Model::Instance(),
                        &Model::ChangeSoundStatus);
-  QPushButton::connect(view.GetDefaultSettingsButton(),
+  QPushButton::connect(View::Instance().GetDefaultSettingsButton(),
                        &QPushButton::pressed,
-                       &model,
+                       &Model::Instance(),
                        &Model::SetDefaultSettings);
 }
 
-void Controller::ConnectGameSignals(View& view, Model& model) {
+void Controller::ConnectGameSignals() {
   QAbstractButton::connect(
-      view.GetPermitButton(), &QPushButton::pressed,
-      &model, &Model::Permit);
+      View::Instance().GetPermitButton(), &QPushButton::pressed,
+      &Model::Instance(), &Model::Permit);
   QAbstractButton::connect(
-      view.GetRejectButton(), &QPushButton::pressed,
-      &model, &Model::Reject);
+      View::Instance().GetRejectButton(), &QPushButton::pressed,
+      &Model::Instance(), &Model::Reject);
 }
 
-void Controller::ConnectMainMenuSignals(View& view, Model& model) {
-  QPushButton::connect(view.GetOpenSettingsButton(),
+void Controller::ConnectMainMenuSignals() {
+  QPushButton::connect(View::Instance().GetOpenSettingsButton(),
                        &QPushButton::pressed,
-                       &view,
+                       &View::Instance(),
                        &View::ShowSettings);
-  QPushButton::connect(view.GetStartGameButton(),
+  QPushButton::connect(View::Instance().GetStartGameButton(),
                        &QPushButton::pressed,
-                       &view,
+                       &View::Instance(),
                        &View::ShowGame);
 }
 
-void Controller::ConnectShortcutSignals(View& view, Model& model) {
-  QShortcut::connect(model.GetExitShortcut(),
+void Controller::ConnectShortcutSignals() {
+  QShortcut::connect(Model::Instance().GetExitShortcut(),
                      &QShortcut::activated,
-                     &view,
+                     &View::Instance(),
                      &View::close);
-}
-
-void Controller::DisconnectShortcutSignals(View& view, Model& model) {
-  QShortcut::disconnect(model.GetExitShortcut(),
-                        &QShortcut::activated,
-                        &view,
-                        &View::close);
 }
