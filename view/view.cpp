@@ -26,7 +26,7 @@ View::View() :
     settings_graphics_(new QGraphicsView(settings_scene_)),
     exit_settings_(new QPushButton("Main menu")),
     complexity_(new QPushButton),
-    exit_shortcut_(new QLabel("Exit shortcut: ")),
+    exit_shortcut_(new QLabel(kExitShortcutText)),
     sound_(new QPushButton),
     default_settings_(new QPushButton("Set default settings")),
     proxy_exit_settings_(settings_scene_->addWidget(exit_settings_)),
