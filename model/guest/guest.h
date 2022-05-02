@@ -1,11 +1,11 @@
 #pragma once
 
-#include "random.h"
-#include "guest_traits.h"
-
 #include <QGraphicsItem>
 
 #include <memory>
+
+#include "random.h"
+#include "guest_traits.h"
 
 class Guest {
  public:

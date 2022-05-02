@@ -1,7 +1,5 @@
 #pragma once
 
-#include "guest.h"
-
 #include <QApplication>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
@@ -9,6 +7,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QTimer>
+
+#include "guest.h"
 
 class Model;
 class Controller;

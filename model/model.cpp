@@ -1,9 +1,9 @@
 #include "model.h"
 
+#include <utility>
+
 #include "file_loader.h"
 #include "view.h"
-
-#include <utility>
 
 Model::Model() {
   auto& view = View::Instance();

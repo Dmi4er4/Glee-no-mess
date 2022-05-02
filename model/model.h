@@ -1,9 +1,5 @@
 #pragma once
 
-#include "all_items.h"
-#include "guest.h"
-#include "settings.h"
-
 #include <QKeySequence>
 #include <QObject>
 #include <QSettings>
@@ -12,6 +8,10 @@
 #include <deque>
 #include <memory>
 #include <vector>
+
+#include "all_items.h"
+#include "guest.h"
+#include "settings.h"
 
 class View;
 class Controller;

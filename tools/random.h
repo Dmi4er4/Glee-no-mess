@@ -1,8 +1,8 @@
 #pragma once
 
-#include "controller.h"
-
 #include <random>
+
+#include "controller.h"
 
 class Random {
  public:

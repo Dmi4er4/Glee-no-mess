@@ -1,10 +1,10 @@
 #pragma once
 
-#include "tools.h"
-#include "guest.h"
-
 #include <memory>
 #include <vector>
+
+#include "tools.h"
+#include "guest.h"
 
 struct BadCharacteristic {
  public:

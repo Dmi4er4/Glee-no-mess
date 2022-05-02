@@ -1,8 +1,9 @@
 #include "controller.h"
-#include "model.h"
-#include "view.h"
 
 #include<QShortcut>
+
+#include "model.h"
+#include "view.h"
 
 Controller::Controller() {
   ConnectSignals();
