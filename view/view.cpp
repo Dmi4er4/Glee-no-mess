@@ -4,8 +4,6 @@
 #include "file_loader.h"
 #include "settings.h"
 
-#include <QGuiApplication>
-
 View::View() :
     // game
     game_scene_(new QGraphicsScene),
@@ -48,10 +46,6 @@ View::View() :
   ShowMainMenu();
 }
 
-void View::SetErrorsCount(int value) {
-  errors_->setText("Errors: " + QString::number(value));
-}
-
 void View::SetTimer() {
   auto timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
@@ -74,10 +68,6 @@ void View::ChangeFrame() {
       ":/club_level/background/background_frame_"
           + QString::number(current_frame_) + ".png"));
   // TODO(Adamenko-Vladislav) frames don't change
-}
-
-void View::keyPressEvent(QKeyEvent* event) {
-  Controller::Instance().keyPressEvent(event);
 }
 
 View& View::Instance() {

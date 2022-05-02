@@ -1,10 +1,7 @@
 #include "model.h"
 
-#include "all_items.h"
 #include "file_loader.h"
 #include "view.h"
-
-#include <utility>
 
 Model::Model() {
   auto& view = View::Instance();
@@ -107,7 +104,7 @@ void Model::SetStartSettings() {
   View::Instance().SetComplexityButton(
       settings_->value(kComplexity).toString());
   View::Instance().SetExitShortcut(
-      "Exit shortcut: " + settings_->value(kExitShortcut).toString());
+      kExitShortcutText + settings_->value(kExitShortcut).toString());
   View::Instance().SetSound(settings_->value(kSound).toString());
   exit_shortcut_ = new QShortcut(
       QKeySequence(settings_->value(kExitShortcut).toString()),
@@ -116,7 +113,7 @@ void Model::SetStartSettings() {
 
 void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
   if (!settings_->contains(name)) {
-    settings_->setValue(name, file[name].toVariant());
+    settings_->setValue(name, file[name]);
   }
 }
 
@@ -129,9 +126,9 @@ void Model::SetComplexitySettings() {
 }
 
 void Model::ChangeComplexity() {
-  if (settings_->value(kComplexity).toString() == kEasy) {
+  if (settings_->value(kComplexity) == kEasy) {
     settings_->setValue(kComplexity, kMedium);
-  } else if (settings_->value(kComplexity).toString() == kMedium) {
+  } else if (settings_->value(kComplexity) == kMedium) {
     settings_->setValue(kComplexity, kHard);
   } else {
     settings_->setValue(kComplexity, kEasy);
@@ -147,7 +144,7 @@ void Model::SetExitShortcut(const QString& keys) {
 }
 
 void Model::ChangeSoundStatus() {
-  if (settings_->value(kSound).toString() == kOff) {
+  if (settings_->value(kSound) == kOff) {
     settings_->setValue(kSound, kOn);
   } else {
     settings_->setValue(kSound, kOff);
@@ -160,7 +157,7 @@ void Model::SetDefaultSettings() {
   settings_->setValue(kExitShortcut, kDefaultExitShortcut);
   settings_->setValue(kSound, kOn);
   View::Instance().SetComplexityButton(kEasy);
-  View::Instance().SetExitShortcut("Exit shortcut: " + kDefaultExitShortcut);
+  View::Instance().SetExitShortcut(kExitShortcutText + kDefaultExitShortcut);
   View::Instance().SetSound(kOn);
   exit_shortcut_->setKey(QKeySequence(kDefaultExitShortcut));
 }

@@ -19,51 +19,11 @@ void Controller::ConnectSignals() {
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
-  auto& model = Model::Instance();
   auto& view = View::Instance();
   if (view.IsGame()) {
-    switch (event->key()) {
-      case Qt::Key_D: {
-        model.Reject();
-        break;
-      }
-      case Qt::Key_A: {
-        model.Permit();
-        break;
-      }
-    }
+    KeyPressInGame(event);
   } else if (view.IsSettings()) {
-    if (view.IsCursorOnExitShortcut()) {
-      switch (event->key()) {
-        case Qt::Key_Alt:
-        case Qt::Key_Shift:
-        case Qt::Key_Control: {
-          break;
-        }
-        default: {
-          QString answer = "Exit shortcut: ";
-          QString keys;
-          if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-            answer += "Ctrl+";
-            keys += "Ctrl+";
-          }
-          if (QApplication::keyboardModifiers() & Qt::AltModifier) {
-            answer += "Alt+";
-            keys += "Alt+";
-          }
-          if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
-            answer += "Shift+";
-            keys += "Shift+";
-          }
-          answer +=
-              QKeySequence(event->key()).toString(QKeySequence::NativeText);
-          keys +=
-              QKeySequence(event->key()).toString(QKeySequence::NativeText);
-          view.SetExitShortcut(answer);
-          model.SetExitShortcut(keys);
-        }
-      }
-    }
+    KeyPressInSetting(event);
   }
 }
 
@@ -116,4 +76,45 @@ void Controller::ConnectShortcutSignals() {
                      &QShortcut::activated,
                      &View::Instance(),
                      &View::close);
+}
+
+void Controller::KeyPressInSetting(QKeyEvent* event) {
+  if (View::Instance().IsCursorOnExitShortcut()) {
+    switch (event->key()) {
+      case Qt::Key_Alt:
+      case Qt::Key_Shift:
+      case Qt::Key_Control: {
+        break;
+      }
+      default: {
+        QString keys = PressedKey(Qt::ControlModifier, "Ctrl+")
+            + PressedKey(Qt::AltModifier, "Alt+")
+            + PressedKey(Qt::ShiftModifier, "Shift+")
+            + QKeySequence(event->key()).toString();
+        View::Instance().SetExitShortcut(kExitShortcutText + keys);
+        Model::Instance().SetExitShortcut(keys);
+      }
+    }
+  }
+}
+
+void Controller::KeyPressInGame(QKeyEvent* event) {
+  auto& model = Model::Instance();
+  switch (event->key()) {
+    case Qt::Key_D: {
+      model.Reject();
+      break;
+    }
+    case Qt::Key_A: {
+      model.Permit();
+      break;
+    }
+  }
+}
+
+QString Controller::PressedKey(Qt::KeyboardModifier key, const QString& text) {
+  if (QApplication::keyboardModifiers() & key) {
+    return text;
+  }
+  return "";
 }

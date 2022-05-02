@@ -24,3 +24,4 @@ const QString kTime = "time";
 // Shortcut
 const QString kExitShortcut = "exit_shortcut";
 const QString kDefaultExitShortcut = "Ctrl+W";
+const QString kExitShortcutText = "Exit shortcut: ";

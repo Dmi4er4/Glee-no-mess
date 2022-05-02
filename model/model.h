@@ -2,15 +2,12 @@
 
 #include "all_items.h"
 #include "guest.h"
-#include "item.h"
-#include "ignore_first_mistake_item.h"
-#include "time_item.h"
 #include "settings.h"
 
+#include <QKeySequence>
 #include <QObject>
 #include <QSettings>
 #include <QShortcut>
-#include <QKeySequence>
 
 #include <deque>
 #include <memory>

@@ -3,22 +3,12 @@
 #include "guest.h"
 
 #include <QApplication>
-#include <QComboBox>
-#include <QMainWindow>
-#include <QGraphicsScene>
-#include <QRect>
-#include <QPushButton>
-#include <QPalette>
-#include <QWidget>
-#include <QLabel>
 #include <QGraphicsProxyWidget>
-#include <QVBoxLayout>
 #include <QGraphicsView>
-#include <QFile>
+#include <QLabel>
+#include <QMainWindow>
+#include <QPushButton>
 #include <QTimer>
-
-#include <deque>
-#include <memory>
 
 class Model;
 class Controller;
@@ -35,12 +25,17 @@ class View : public QMainWindow {
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
-  void keyPressEvent(QKeyEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override {
+    Controller::Instance().keyPressEvent(event);
+  }
 
   // Game
   bool IsGame() const { return centralWidget() == game_graphics_; }
 
-  void SetErrorsCount(int value);
+  void SetErrorsCount(int value) {
+    errors_->setText("Errors: " + QString::number(value));
+  }
+
   void SetTimer();
   void SetBackgroundImage(QGraphicsView*, const QPixmap&);
   void ChangeFrame();
@@ -51,23 +46,16 @@ class View : public QMainWindow {
 
   // Menu
   bool IsMenu() const { return centralWidget() == menu_graphics_; }
-
   auto GetOpenSettingsButton() const { return open_settings_; }
   auto GetStartGameButton() const { return start_game_; }
 
   // Settings
   bool IsSettings() const { return centralWidget() == settings_graphics_; }
+  void SetExitShortcut(const QString& text) { exit_shortcut_->setText(text); }
+  void SetSound(const QString& text) { sound_->setText(text); }
 
   void SetComplexityButton(const QString& text) {
     complexity_->setText("Complexity: " + text);
-  }
-
-  void SetExitShortcut(const QString& text) {
-    exit_shortcut_->setText(text);
-  }
-
-  void SetSound(const QString& text) {
-    sound_->setText(text);
   }
 
   bool IsCursorOnExitShortcut() const {
@@ -94,20 +82,16 @@ class View : public QMainWindow {
   void CustomGameScene();
   void CustomMainMenu();
   void CustomSettings();
-
   void SetUpGraphicsView(QGraphicsView* graphics);
 
   // Game
   QGraphicsScene* game_scene_;
   QGraphicsView* game_graphics_;
-
   QPushButton* permit_button_;
-  QGraphicsProxyWidget* proxy_permit_;
-
   QPushButton* reject_button_;
-  QGraphicsProxyWidget* proxy_reject_;
-
   QLabel* errors_;
+  QGraphicsProxyWidget* proxy_permit_;
+  QGraphicsProxyWidget* proxy_reject_;
   QGraphicsProxyWidget* proxy_errors_;
 
   int32_t current_frame_;
@@ -116,29 +100,22 @@ class View : public QMainWindow {
   // Menu
   QGraphicsScene* menu_scene_;
   QGraphicsView* menu_graphics_;
-
   QPushButton* start_game_;
-  QGraphicsProxyWidget* proxy_stat_game_;
-
   QPushButton* open_settings_;
+  QGraphicsProxyWidget* proxy_stat_game_;
   QGraphicsProxyWidget* proxy_open_settings_;
 
   // Settings
   QGraphicsScene* settings_scene_;
   QGraphicsView* settings_graphics_;
-
   QPushButton* exit_settings_;
-  QGraphicsProxyWidget* proxy_exit_settings_;
-
   QPushButton* complexity_;
-  QGraphicsProxyWidget* proxy_complexity_;
-
-  QLabel* exit_shortcut_;
-  QGraphicsProxyWidget* proxy_exit_shortcut_;
-
   QPushButton* sound_;
-  QGraphicsProxyWidget* proxy_sound_;
-
   QPushButton* default_settings_;
+  QLabel* exit_shortcut_;
+  QGraphicsProxyWidget* proxy_exit_settings_;
+  QGraphicsProxyWidget* proxy_complexity_;
+  QGraphicsProxyWidget* proxy_exit_shortcut_;
+  QGraphicsProxyWidget* proxy_sound_;
   QGraphicsProxyWidget* proxy_default_settings_;
 };
