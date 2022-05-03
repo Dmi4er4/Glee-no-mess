@@ -25,9 +25,7 @@ class View : public QMainWindow {
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
-  void keyPressEvent(QKeyEvent* event) override {
-    Controller::Instance().keyPressEvent(event);
-  }
+  void keyPressEvent(QKeyEvent* event) override;
 
   // Game
   bool IsGame() const { return centralWidget() == game_graphics_; }

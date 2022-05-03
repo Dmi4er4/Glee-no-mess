@@ -184,3 +184,7 @@ void View::SetUpGraphicsView(QGraphicsView* graphics) {
   graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
+
+void View::keyPressEvent(QKeyEvent* event) {
+  Controller::Instance().keyPressEvent(event);
+}
