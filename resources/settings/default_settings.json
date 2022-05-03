@@ -2,5 +2,5 @@
   "money": 0,
   "sound": "on",
   "complexity": "easy",
-  "exit_shortcut" : "Ctrl+W"
+  "exit_shortcut" : "Ctrl+Q"
 }

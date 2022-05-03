@@ -2,8 +2,6 @@
 
 #include <random>
 
-#include "controller.h"
-
 class Random {
  public:
   static Random& Instance() {
