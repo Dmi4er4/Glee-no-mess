@@ -10,6 +10,10 @@ QPushButton:!hover {
     background: white;
 }
 
+QPushButton:hover {
+    background: gray;
+}
+
 QPushButton:pressed {
     background: red;
 }
@@ -18,8 +22,4 @@ QLabel {
     background-color: transparent;
     font-size: 40px;
     color: black;
-}
-
-QPushButton:hover {
-    background: gray;
 }

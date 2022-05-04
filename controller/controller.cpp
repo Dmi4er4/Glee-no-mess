@@ -35,39 +35,39 @@ Controller& Controller::Instance() {
 
 void Controller::ConnectSettingsMenuSignals() {
   QPushButton::connect(View::Instance().GetComplexityButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &Model::Instance(),
                        &Model::ChangeComplexity);
   QPushButton::connect(View::Instance().GetExitSettingsButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &View::Instance(),
                        &View::ShowMainMenu);
   QPushButton::connect(View::Instance().GetSoundButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &Model::Instance(),
                        &Model::ChangeSoundStatus);
   QPushButton::connect(View::Instance().GetDefaultSettingsButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &Model::Instance(),
                        &Model::SetDefaultSettings);
 }
 
 void Controller::ConnectGameSignals() {
   QAbstractButton::connect(
-      View::Instance().GetPermitButton(), &QPushButton::pressed,
+      View::Instance().GetPermitButton(), &QPushButton::released,
       &Model::Instance(), &Model::Permit);
   QAbstractButton::connect(
-      View::Instance().GetRejectButton(), &QPushButton::pressed,
+      View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
 }
 
 void Controller::ConnectMainMenuSignals() {
   QPushButton::connect(View::Instance().GetOpenSettingsButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &View::Instance(),
                        &View::ShowSettings);
   QPushButton::connect(View::Instance().GetStartGameButton(),
-                       &QPushButton::pressed,
+                       &QPushButton::released,
                        &View::Instance(),
                        &View::ShowGame);
 }
