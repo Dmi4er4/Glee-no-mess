@@ -33,7 +33,7 @@ class Model : public QObject {
   void UpdateMistake();
 
   void UpdateTimeLeft() {
-    for (auto item : all_items) {
+    for (const auto& item : all_items) {
       item->TimeTrigger();
     }
   }
@@ -52,14 +52,14 @@ class Model : public QObject {
     return settings_->value(kSound).toString() == kOn;
   }
 
-  void ChangeSoundStatus();
+  void ToggleSound();
 
-  // Complexity
-  QString GetComplexity() {
-    return settings_->value(kComplexity).toString();
+  // Difficulty
+  QString GetDifficulty() {
+    return settings_->value(kDifficulty).toString();
   }
 
-  void ChangeComplexity();
+  void ChangeDifficulty();
 
   // Shortcut
   void SetExitShortcut(const QString& keys);
@@ -72,7 +72,7 @@ class Model : public QObject {
 
   void SetStartSettings();
   void SetStartSettings(const QJsonDocument&, const QString&);
-  void SetComplexitySettings();
+  void UpdateDifficultySettings();
 
   size_t errors_count_{0};
   size_t time_left_{0};
@@ -85,7 +85,7 @@ class Model : public QObject {
 
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;
-  std::vector<std::shared_ptr<Item>> all_items;
+  std::vector<std::unique_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
   QSettings* settings_;

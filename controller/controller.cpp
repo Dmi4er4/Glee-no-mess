@@ -34,10 +34,10 @@ Controller& Controller::Instance() {
 }
 
 void Controller::ConnectSettingsMenuSignals() {
-  QPushButton::connect(View::Instance().GetComplexityButton(),
+  QPushButton::connect(View::Instance().GetDifficultyButton(),
                        &QPushButton::released,
                        &Model::Instance(),
-                       &Model::ChangeComplexity);
+                       &Model::ChangeDifficulty);
   QPushButton::connect(View::Instance().GetExitSettingsButton(),
                        &QPushButton::released,
                        &View::Instance(),
@@ -45,7 +45,7 @@ void Controller::ConnectSettingsMenuSignals() {
   QPushButton::connect(View::Instance().GetSoundButton(),
                        &QPushButton::released,
                        &Model::Instance(),
-                       &Model::ChangeSoundStatus);
+                       &Model::ToggleSound);
   QPushButton::connect(View::Instance().GetDefaultSettingsButton(),
                        &QPushButton::released,
                        &Model::Instance(),
@@ -111,11 +111,4 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
       break;
     }
   }
-}
-
-QString Controller::PressedKey(Qt::KeyboardModifier key, const QString& text) {
-  if (QApplication::keyboardModifiers() & key) {
-    return text;
-  }
-  return "";
 }

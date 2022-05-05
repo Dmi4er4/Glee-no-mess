@@ -15,7 +15,7 @@ Model::Model() {
   current_guest_->SetActive();
   settings_ = new QSettings("GameMasters", "Glee-no-mess");
   SetStartSettings();
-  SetComplexitySettings();
+  UpdateDifficultySettings();
 }
 
 void Model::Permit() {
@@ -53,7 +53,7 @@ Model& Model::Instance() {
 
 void Model::UpdateMistake() {
   errors_count_++;
-  for (auto item : all_items) {
+  for (const auto& item : all_items) {
     item->MistakeTrigger();
   }
   is_first_mistake_ = false;
@@ -76,7 +76,7 @@ void Model::AddTime(size_t time) {
 }
 
 bool Model::HasItem(const QString& name) {
-  for (auto item : all_items) {
+  for (const auto& item : all_items) {
     if (item->GetName() == name) {
       return true;
     }
@@ -101,10 +101,10 @@ void Model::SetStartSettings() {
       FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
   SetStartSettings(file, kMoney);
   SetStartSettings(file, kSound);
-  SetStartSettings(file, kComplexity);
+  SetStartSettings(file, kDifficulty);
   SetStartSettings(file, kExitShortcut);
-  View::Instance().SetComplexityButton(
-      settings_->value(kComplexity).toString());
+  View::Instance().SetDifficultyButton(
+      settings_->value(kDifficulty).toString());
   View::Instance().SetExitShortcut(
       kExitShortcutText + settings_->value(kExitShortcut).toString());
   View::Instance().SetSound(settings_->value(kSound).toString());
@@ -119,25 +119,25 @@ void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
   }
 }
 
-void Model::SetComplexitySettings() {
-  auto file = FileLoader::GetFile<QJsonDocument>(kComplexitySettings);
-  auto complexity = settings_->value(kComplexity).toString();
-  errors_limit_ = file[complexity][kErrorsCount].toInt();
-  guest_limit_ = file[complexity][kGuestCount].toInt();
-  time_limit_ = file[complexity][kTime].toInt();
+void Model::UpdateDifficultySettings() {
+  auto file = FileLoader::GetFile<QJsonDocument>(kDifficultySettings);
+  auto difficulty = settings_->value(kDifficulty).toString();
+  errors_limit_ = file[difficulty][kErrorsCount].toInt();
+  guest_limit_ = file[difficulty][kGuestCount].toInt();
+  time_limit_ = file[difficulty][kTime].toInt();
 }
 
-void Model::ChangeComplexity() {
-  if (settings_->value(kComplexity) == kEasy) {
-    settings_->setValue(kComplexity, kMedium);
-  } else if (settings_->value(kComplexity) == kMedium) {
-    settings_->setValue(kComplexity, kHard);
+void Model::ChangeDifficulty() {
+  if (settings_->value(kDifficulty) == kEasy) {
+    settings_->setValue(kDifficulty, kMedium);
+  } else if (settings_->value(kDifficulty) == kMedium) {
+    settings_->setValue(kDifficulty, kHard);
   } else {
-    settings_->setValue(kComplexity, kEasy);
+    settings_->setValue(kDifficulty, kEasy);
   }
-  View::Instance().SetComplexityButton(
-      settings_->value(kComplexity).toString());
-  SetComplexitySettings();
+  View::Instance().SetDifficultyButton(
+      settings_->value(kDifficulty).toString());
+  UpdateDifficultySettings();
 }
 
 void Model::SetExitShortcut(const QString& keys) {
@@ -145,7 +145,7 @@ void Model::SetExitShortcut(const QString& keys) {
   exit_shortcut_->setKey(keys);
 }
 
-void Model::ChangeSoundStatus() {
+void Model::ToggleSound() {
   if (settings_->value(kSound) == kOff) {
     settings_->setValue(kSound, kOn);
   } else {
@@ -155,10 +155,10 @@ void Model::ChangeSoundStatus() {
 }
 
 void Model::SetDefaultSettings() {
-  settings_->setValue(kComplexity, kEasy);
+  settings_->setValue(kDifficulty, kEasy);
   settings_->setValue(kExitShortcut, kDefaultExitShortcut);
   settings_->setValue(kSound, kOn);
-  View::Instance().SetComplexityButton(kEasy);
+  View::Instance().SetDifficultyButton(kEasy);
   View::Instance().SetExitShortcut(kExitShortcutText + kDefaultExitShortcut);
   View::Instance().SetSound(kOn);
   exit_shortcut_->setKey(QKeySequence(kDefaultExitShortcut));

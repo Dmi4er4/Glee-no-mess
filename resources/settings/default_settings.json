@@ -1,6 +1,6 @@
 {
   "money": 0,
   "sound": "on",
-  "complexity": "easy",
+  "difficulty": "medium",
   "exit_shortcut" : "Ctrl+Q"
 }

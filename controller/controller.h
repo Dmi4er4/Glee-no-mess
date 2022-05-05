@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QApplication>
 #include <QKeyEvent>
 #include <QPushButton>
 
@@ -11,6 +12,7 @@ class Model;
 class Controller {
  public:
   static Controller& Instance();
+
   void keyPressEvent(QKeyEvent* event);
   void KeyPressInSetting(QKeyEvent* event);
   void KeyPressInGame(QKeyEvent* event);
@@ -24,5 +26,7 @@ class Controller {
   void ConnectSettingsMenuSignals();
   void ConnectMainMenuSignals();
 
-  QString PressedKey(Qt::KeyboardModifier key, const QString& text);
+  QString PressedKey(Qt::KeyboardModifier key, const QString& text) {
+    return QApplication::keyboardModifiers() & key ? text : "";
+  }
 };

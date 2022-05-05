@@ -8,12 +8,12 @@ const QString kOn = "on";
 const QString kOff = "off";
 // Money
 const QString kMoney = "money";
-// Complexity
-const QString kComplexity = "complexity";
+// kDifficulty
+const QString kDifficulty = "difficulty";
 const QString kEasy = "easy";
 const QString kHard = "hard";
 const QString kMedium = "medium";
-const QString kComplexitySettings = ":/settings/complexity_settings.json";
+const QString kDifficultySettings = ":/settings/difficulty_settings.json";
 const QString kDefaultSettings = ":/settings/default_settings.json";
 // Errors
 const QString kErrorsCount = "errors_count";

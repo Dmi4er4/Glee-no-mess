@@ -50,10 +50,10 @@ class View : public QMainWindow {
   // Settings
   bool IsSettings() const { return centralWidget() == settings_graphics_; }
   void SetExitShortcut(const QString& text) { exit_shortcut_->setText(text); }
-  void SetSound(const QString& text) { sound_->setText(text); }
+  void SetSound(const QString& text) { sound_->setText("Sound: " + text); }
 
-  void SetComplexityButton(const QString& text) {
-    complexity_->setText("Complexity: " + text);
+  void SetDifficultyButton(const QString& text) {
+    difficulty_->setText("Difficulty: " + text);
   }
 
   bool IsCursorOnExitShortcut() const {
@@ -62,7 +62,7 @@ class View : public QMainWindow {
   }
 
   QPushButton* GetExitSettingsButton() { return exit_settings_; }
-  QPushButton* GetComplexityButton() { return complexity_; }
+  QPushButton* GetDifficultyButton() { return difficulty_; }
   QPushButton* GetSoundButton() { return sound_; }
   QPushButton* GetDefaultSettingsButton() { return default_settings_; }
 
@@ -77,10 +77,10 @@ class View : public QMainWindow {
  private:
   View();
 
-  void CustomGameScene();
-  void CustomMainMenu();
-  void CustomSettings();
-  void SetUpGraphicsView(QGraphicsView* graphics);
+  void CustomizeGameScene();
+  void CustomizeMainMenu();
+  void CustomizeSettings();
+  void DisableScrollbars(QGraphicsView* graphics);
 
   // Game
   QGraphicsScene* game_scene_;
@@ -107,12 +107,12 @@ class View : public QMainWindow {
   QGraphicsScene* settings_scene_;
   QGraphicsView* settings_graphics_;
   QPushButton* exit_settings_;
-  QPushButton* complexity_;
+  QPushButton* difficulty_;
   QPushButton* sound_;
   QPushButton* default_settings_;
   QLabel* exit_shortcut_;
   QGraphicsProxyWidget* proxy_exit_settings_;
-  QGraphicsProxyWidget* proxy_complexity_;
+  QGraphicsProxyWidget* proxy_difficulty_;
   QGraphicsProxyWidget* proxy_exit_shortcut_;
   QGraphicsProxyWidget* proxy_sound_;
   QGraphicsProxyWidget* proxy_default_settings_;
