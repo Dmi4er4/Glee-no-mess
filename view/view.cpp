@@ -135,8 +135,8 @@ void View::CustomizeMainMenu() {
   settings_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
 
   proxy_stat_game_->setGeometry(QRectF(
-      width() * .5 - width() / 1.5,
-      height() * .5 - height() / 1.5,
+      width() * .5 - width() * .7,
+      height() * .5 - height() * .7,
       width() *  .3,
       height() *  .125));
 
