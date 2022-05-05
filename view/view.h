@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QApplication>
+#include <QDirIterator>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
 #include <QLabel>
@@ -81,6 +82,7 @@ class View : public QMainWindow {
   void CustomizeMainMenu();
   void CustomizeSettings();
   void DisableScrollbars(QGraphicsView* graphics);
+  void LoadBackgroundFrames(const QString& folder);
 
   // Game
   QGraphicsScene* game_scene_;
@@ -91,9 +93,11 @@ class View : public QMainWindow {
   QGraphicsProxyWidget* proxy_permit_;
   QGraphicsProxyWidget* proxy_reject_;
   QGraphicsProxyWidget* proxy_errors_;
+  QList<QPixmap> background_frames_;
+  QGraphicsPixmapItem* game_background_;
+  int bg_frame_index_;
 
-  int32_t current_frame_;
-  const int32_t kFrameRate = 75;
+  const int32_t kFrameRate = 13;
 
   // Menu
   QGraphicsScene* menu_scene_;

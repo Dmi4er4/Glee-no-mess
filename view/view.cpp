@@ -5,15 +5,6 @@
 #include "settings.h"
 
 View::View() :
-    // game
-    game_scene_(new QGraphicsScene),
-    permit_button_(new QPushButton("OK")),
-    reject_button_(new QPushButton("NOT OK")),
-    game_graphics_(new QGraphicsView(game_scene_)),
-    errors_(new QLabel("Placeholder")),
-    proxy_permit_(game_scene_->addWidget(permit_button_)),
-    proxy_reject_(game_scene_->addWidget(reject_button_)),
-    proxy_errors_(game_scene_->addWidget(errors_)),
     // menu
     menu_scene_(new QGraphicsScene),
     menu_graphics_(new QGraphicsView(menu_scene_)),
@@ -49,7 +40,7 @@ View::View() :
 void View::SetTimer() {
   auto timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
-  timer->start(kFrameRate);
+  timer->start(1000 / kFrameRate);
 }
 
 void View::SetBackgroundImage(QGraphicsView* graphics_view,
@@ -62,13 +53,10 @@ void View::SetBackgroundImage(QGraphicsView* graphics_view,
 }
 
 void View::ChangeFrame() {
-  static constexpr uint8_t number_of_frames = 16;
-  current_frame_++;
-  current_frame_ %= number_of_frames;
-  SetBackgroundImage(game_graphics_, FileLoader::GetFile<QPixmap>(
-      ":/club_level/background/background_frame_"
-          + QString::number(current_frame_) + ".png"));
-  // TODO(Adamenko-Vladislav) frames don't change
+  if (++bg_frame_index_ == background_frames_.size()) {
+    bg_frame_index_ = 0;
+  }
+  game_background_->setPixmap(background_frames_[bg_frame_index_]);
 }
 
 View& View::Instance() {
@@ -106,7 +94,19 @@ void View::ShowSettings() {
 }
 
 void View::CustomizeGameScene() {
+  game_graphics_ = new QGraphicsView(
+      game_scene_ = new QGraphicsScene);
   game_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+
+  LoadBackgroundFrames(":/club_level/background");
+  game_background_ = game_scene_->addPixmap(background_frames_.first());
+
+  proxy_permit_ = game_scene_->addWidget(
+      permit_button_ = new QPushButton("OK"));
+  proxy_reject_ = game_scene_->addWidget(
+      reject_button_ = new QPushButton("NOT OK"));
+  proxy_errors_ = game_scene_->addWidget(
+      errors_ = new QLabel("Placeholder"));
 
   proxy_permit_->setGeometry(QRectF(
       kMargin,
@@ -123,8 +123,8 @@ void View::CustomizeGameScene() {
   proxy_errors_->setGeometry(QRectF(
       kMargin,
       reject_button_->geometry().bottom() + kMargin,
-      errors_->width() + 100,
-      errors_->height() + 100));
+      width(),
+      errors_->height()));
   // TODO(Adamenko-Vladislav) Magic constant.
 
   SetErrorsCount(0);
@@ -188,4 +188,20 @@ void View::DisableScrollbars(QGraphicsView* graphics) {
 
 void View::keyPressEvent(QKeyEvent* event) {
   Controller::Instance().keyPressEvent(event);
+}
+
+void View::LoadBackgroundFrames(const QString& folder) {
+  bg_frame_index_ = 0;
+  QDirIterator it(folder);
+  QList<QString> frames;
+  while (it.hasNext()) {
+    frames.push_back(it.next());
+  }
+  frames.sort();
+  background_frames_.clear();
+  for (const auto& filename : frames) {
+    background_frames_.emplace_back(
+        FileLoader::GetFile<QPixmap>(filename)
+            .scaled(width(), height(), Qt::IgnoreAspectRatio));
+  }
 }
