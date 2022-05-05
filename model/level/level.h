@@ -1,10 +1,5 @@
 #pragma once
 
-#include "bad_characteristic.h"
-#include "file_loader.h"
-#include "guest.h"
-#include "typedefs.h"
-
 #include <QFile>
 #include <QString>
 #include <QStringList>
@@ -15,6 +10,11 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
+
+#include "bad_characteristic.h"
+#include "file_loader.h"
+#include "guest.h"
+#include "typedefs.h"
 
 class Level {
  public:

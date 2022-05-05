@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QString>
 #include <QFile>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QPixmap>
-#include <QJsonDocument>
+#include <QString>
 
 #include <unordered_map>
 
