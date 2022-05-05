@@ -4,36 +4,11 @@
 #include "file_loader.h"
 #include "settings.h"
 
-View::View() :
-    // menu
-    menu_scene_(new QGraphicsScene),
-    menu_graphics_(new QGraphicsView(menu_scene_)),
-    start_game_(new QPushButton("Play")),
-    open_settings_(new QPushButton("Settings")),
-    proxy_stat_game_(menu_scene_->addWidget(start_game_)),
-    proxy_open_settings_(menu_scene_->addWidget(open_settings_)),
-    // settings
-    settings_scene_(new QGraphicsScene),
-    settings_graphics_(new QGraphicsView(settings_scene_)),
-    exit_settings_(new QPushButton("Main menu")),
-    difficulty_(new QPushButton),
-    exit_shortcut_(new QLabel(kExitShortcutText)),
-    sound_(new QPushButton),
-    default_settings_(new QPushButton("Set default settings")),
-    proxy_exit_settings_(settings_scene_->addWidget(exit_settings_)),
-    proxy_difficulty_(settings_scene_->addWidget(difficulty_)),
-    proxy_exit_shortcut_(settings_scene_->addWidget(exit_shortcut_)),
-    proxy_sound_(settings_scene_->addWidget(sound_)),
-    proxy_default_settings_(settings_scene_->addWidget(default_settings_)) {
-  // full screen mode
-  auto screen_size = QGuiApplication::primaryScreen()->size();
-  setFixedSize(screen_size);
-  setWindowState(windowState() | Qt::WindowFullScreen);
-
-  CustomizeGameScene();
-  CustomizeMainMenu();
-  CustomizeSettings();
-
+View::View() {
+  InitView();
+  InitGameScene();
+  InitMainMenu();
+  InitSettings();
   ShowMainMenu();
 }
 
@@ -41,15 +16,6 @@ void View::SetTimer() {
   auto timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
   timer->start(1000 / kFrameRate);
-}
-
-void View::SetBackgroundImage(QGraphicsView* graphics_view,
-                              const QPixmap& pixmap) {
-  // QPalette palette;
-  // palette.setBrush(QPalette::Base,
-  //                  pixmap.scaled(size(), Qt::IgnoreAspectRatio));
-  // graphics_view->setPalette(palette);
-  // TODO(Adamenko-Vladislav) SetBackGroundImage
 }
 
 void View::ChangeFrame() {
@@ -65,38 +31,32 @@ View& View::Instance() {
 }
 
 void View::ShowGame() {
-  game_graphics_ = new QGraphicsView(game_scene_);
-  DisableScrollbars(game_graphics_);
-  SetBackgroundImage(game_graphics_, FileLoader::GetFile<QPixmap>(
-      ":/club_level/background/background_frame_0.png"));
-  setCentralWidget(game_graphics_);
+  view_->setScene(game_scene_);
   qApp->setStyleSheet(FileLoader::CastFileToString(":/main.qss"));
-  // TODO(Adamenko-Vladislav) set correct style
 }
 
 void View::ShowMainMenu() {
-  menu_graphics_ = new QGraphicsView(menu_scene_);
-  DisableScrollbars(menu_graphics_);
-  // SetBackgroundImage(menu_graphics_, FileLoader::GetFile<QPixmap>(
-  //     ":/menu/main_menu_background.jpg"));
-  // TODO(Adamenko-Vladislav) set correct image
-  setCentralWidget(menu_graphics_);
+  view_->setScene(menu_scene_);
   qApp->setStyleSheet(FileLoader::CastFileToString(":/menu/start_menu.qss"));
-  // TODO(Adamenko-Vladislav) set correct style
 }
 
 void View::ShowSettings() {
-  settings_graphics_ = new QGraphicsView(settings_scene_);
-  DisableScrollbars(settings_graphics_);
-  setCentralWidget(settings_graphics_);
+  view_->setScene(settings_scene_);
   qApp->setStyleSheet(FileLoader::CastFileToString(":/settings/settings.qss"));
-  // TODO(Adamenko-Vladislav) set correct style
 }
 
-void View::CustomizeGameScene() {
-  game_graphics_ = new QGraphicsView(
-      game_scene_ = new QGraphicsScene);
-  game_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+void View::InitView() {
+  auto screen_size = QGuiApplication::primaryScreen()->size();
+  setFixedSize(screen_size);
+  setWindowState(windowState() | Qt::WindowFullScreen);
+  view_ = new QGraphicsView;
+  view_->setStyleSheet("border: none");
+  DisableScrollbars(view_);
+  setCentralWidget(view_);
+}
+
+void View::InitGameScene() {
+  game_scene_ = new QGraphicsScene;
 
   LoadBackgroundFrames(":/club_level/background");
   game_background_ = game_scene_->addPixmap(background_frames_.first());
@@ -125,20 +85,24 @@ void View::CustomizeGameScene() {
       reject_button_->geometry().bottom() + kMargin,
       width(),
       errors_->height()));
-  // TODO(Adamenko-Vladislav) Magic constant.
 
   SetErrorsCount(0);
   SetTimer();
 }
 
-void View::CustomizeMainMenu() {
-  settings_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+void View::InitMainMenu() {
+  menu_scene_ = new QGraphicsScene;
+  proxy_stat_game_ = menu_scene_->addWidget(
+      start_game_ = new QPushButton("Play"));
+  proxy_open_settings_ = menu_scene_->addWidget(
+      open_settings_ = new QPushButton("Settings"));
+  menu_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
 
   proxy_stat_game_->setGeometry(QRectF(
-      width() * .5 - width() * .7,
-      height() * .5 - height() * .7,
-      width() *  .3,
-      height() *  .125));
+      width() * .2,
+      height() * .2,
+      width() * .6,
+      height() * .3));
 
   proxy_open_settings_->setGeometry(QRectF(
       start_game_->geometry().bottomLeft().x(),
@@ -147,7 +111,18 @@ void View::CustomizeMainMenu() {
       start_game_->height()));
 }
 
-void View::CustomizeSettings() {
+void View::InitSettings() {
+  settings_scene_ = new QGraphicsScene;
+  exit_settings_ = new QPushButton("Main menu");
+  difficulty_ = new QPushButton;
+  exit_shortcut_ = new QLabel(kExitShortcutText);
+  sound_ = new QPushButton;
+  default_settings_ = new QPushButton("Set default settings");
+  proxy_exit_settings_ = settings_scene_->addWidget(exit_settings_);
+  proxy_difficulty_ = settings_scene_->addWidget(difficulty_);
+  proxy_exit_shortcut_ = settings_scene_->addWidget(exit_shortcut_);
+  proxy_sound_ = settings_scene_->addWidget(sound_);
+  proxy_default_settings_ = settings_scene_->addWidget(default_settings_);
   settings_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
 
   proxy_exit_settings_->setGeometry(QRect(
