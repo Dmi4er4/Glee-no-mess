@@ -10,6 +10,7 @@ View::View() {
   InitMainMenu();
   InitSettings();
   ShowMainMenu();
+  show();
 }
 
 void View::SetTimer() {
@@ -30,27 +31,46 @@ View& View::Instance() {
   return instance;
 }
 
+void View::RequestKeyComboEnter() {
+  shortcut_request_overlay_ = new QWidget;
+  auto proxy = settings_scene_->addWidget(shortcut_request_overlay_);
+  proxy->setGeometry(QRect{0, 0, width(), height()});
+  auto layout = new QVBoxLayout;
+  shortcut_request_overlay_->setLayout(layout);
+  auto label = new QLabel("Please enter new hotkey:");
+  label->setAlignment(Qt::AlignCenter);
+  shortcut_request_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
+  label->setStyleSheet("background: transparent");
+  layout->addWidget(label);
+  view_->setEnabled(false);
+}
+
+void View::HideShortcutRequestOverlay() {
+  shortcut_request_overlay_->hide();
+  view_->setEnabled(true);
+}
+
 void View::ShowGame() {
   view_->setScene(game_scene_);
-  qApp->setStyleSheet(FileLoader::CastFileToString(":/main.qss"));
 }
 
 void View::ShowMainMenu() {
   view_->setScene(menu_scene_);
-  qApp->setStyleSheet(FileLoader::CastFileToString(":/menu/start_menu.qss"));
 }
 
 void View::ShowSettings() {
   view_->setScene(settings_scene_);
-  qApp->setStyleSheet(FileLoader::CastFileToString(":/settings/settings.qss"));
 }
 
 void View::InitView() {
+  QFontDatabase::addApplicationFont(":Koulen-Regular.ttf");
   auto screen_size = QGuiApplication::primaryScreen()->size();
   setFixedSize(screen_size);
+  auto font_size = QString::number(int(screen_size.height() * .05));
+  qApp->setStyleSheet("* { font-size: " + font_size + "px; }" +
+                      FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
-  view_->setStyleSheet("border: none");
   DisableScrollbars(view_);
   setCentralWidget(view_);
 }
@@ -61,30 +81,26 @@ void View::InitGameScene() {
   LoadBackgroundFrames(":/club_level/background");
   game_background_ = game_scene_->addPixmap(background_frames_.first());
 
-  proxy_permit_ = game_scene_->addWidget(
-      permit_button_ = new QPushButton("OK"));
-  proxy_reject_ = game_scene_->addWidget(
-      reject_button_ = new QPushButton("NOT OK"));
-  proxy_errors_ = game_scene_->addWidget(
-      errors_ = new QLabel("Placeholder"));
+  auto proxy = game_scene_->addWidget(new QWidget);
+  auto layout = new QHBoxLayout;
+  proxy->widget()->setLayout(layout);
 
-  proxy_permit_->setGeometry(QRectF(
-      kMargin,
-      kMargin,
-      permit_button_->width(),
-      permit_button_->height()));
+  layout->addWidget(permit_button_ = new QPushButton("OK"));
+  layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
+  layout->addWidget(errors_ = new QLabel("Placeholder"));
+  layout->addItem(new QSpacerItem(0, 0,
+                                  QSizePolicy::Expanding,
+                                  QSizePolicy::Expanding));
 
-  proxy_reject_->setGeometry(QRectF(
-      kMargin,
-      permit_button_->geometry().bottom() + kMargin,
-      reject_button_->width(),
-      reject_button_->height()));
+  permit_button_->setObjectName("in-game");
+  reject_button_->setObjectName("in-game");
 
-  proxy_errors_->setGeometry(QRectF(
-      kMargin,
-      reject_button_->geometry().bottom() + kMargin,
-      width(),
-      errors_->height()));
+  proxy->setGeometry(QRectF{
+    0,
+    height() * .9,
+    width() * 1.,
+    height() * .1
+  });
 
   SetErrorsCount(0);
   SetTimer();
@@ -92,68 +108,51 @@ void View::InitGameScene() {
 
 void View::InitMainMenu() {
   menu_scene_ = new QGraphicsScene;
-  proxy_stat_game_ = menu_scene_->addWidget(
-      start_game_ = new QPushButton("Play"));
-  proxy_open_settings_ = menu_scene_->addWidget(
-      open_settings_ = new QPushButton("Settings"));
-  menu_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+  menu_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":menu/main_menu_background.jpg")
+          .scaled(width(), height(), Qt::IgnoreAspectRatio));
+  auto* proxy = menu_scene_->addWidget(new QWidget);
+  auto layout = new QVBoxLayout;
+  proxy->widget()->setLayout(layout);
+  layout->addWidget(start_game_ = new QPushButton("Play"));
+  layout->addWidget(open_settings_ = new QPushButton("Settings"));
+  layout->addWidget(quit_ = new QPushButton("Quit"));
 
-  proxy_stat_game_->setGeometry(QRectF(
-      width() * .2,
-      height() * .2,
-      width() * .6,
-      height() * .3));
+  start_game_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-  proxy_open_settings_->setGeometry(QRectF(
-      start_game_->geometry().bottomLeft().x(),
-      start_game_->geometry().bottomLeft().y() + kMargin,
-      start_game_->width(),
-      start_game_->height()));
+  proxy->setGeometry(QRectF{
+      width() * .3,
+      height() * .3,
+      width() * .4,
+      height() * .4
+  });
 }
 
 void View::InitSettings() {
   settings_scene_ = new QGraphicsScene;
-  exit_settings_ = new QPushButton("Main menu");
-  difficulty_ = new QPushButton;
-  exit_shortcut_ = new QLabel(kExitShortcutText);
-  sound_ = new QPushButton;
-  default_settings_ = new QPushButton("Set default settings");
-  proxy_exit_settings_ = settings_scene_->addWidget(exit_settings_);
-  proxy_difficulty_ = settings_scene_->addWidget(difficulty_);
-  proxy_exit_shortcut_ = settings_scene_->addWidget(exit_shortcut_);
-  proxy_sound_ = settings_scene_->addWidget(sound_);
-  proxy_default_settings_ = settings_scene_->addWidget(default_settings_);
-  settings_scene_->addLine(0, 0, width(), height(), QPen(Qt::transparent));
+  settings_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":menu/main_menu_background.jpg")
+          .scaled(width(), height(), Qt::IgnoreAspectRatio));
 
-  proxy_exit_settings_->setGeometry(QRect(
-      width() - width() *  .25 - kMargin,
-      height() - height() * .1 - kMargin,
-      width() *  .25,
-      height() * .1));
+  auto proxy = settings_scene_->addWidget(new QWidget);
+  proxy->setGeometry(QRectF{
+      width() * .25,
+      height() * .2,
+      width() * .5,
+      height() * .6
+  });
+  auto form = new QFormLayout;
+  proxy->widget()->setLayout(form);
 
-  proxy_difficulty_->setGeometry(QRect(
-      width() * .5 - width() *  .125,
-      height() * .5 - height() *  .25,
-      width() *  .25,
-      height() * .1));
-
-  proxy_exit_shortcut_->setGeometry(QRectF(
-      proxy_difficulty_->scenePos().x(),
-      proxy_difficulty_->scenePos().y() + height() * .1 + kMargin,
-      width() *  .25,
-      height() * .1));
-
-  proxy_sound_->setGeometry(QRectF(
-      proxy_exit_shortcut_->scenePos().x(),
-      proxy_exit_shortcut_->scenePos().y() + height() * .1 + kMargin,
-      width() *  .25,
-      height() * .1));
-
-  proxy_default_settings_->setGeometry(QRectF(
-      proxy_sound_->scenePos().x(),
-      proxy_sound_->scenePos().y() + height() * .1 + kMargin,
-      width() *  .25,
-      height() * .1));
+  form->addRow(QLabelOrientate("Difficulty:", Qt::AlignRight),
+               difficulty_ = new QPushButton);
+  form->addRow(QLabelOrientate("Sound:", Qt::AlignRight),
+               sound_ = new QPushButton);
+  form->addRow(QLabelOrientate("Keybindings", Qt::AlignCenter));
+  form->addRow(QLabelOrientate("Quit:", Qt::AlignRight),
+               exit_shortcut_ = new QPushButton);
+  form->addRow(reset_defaults_ = new QPushButton("Reset Defaults"));
+  form->addRow(back_to_menu_ = new QPushButton("Back to menu"));
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
@@ -179,4 +178,10 @@ void View::LoadBackgroundFrames(const QString& folder) {
         FileLoader::GetFile<QPixmap>(filename)
             .scaled(width(), height(), Qt::IgnoreAspectRatio));
   }
+}
+
+QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
+  auto* res = new QLabel(text);
+  res->setAlignment(align);
+  return res;
 }

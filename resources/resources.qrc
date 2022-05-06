@@ -20,9 +20,8 @@
         <file>club_level/background/background_frame_15.png</file>
     </qresource>
     <qresource>
-        <file>main.qss</file>
-        <file>menu/start_menu.qss</file>
-        <file>settings/settings.qss</file>
+        <file>style.qss</file>
+        <file>Koulen-Regular.ttf</file>
     </qresource>
     <qresource>
         <file>settings/default_settings.json</file>
