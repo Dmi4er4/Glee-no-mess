@@ -31,7 +31,7 @@ QPushButton#in-game {
     margin-right: 1ex;
 }
 
-QPushButton#in-game:hover:!pressed {
+QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;
 }
