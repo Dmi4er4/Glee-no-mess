@@ -32,5 +32,5 @@ class Controller : public QObject {
   }
 
   bool is_editing_keybinding_{};
-  void (Model::*new_hotkey_)(const QString& keys) = nullptr;
+  std::function<void(const QString& keys)> new_hotkey_;
 };

@@ -55,7 +55,8 @@ void Controller::ConnectSettingsMenuSignals() {
                        [&] {
       View::Instance().RequestKeyComboEnter();
       is_editing_keybinding_ = true;
-      new_hotkey_ = &Model::SetExitShortcut;
+      new_hotkey_ = [capture0 = &Model::Instance()](auto && PH1)
+          { capture0->SetExitShortcut(std::forward<decltype(PH1)>(PH1)); };
   });
 }
 
@@ -103,7 +104,7 @@ void Controller::KeyPressInSettings(QKeyEvent* event) {
             + PressedKey(Qt::AltModifier, "Alt+")
             + PressedKey(Qt::ShiftModifier, "Shift+")
             + QKeySequence(event->key()).toString();
-        (Model::Instance().*new_hotkey_)(keys);
+        new_hotkey_(keys);
         is_editing_keybinding_ = false;
         View::Instance().HideShortcutRequestOverlay();
       }
