@@ -66,7 +66,8 @@ void View::InitView() {
   QFontDatabase::addApplicationFont(":Koulen-Regular.ttf");
   auto screen_size = QGuiApplication::primaryScreen()->size();
   setFixedSize(screen_size);
-  auto font_size = QString::number(int(screen_size.height() * .05));
+  auto font_size = QString::number(
+      static_cast<int>(screen_size.height() * .05));
   qApp->setStyleSheet("* { font-size: " + font_size + "px; }" +
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
