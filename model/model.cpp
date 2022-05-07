@@ -97,12 +97,13 @@ void Model::AddIgnoreFirstMistakeItem() {
 }
 
 void Model::InitSettings() {
-  QJsonDocument file =
-      FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
-  InitSettings(file, kMoney);
-  InitSettings(file, kSound);
-  InitSettings(file, kDifficulty);
-  InitSettings(file, kExitShortcut);
+  auto file = FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
+  for (const auto& property_name : {kMoney,
+                                    kSound,
+                                    kDifficulty,
+                                    kExitShortcut}) {
+    InitSettings(file, property_name);
+  }
   View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
   View::Instance().SetExitShortcut(

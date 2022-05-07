@@ -55,8 +55,8 @@ void Controller::ConnectSettingsMenuSignals() {
                        [&] {
       View::Instance().RequestKeyComboEnter();
       is_editing_keybinding_ = true;
-      new_hotkey_ = [capture0 = &Model::Instance()](auto && PH1)
-          { capture0->SetExitShortcut(std::forward<decltype(PH1)>(PH1)); };
+      new_hotkey_ = [model = &Model::Instance()](const QString& keys)
+          { model->SetExitShortcut(keys); };
   });
 }
 

@@ -98,9 +98,9 @@ void View::InitGameScene() {
 
   proxy->setGeometry(QRectF{
     0,
-    height() * .9,
-    width() * 1.,
-    height() * .1
+    height() * 0.9,
+    width() * 1.0,
+    height() * 0.1
   });
 
   SetErrorsCount(0);
