@@ -9,7 +9,6 @@ Controller::Controller() {
   ConnectSignals();
   auto& view = View::Instance();
   view.setWindowTitle("Glee, no mess!");
-  view.show();
 }
 
 void Controller::ConnectSignals() {
@@ -24,7 +23,7 @@ void Controller::keyPressEvent(QKeyEvent* event) {
   if (view.IsGame()) {
     KeyPressInGame(event);
   } else if (view.IsSettings()) {
-    KeyPressInSetting(event);
+    KeyPressInSettings(event);
   }
 }
 
@@ -34,53 +33,66 @@ Controller& Controller::Instance() {
 }
 
 void Controller::ConnectSettingsMenuSignals() {
-  QPushButton::connect(View::Instance().GetDifficultyButton(),
+  connect(View::Instance().GetDifficultyButton(),
                        &QPushButton::released,
                        &Model::Instance(),
                        &Model::ChangeDifficulty);
-  QPushButton::connect(View::Instance().GetExitSettingsButton(),
+  connect(View::Instance().GetBackToMenuButton(),
                        &QPushButton::released,
                        &View::Instance(),
                        &View::ShowMainMenu);
-  QPushButton::connect(View::Instance().GetSoundButton(),
+  connect(View::Instance().GetSoundButton(),
                        &QPushButton::released,
                        &Model::Instance(),
                        &Model::ToggleSound);
-  QPushButton::connect(View::Instance().GetDefaultSettingsButton(),
+  connect(View::Instance().GetDefaultSettingsButton(),
                        &QPushButton::released,
                        &Model::Instance(),
-                       &Model::SetDefaultSettings);
+                       &Model::ResetDefaults);
+  connect(View::Instance().GetExitShortcutButton(),
+                       &QPushButton::released,
+                       this,
+                       [&] {
+      View::Instance().RequestKeyComboEnter();
+      is_editing_keybinding_ = true;
+      new_hotkey_ = [model = &Model::Instance()](const QString& keys)
+          { model->SetExitShortcut(keys); };
+  });
 }
 
 void Controller::ConnectGameSignals() {
-  QAbstractButton::connect(
+  connect(
       View::Instance().GetPermitButton(), &QPushButton::released,
       &Model::Instance(), &Model::Permit);
-  QAbstractButton::connect(
+  connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
 }
 
 void Controller::ConnectMainMenuSignals() {
-  QPushButton::connect(View::Instance().GetOpenSettingsButton(),
+  connect(View::Instance().GetOpenSettingsButton(),
                        &QPushButton::released,
                        &View::Instance(),
                        &View::ShowSettings);
-  QPushButton::connect(View::Instance().GetStartGameButton(),
+  connect(View::Instance().GetStartGameButton(),
                        &QPushButton::released,
                        &View::Instance(),
                        &View::ShowGame);
+  connect(View::Instance().GetQuitButton(),
+                       &QPushButton::released,
+                       this,
+                       &Controller::Quit);
 }
 
 void Controller::ConnectShortcutSignals() {
   QShortcut::connect(Model::Instance().GetExitShortcut(),
                      &QShortcut::activated,
-                     &View::Instance(),
-                     &View::close);
+                     this,
+                     &Controller::Quit);
 }
 
-void Controller::KeyPressInSetting(QKeyEvent* event) {
-  if (View::Instance().IsCursorOnExitShortcut()) {
+void Controller::KeyPressInSettings(QKeyEvent* event) {
+  if (is_editing_keybinding_) {
     switch (event->key()) {
       case Qt::Key_Alt:
       case Qt::Key_Shift:
@@ -92,8 +104,9 @@ void Controller::KeyPressInSetting(QKeyEvent* event) {
             + PressedKey(Qt::AltModifier, "Alt+")
             + PressedKey(Qt::ShiftModifier, "Shift+")
             + QKeySequence(event->key()).toString();
-        View::Instance().SetExitShortcut(kExitShortcutText + keys);
-        Model::Instance().SetExitShortcut(keys);
+        new_hotkey_(keys);
+        is_editing_keybinding_ = false;
+        View::Instance().HideShortcutRequestOverlay();
       }
     }
   }
@@ -110,5 +123,11 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
       model.Permit();
       break;
     }
+  }
+}
+
+void Controller::Quit() {
+  if (!is_editing_keybinding_) {
+    View::Instance().close();
   }
 }

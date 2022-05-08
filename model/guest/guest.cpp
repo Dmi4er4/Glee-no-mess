@@ -43,7 +43,7 @@ QRect Guest::GetRectWaiting(int index) {
 
 QRect Guest::GetRectActive() {
   return {
-      -View::kMargin,
+      View::kMargin,
       (View::Instance().height() + View::kSquareSize) / 2,
       View::kSquareSize,
       View::kSquareSize,

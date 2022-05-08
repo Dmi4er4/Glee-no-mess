@@ -14,7 +14,7 @@ Model::Model() {
   current_guest_ = std::make_unique<Guest>();
   current_guest_->SetActive();
   settings_ = new QSettings("GameMasters", "Glee-no-mess");
-  SetStartSettings();
+  InitSettings();
   UpdateDifficultySettings();
 }
 
@@ -96,26 +96,27 @@ void Model::AddIgnoreFirstMistakeItem() {
   }
 }
 
-void Model::SetStartSettings() {
-  QJsonDocument file =
-      FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
-  SetStartSettings(file, kMoney);
-  SetStartSettings(file, kSound);
-  SetStartSettings(file, kDifficulty);
-  SetStartSettings(file, kExitShortcut);
-  View::Instance().SetDifficultyButton(
+void Model::InitSettings() {
+  auto file = FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
+  for (const auto& property_name : {kMoney,
+                                    kSound,
+                                    kDifficulty,
+                                    kExitShortcut}) {
+    InitSettings(file, property_name);
+  }
+  View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
   View::Instance().SetExitShortcut(
-      kExitShortcutText + settings_->value(kExitShortcut).toString());
+      settings_->value(kExitShortcut).toString());
   View::Instance().SetSound(settings_->value(kSound).toString());
   exit_shortcut_ = new QShortcut(
       QKeySequence(settings_->value(kExitShortcut).toString()),
       &View::Instance());
 }
 
-void Model::SetStartSettings(const QJsonDocument& file, const QString& name) {
-  if (!settings_->contains(name)) {
-    settings_->setValue(name, file[name]);
+void Model::InitSettings(const QJsonDocument& json, const QString& property) {
+  if (!settings_->contains(property)) {
+    settings_->setValue(property, json[property]);
   }
 }
 
@@ -135,7 +136,7 @@ void Model::ChangeDifficulty() {
   } else {
     settings_->setValue(kDifficulty, kEasy);
   }
-  View::Instance().SetDifficultyButton(
+  View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
   UpdateDifficultySettings();
 }
@@ -143,6 +144,7 @@ void Model::ChangeDifficulty() {
 void Model::SetExitShortcut(const QString& keys) {
   settings_->setValue(kExitShortcut, keys);
   exit_shortcut_->setKey(keys);
+  View::Instance().SetExitShortcut(keys);
 }
 
 void Model::ToggleSound() {
@@ -154,12 +156,12 @@ void Model::ToggleSound() {
   View::Instance().SetSound(settings_->value(kSound).toString());
 }
 
-void Model::SetDefaultSettings() {
+void Model::ResetDefaults() {
   settings_->setValue(kDifficulty, kEasy);
   settings_->setValue(kExitShortcut, kDefaultExitShortcut);
   settings_->setValue(kSound, kOn);
-  View::Instance().SetDifficultyButton(kEasy);
-  View::Instance().SetExitShortcut(kExitShortcutText + kDefaultExitShortcut);
+  View::Instance().SetDifficulty(kEasy);
+  View::Instance().SetExitShortcut(kDefaultExitShortcut);
   View::Instance().SetSound(kOn);
   exit_shortcut_->setKey(QKeySequence(kDefaultExitShortcut));
 }

@@ -65,13 +65,13 @@ class Model : public QObject {
   void SetExitShortcut(const QString& keys);
   QShortcut* GetExitShortcut() { return exit_shortcut_; }
 
-  void SetDefaultSettings();
+  void ResetDefaults();
 
  private:
   Model();
 
-  void SetStartSettings();
-  void SetStartSettings(const QJsonDocument&, const QString&);
+  void InitSettings();
+  void InitSettings(const QJsonDocument&, const QString&);
   void UpdateDifficultySettings();
 
   size_t errors_count_{0};

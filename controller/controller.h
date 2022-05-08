@@ -9,12 +9,12 @@
 class View;
 class Model;
 
-class Controller {
+class Controller : public QObject {
  public:
   static Controller& Instance();
 
   void keyPressEvent(QKeyEvent* event);
-  void KeyPressInSetting(QKeyEvent* event);
+  void KeyPressInSettings(QKeyEvent* event);
   void KeyPressInGame(QKeyEvent* event);
   void ConnectShortcutSignals();
 
@@ -25,8 +25,12 @@ class Controller {
   void ConnectGameSignals();
   void ConnectSettingsMenuSignals();
   void ConnectMainMenuSignals();
+  void Quit();
 
   QString PressedKey(Qt::KeyboardModifier key, const QString& text) {
     return QApplication::keyboardModifiers() & key ? text : "";
   }
+
+  bool is_editing_keybinding_{};
+  std::function<void(const QString& keys)> new_hotkey_;
 };
