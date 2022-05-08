@@ -28,6 +28,18 @@ void Controller::keyPressEvent(QKeyEvent* event) {
   }
 }
 
+bool Controller::eventFilter(QObject *obj, QEvent *event) {
+  if (obj == (QObject*)View::Instance().GetContinueButton()) {
+    if (event->type() == QEvent::Enter) {
+      View::Instance().GetContinueButton()->setText("Level: Gachi-club\nDay: 1");
+    } else if (event->type() == QEvent::Leave) {
+      View::Instance().GetContinueButton()->setText("Continue");
+    }
+    return QObject::eventFilter(obj, event);
+  }
+  return QObject::eventFilter(obj, event);
+}
+
 Controller& Controller::Instance() {
   static Controller instance;
   return instance;
@@ -105,6 +117,8 @@ void Controller::ConnectChooseGameSignals() {
           &QPushButton::released,
           &View::Instance(),
           &View::ShowMainMenu);
+
+  View::Instance().GetContinueButton()->installEventFilter(this);
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {
