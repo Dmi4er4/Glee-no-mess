@@ -53,6 +53,14 @@ class View : public QMainWindow {
   auto GetOpenSettingsButton() const { return open_settings_; }
   auto GetStartGameButton() const { return start_game_; }
 
+  // Choose game
+  bool IsChooseGame() const { return view_->scene() == choose_game_scene_; }
+  auto GetContinueButton() const { return continue_button_; }
+  auto GetNewGameButton() const { return new_game_button_; }
+  auto GetToMenuFromChooseGameButton() const {
+    return to_menu_from_choose_game_button_;
+  }
+
   // Settings
   bool IsSettings() const { return view_->scene() == settings_scene_; }
   void SetExitShortcut(const QString& text) { exit_shortcut_->setText(text); }
@@ -71,6 +79,7 @@ class View : public QMainWindow {
   // Show Scene
   void ShowGame();
   void ShowMainMenu();
+  void ShowChooseGame();
   void ShowSettings();
 
   // Central Widget
@@ -82,6 +91,7 @@ class View : public QMainWindow {
   void InitView();
   void InitGameScene();
   void InitMainMenu();
+  void InitChooseGame();
   void InitSettings();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
@@ -106,6 +116,12 @@ class View : public QMainWindow {
   QPushButton* start_game_{};
   QPushButton* open_settings_{};
   QPushButton* quit_{};
+
+  // Choose game
+  QGraphicsScene* choose_game_scene_;
+  QPushButton* continue_button_;
+  QPushButton* new_game_button_;
+  QPushButton* to_menu_from_choose_game_button_;
 
   // Settings
   QGraphicsScene* settings_scene_{};

@@ -8,6 +8,7 @@ View::View() {
   InitView();
   InitGameScene();
   InitMainMenu();
+  InitChooseGame();
   InitSettings();
   ShowMainMenu();
   show();
@@ -56,6 +57,10 @@ void View::ShowGame() {
 
 void View::ShowMainMenu() {
   view_->setScene(menu_scene_);
+}
+
+void View::ShowChooseGame() {
+  view_->setScene(choose_game_scene_);
 }
 
 void View::ShowSettings() {
@@ -120,6 +125,29 @@ void View::InitMainMenu() {
   layout->addWidget(quit_ = new QPushButton("Quit"));
 
   start_game_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+  proxy->setGeometry(QRectF{
+      width() * .3,
+      height() * .3,
+      width() * .4,
+      height() * .4
+  });
+}
+
+void View::InitChooseGame() {
+  choose_game_scene_ = new QGraphicsScene;
+  choose_game_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+                             ":menu/main_menu_background.jpg")
+                             .scaled(width(), height(), Qt::IgnoreAspectRatio));
+  auto* proxy = choose_game_scene_->addWidget(new QWidget);
+  auto layout = new QVBoxLayout;
+  proxy->widget()->setLayout(layout);
+  layout->addWidget(continue_button_ = new QPushButton("Continue"));
+  layout->addWidget(new_game_button_ = new QPushButton("New game"));
+  layout->addWidget(to_menu_from_choose_game_button_ =
+                        new QPushButton("Back to menu"));
+
+  continue_button_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   proxy->setGeometry(QRectF{
       width() * .3,

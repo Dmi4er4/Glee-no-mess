@@ -157,10 +157,12 @@ void Model::ToggleSound() {
 }
 
 void Model::ResetDefaults() {
-  auto default_settings = FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
+  auto default_settings =
+      FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
   const QString default_sound = default_settings[kSound].toString();
   const QString default_difficulty = default_settings[kDifficulty].toString();
-  const QString default_exit_shortcut = default_settings[kExitShortcut].toString();
+  const QString default_exit_shortcut =
+      default_settings[kExitShortcut].toString();
 
   settings_->setValue(kDifficulty, default_difficulty);
   settings_->setValue(kExitShortcut, default_exit_shortcut);

@@ -16,6 +16,7 @@ void Controller::ConnectSignals() {
   ConnectSettingsMenuSignals();
   ConnectMainMenuSignals();
   ConnectShortcutSignals();
+  ConnectChooseGameSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -77,7 +78,7 @@ void Controller::ConnectMainMenuSignals() {
   connect(View::Instance().GetStartGameButton(),
                        &QPushButton::released,
                        &View::Instance(),
-                       &View::ShowGame);
+                       &View::ShowChooseGame);
   connect(View::Instance().GetQuitButton(),
                        &QPushButton::released,
                        this,
@@ -89,6 +90,21 @@ void Controller::ConnectShortcutSignals() {
                      &QShortcut::activated,
                      this,
                      &Controller::Quit);
+}
+
+void Controller::ConnectChooseGameSignals() {
+  connect(View::Instance().GetContinueButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowGame);
+  connect(View::Instance().GetNewGameButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowGame);
+  connect(View::Instance().GetToMenuFromChooseGameButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowMainMenu);
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {
