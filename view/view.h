@@ -40,12 +40,22 @@ class View : public QMainWindow {
   void SetErrorsCount(int value) {
     errors_->setText("Errors: " + QString::number(value));
   }
+  void SetGuestsLeft(int value) {
+    guests_left_->setText("Visitors: " + QString::number(value));
+  }
+  void SetDay(int value) {
+    day_->setText("Day: " + QString::number(value));
+  }
+  void SetTimeLeft(QString value) {
+    time_left_->setText("Time: " + value);
+  }
 
   void SetTimer();
   void ChangeFrame();
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
+  auto GetToMenuFromGameButton() const { return reject_button_; }
   auto GetScene() const { return game_scene_; }
 
   // Menu
@@ -105,6 +115,10 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* errors_{};
+  QPushButton* to_menu_from_game_{};
+  QLabel* guests_left_{};
+  QLabel* day_{};
+  QLabel* time_left_{};
   QList<QPixmap> background_frames_;
   QGraphicsPixmapItem* game_background_{};
   int bg_frame_index_{};

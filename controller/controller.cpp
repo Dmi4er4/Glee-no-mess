@@ -29,9 +29,11 @@ void Controller::keyPressEvent(QKeyEvent* event) {
 }
 
 bool Controller::eventFilter(QObject *obj, QEvent *event) {
-  if (obj == (QObject*)View::Instance().GetContinueButton()) {
+  if (obj == static_cast<QObject*>(View::Instance().GetContinueButton())) {
     if (event->type() == QEvent::Enter) {
-      View::Instance().GetContinueButton()->setText("Level: Gachi-club\nDay: 1");
+      View::Instance().GetContinueButton()->setText(
+          "Level: Gachi-club\nDay: 1");
+      // TODO(Kostianoy-Andrey)
     } else if (event->type() == QEvent::Leave) {
       View::Instance().GetContinueButton()->setText("Continue");
     }
@@ -107,18 +109,27 @@ void Controller::ConnectShortcutSignals() {
 void Controller::ConnectChooseGameSignals() {
   connect(View::Instance().GetContinueButton(),
           &QPushButton::released,
-          &View::Instance(),
-          &View::ShowGame);
+          this,
+          &Controller::StartNewGame);
   connect(View::Instance().GetNewGameButton(),
           &QPushButton::released,
-          &View::Instance(),
-          &View::ShowGame);
+          this,
+          &Controller::StartNewGame);
   connect(View::Instance().GetToMenuFromChooseGameButton(),
           &QPushButton::released,
           &View::Instance(),
           &View::ShowMainMenu);
 
   View::Instance().GetContinueButton()->installEventFilter(this);
+}
+
+void Controller::StartNewGame() {
+  Model::Instance().StartNewDay();
+  View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
+  View::Instance().SetDay(1);
+  // TODO(Kostianoy-Andrey)
+  View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
+  View::Instance().ShowGame();
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {

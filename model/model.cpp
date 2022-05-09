@@ -60,10 +60,11 @@ void Model::UpdateMistake() {
   // TODO(Adamenko-Vladislav)
 }
 
-void Model::StartNewLevel() {
+void Model::StartNewDay() {
   errors_count_ = 0;
   is_first_mistake_ = true;
-  // time_lest =
+  time_left_ = time_limit_;
+  guest_left_ = guest_limit_;
   was_added_time_ = false;
   // TODO(Adamenko-Vladislav)
 }
@@ -94,6 +95,23 @@ void Model::AddIgnoreFirstMistakeItem() {
   if (!HasItem(kIgnoreFirstMistake)) {
     all_items.emplace_back(new IgnoreFirstMistakeItem);
   }
+}
+
+QString Model::GetTimeLeft() const {
+  size_t minutes = time_left_ / 60;
+  size_t seconds = time_left_ % 60;
+  QString result = "";
+  result += char('0' + minutes);
+  result += ":";
+
+  if (seconds > 9) {
+    result += char('0' + seconds / 10);
+    result += char('0' + seconds % 10);
+  } else {
+    result += "0";
+    result += char('0' + seconds);
+  }
+  return result;
 }
 
 void Model::InitSettings() {
@@ -172,4 +190,5 @@ void Model::ResetDefaults() {
   View::Instance().SetExitShortcut(default_exit_shortcut);
   View::Instance().SetSound(default_sound);
   exit_shortcut_->setKey(QKeySequence(default_exit_shortcut));
+  UpdateDifficultySettings();
 }

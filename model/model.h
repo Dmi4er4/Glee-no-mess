@@ -27,7 +27,7 @@ class Model : public QObject {
   void ShiftQueue();
   void IncreaseErrorsCount();
 
-  void StartNewLevel();
+  void StartNewDay();
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();
   void UpdateMistake();
@@ -67,6 +67,9 @@ class Model : public QObject {
 
   void ResetDefaults();
 
+  size_t GetGuestsLeft() const { return guest_left_; }
+  QString GetTimeLeft() const;
+
  private:
   Model();
 
@@ -76,6 +79,7 @@ class Model : public QObject {
 
   size_t errors_count_{0};
   size_t time_left_{0};
+  size_t guest_left_{0};
   bool was_added_time_{false};
   bool is_first_mistake_{true};
 

@@ -97,9 +97,18 @@ void View::InitGameScene() {
   layout->addItem(new QSpacerItem(0, 0,
                                   QSizePolicy::Expanding,
                                   QSizePolicy::Expanding));
+  layout->addWidget(to_menu_from_game_ = new QPushButton("Back to menu"));
+  layout->addWidget(guests_left_ = new QLabel("Visitors: "));
+  layout->addWidget(day_ = new QLabel("Day: "));
+  layout->addWidget(time_left_ = new QLabel("Time: "));
+
+  guests_left_->setObjectName("in-game");
+  day_->setObjectName("in-game");
+  time_left_->setObjectName("in-game");
 
   permit_button_->setObjectName("in-game");
   reject_button_->setObjectName("in-game");
+  to_menu_from_game_->setObjectName("in-game");
 
   proxy->setGeometry(QRectF{
     0,
