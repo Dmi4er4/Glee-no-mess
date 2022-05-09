@@ -9,7 +9,11 @@ View::View() {
   InitGameScene();
   InitMainMenu();
   InitSettings();
+  InitCasino();
+  InitBlackJack();
   ShowMainMenu();
+  // Debug
+  ShowCasino();
   show();
 }
 
@@ -48,18 +52,6 @@ void View::RequestKeyComboEnter() {
 void View::HideShortcutRequestOverlay() {
   shortcut_request_overlay_->hide();
   view_->setEnabled(true);
-}
-
-void View::ShowGame() {
-  view_->setScene(game_scene_);
-}
-
-void View::ShowMainMenu() {
-  view_->setScene(menu_scene_);
-}
-
-void View::ShowSettings() {
-  view_->setScene(settings_scene_);
 }
 
 void View::InitView() {
@@ -154,6 +146,106 @@ void View::InitSettings() {
                exit_shortcut_ = new QPushButton);
   form->addRow(reset_defaults_ = new QPushButton("Reset Defaults"));
   form->addRow(back_to_menu_ = new QPushButton("Back to menu"));
+}
+
+void View::InitCasino() {
+  casino_scene_ = new QGraphicsScene;
+  casino_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":casino/casino.jpg").scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  auto proxy = casino_scene_->addWidget(new QWidget);
+  proxy->setGeometry(QRectF{
+      width() * 0.25,
+      height() * 0.3,
+      width() * 0.5,
+      height() * 0.6
+  });
+  auto form = new QFormLayout;
+  proxy->widget()->setLayout(form);
+
+  form->addRow(black_jack_ = new QPushButton("Black Jack"));
+  form->addRow(fruit_machine_ = new QPushButton("Fruit machine"));
+  form->addRow(casino_exit_ = new QPushButton("Exit"));
+}
+
+void View::InitBlackJack() {
+  black_jack_scene_ = new QGraphicsScene;
+  black_jack_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":casino/black_jack.jpg").
+      scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+
+  auto proxy_status = black_jack_scene_->addWidget(status_ = new QLabel);
+  proxy_status->setGeometry(QRectF{
+    0,
+    0,
+    width() * 0.3,
+    height() * 0.1
+  });
+
+  auto croupier_proxy = black_jack_scene_->
+      addWidget(croupier_ = new QLabel);
+  QPixmap croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
+  croupier_->setPixmap(croupier);
+
+
+  // TODO !!!!!!
+  croupier_proxy->setGeometry(QRectF{
+      width() * 0.5 - croupier.width() / 2,
+      0,
+      width() * 0.2,
+      height() * 0.3
+  });
+
+  croupier_cards_.resize(11);
+  for (int i = 0; i < 11; ++i) {
+    auto proxy_card = black_jack_scene_->addWidget(
+        croupier_cards_[i] = new QLabel);
+
+    proxy_card->setGeometry(QRectF{
+        i * 80.0 + kMargin,
+        croupier_proxy->geometry().height() + 15 * kMargin,
+        width() * 0.35,
+        height() * 0.35
+    });
+  }
+
+  player_cards_.resize(11);
+  for (int i = 0; i < 11; ++i) {
+    auto proxy_card = black_jack_scene_->addWidget(
+        player_cards_[i] = new QLabel);
+
+    proxy_card->setGeometry(QRectF{
+        width() * 0.5 + i * 80.0 + kMargin,
+        croupier_proxy->geometry().height() + 15 * kMargin,
+        width() * 0.35,
+        height() * 0.35
+    });
+  }
+
+  auto proxy = black_jack_scene_->addWidget(new QWidget);
+  proxy->setGeometry(QRectF{
+      0,
+      height() * 0.7,
+      width() * 1.0,
+      height() * 0.3
+  });
+  auto form = new QGridLayout;
+  proxy->widget()->setLayout(form);
+
+  form->addWidget(make_bid_ = new QPushButton("Make bid!"), 1, 0);
+  form->addWidget(player_money_ = new QLabel, 0, 0);
+
+  form->addWidget(bid_ = new QSpinBox, 1, 1);
+  bid_->setMaximumWidth(width() * 0.125);
+  bid_->setMinimum(1);
+  bid_->setMaximum(INT32_MAX);
+
+  form->addWidget(hit_me_ = new QPushButton("Hit me!"), 1, 2);
+  hit_me_->hide();
+  form->addWidget(stand_ = new QPushButton("Stand!"), 1, 3);
+  stand_->hide();
+  form->addWidget(back_to_casino_ = new QPushButton("Exit"), 1, 4);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

@@ -112,6 +112,8 @@ void Model::InitSettings() {
   exit_shortcut_ = new QShortcut(
       QKeySequence(settings_->value(kExitShortcut).toString()),
       &View::Instance());
+  View::Instance().SetPlayerMoney(settings_->value(kMoney).toInt());
+  View::Instance().SetPlayerMaxBid(settings_->value(kMoney).toInt());
 }
 
 void Model::InitSettings(const QJsonDocument& json, const QString& property) {
@@ -164,4 +166,23 @@ void Model::ResetDefaults() {
   View::Instance().SetExitShortcut(kDefaultExitShortcut);
   View::Instance().SetSound(kOn);
   exit_shortcut_->setKey(QKeySequence(kDefaultExitShortcut));
+}
+
+void Model::StartNewGameBlackJack() {
+  auto bid = View::Instance().GetBid();
+  if (bid == 0) {
+    return;
+  }
+  View::Instance().ShowBlackJackGame();
+  View::Instance().ShowSatus("");
+  UpdateMoney(-bid);
+  BlackJack::Instance().StartNewGame(bid);
+  // TODO BlackJack show cards
+}
+
+void Model::UpdateMoney(int delta) {
+  money_t money = settings_->value(kMoney).toInt();
+  money += delta;
+  settings_->setValue(kMoney, QString::number(money));
+  View::Instance().SetPlayerMoney(money);
 }

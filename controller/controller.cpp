@@ -16,6 +16,8 @@ void Controller::ConnectSignals() {
   ConnectSettingsMenuSignals();
   ConnectMainMenuSignals();
   ConnectShortcutSignals();
+  ConnectCasinoSignals();
+  ConnectBlackJackSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -70,18 +72,44 @@ void Controller::ConnectGameSignals() {
 }
 
 void Controller::ConnectMainMenuSignals() {
-  connect(View::Instance().GetOpenSettingsButton(),
-                       &QPushButton::released,
+  connect(View::Instance().GetOpenSettingsButton(), &QPushButton::released,
+          &View::Instance(), &View::ShowSettings);
+  connect(View::Instance().GetStartGameButton(), &QPushButton::released,
+         &View::Instance(), &View::ShowGame);
+  connect(View::Instance().GetQuitButton(), &QPushButton::released,
+         this, &Controller::Quit);
+}
+
+
+void Controller::ConnectCasinoSignals() {
+  QPushButton::connect(View::Instance().GetBlackJackButton(),
+                       &QPushButton::pressed,
                        &View::Instance(),
-                       &View::ShowSettings);
-  connect(View::Instance().GetStartGameButton(),
-                       &QPushButton::released,
+                       &View::ShowBlackJack);
+}
+
+void Controller::ConnectBlackJackSignals() {
+  QPushButton::connect(View::Instance().GetExitBlackJackButton(),
+                       &QPushButton::pressed,
                        &View::Instance(),
-                       &View::ShowGame);
-  connect(View::Instance().GetQuitButton(),
-                       &QPushButton::released,
+                       &View::ShowCasino);
+  QPushButton::connect(View::Instance().GetMakeBidButton(),
+                       &QPushButton::pressed,
+                       &Model::Instance(),
+                       &Model::StartNewGameBlackJack);
+  QPushButton::connect(View::Instance().GetHitMeButton(),
+                       &QPushButton::pressed,
                        this,
-                       &Controller::Quit);
+                       []{
+    BlackJack::Instance().HitPlayer();
+  });
+
+  QPushButton::connect(View::Instance().GetStandButton(),
+                       &QPushButton::pressed,
+                       this,
+                       []{
+    BlackJack::Instance().HitCroupier();
+  });
 }
 
 void Controller::ConnectShortcutSignals() {

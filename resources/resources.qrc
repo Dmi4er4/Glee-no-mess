@@ -30,4 +30,22 @@
     <qresource>
         <file>menu/main_menu_background.jpg</file>
     </qresource>
+    <qresource>
+        <file>casino/casino.jpg</file>
+        <file>casino/black_jack.jpg</file>
+        <file>casino/croupier.png</file>
+        <file>casino/2_hearts.png</file>
+        <file>casino/3_hearts.png</file>
+        <file>casino/4_hearts.png</file>
+        <file>casino/5_hearts.png</file>
+        <file>casino/6_hearts.png</file>
+        <file>casino/7_hearts.png</file>
+        <file>casino/8_hearts.png</file>
+        <file>casino/9_hearts.png</file>
+        <file>casino/10_hearts.png</file>
+        <file>casino/Ace_hearts.png</file>
+        <file>casino/Jack_hearts.png</file>
+        <file>casino/King_hearts.png</file>
+        <file>casino/Queen_hearts.png</file>
+    </qresource>
 </RCC>

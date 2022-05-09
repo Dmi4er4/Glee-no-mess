@@ -35,3 +35,7 @@ QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;
 }
+
+QSpinBox {
+    color: salmon;
+}
