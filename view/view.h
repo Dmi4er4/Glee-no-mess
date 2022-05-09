@@ -37,13 +37,13 @@ class View : public QMainWindow {
   // Game
   bool IsGame() const { return view_->scene() == game_scene_; }
 
-  void SetErrorsCount(int value) {
+  void SetErrorsCount(size_t value) {
     errors_->setText("Errors: " + QString::number(value));
   }
-  void SetGuestsLeft(int value) {
+  void SetGuestsLeft(size_t value) {
     guests_left_->setText("Visitors: " + QString::number(value));
   }
-  void SetDay(int value) {
+  void SetDay(size_t value) {
     day_->setText("Day: " + QString::number(value));
   }
   void SetTimeLeft(QString value) {
@@ -55,7 +55,7 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetToMenuFromGameButton() const { return reject_button_; }
+  auto GetToMenuFromGameButton() const { return to_menu_from_game_;  }
   auto GetScene() const { return game_scene_; }
 
   // Menu

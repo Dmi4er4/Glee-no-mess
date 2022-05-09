@@ -24,3 +24,5 @@ const QString kTime = "time";
 // Shortcut
 const QString kExitShortcut = "exit_shortcut";
 const QString kExitShortcutText = "Exit shortcut: ";
+// Levels
+const QString kGachiClub = ":/club_level/club_level.json";

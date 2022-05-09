@@ -106,6 +106,9 @@ void View::InitGameScene() {
   day_->setObjectName("in-game");
   time_left_->setObjectName("in-game");
 
+  guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
+  time_left_->setFixedSize(width() * 0.11, height() * 0.1);
+
   permit_button_->setObjectName("in-game");
   reject_button_->setObjectName("in-game");
   to_menu_from_game_->setObjectName("in-game");

@@ -32,8 +32,8 @@ bool Controller::eventFilter(QObject *obj, QEvent *event) {
   if (obj == static_cast<QObject*>(View::Instance().GetContinueButton())) {
     if (event->type() == QEvent::Enter) {
       View::Instance().GetContinueButton()->setText(
-          "Level: Gachi-club\nDay: 1");
-      // TODO(Kostianoy-Andrey)
+          "Level: Gachi-club\nDay: " +
+          QString::number(Model::Instance().GetSettingsDay()));
     } else if (event->type() == QEvent::Leave) {
       View::Instance().GetContinueButton()->setText("Continue");
     }
@@ -82,6 +82,11 @@ void Controller::ConnectGameSignals() {
   connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
+  connect(
+      View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
+      &Model::Instance(), [] () {
+        Model::Instance().DayFailed();
+      });
 }
 
 void Controller::ConnectMainMenuSignals() {
@@ -110,7 +115,7 @@ void Controller::ConnectChooseGameSignals() {
   connect(View::Instance().GetContinueButton(),
           &QPushButton::released,
           this,
-          &Controller::StartNewGame);
+          &Controller::ContinueGame);
   connect(View::Instance().GetNewGameButton(),
           &QPushButton::released,
           this,
@@ -124,10 +129,14 @@ void Controller::ConnectChooseGameSignals() {
 }
 
 void Controller::StartNewGame() {
+  Model::Instance().SetSettingsDay(1);
+  ContinueGame();
+}
+
+void Controller::ContinueGame() {
   Model::Instance().StartNewDay();
   View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
-  View::Instance().SetDay(1);
-  // TODO(Kostianoy-Andrey)
+  View::Instance().SetDay(Model::Instance().GetSettingsDay());
   View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
   View::Instance().ShowGame();
 }

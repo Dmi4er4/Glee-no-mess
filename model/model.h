@@ -4,13 +4,16 @@
 #include <QObject>
 #include <QSettings>
 #include <QShortcut>
+#include <QTimer>
 
+#include <algorithm>
 #include <deque>
 #include <memory>
 #include <vector>
 
 #include "all_items.h"
 #include "guest.h"
+#include "level.h"
 #include "settings.h"
 
 class View;
@@ -20,7 +23,7 @@ class Model : public QObject {
  public:
   static Model& Instance();
 
-  static constexpr int kQueueLength = 3;
+  static constexpr size_t kQueueLength = 3;
 
   void Permit();
   void Reject();
@@ -69,6 +72,15 @@ class Model : public QObject {
 
   size_t GetGuestsLeft() const { return guest_left_; }
   QString GetTimeLeft() const;
+  QTimer* GetDayTimer() const { return day_timer_; }
+
+  void ConnectSignals();
+
+  int GetSettingsDay() const;
+  void SetSettingsDay(int new_day);
+
+  void DayPassed();
+  void DayFailed();
 
  private:
   Model();
@@ -87,10 +99,14 @@ class Model : public QObject {
   size_t guest_limit_;
   size_t time_limit_;
 
+  Level level_{kGachiClub};
+  // TODO(Kostianoy-Andrey)
+
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;
   std::vector<std::unique_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
   QSettings* settings_;
+  QTimer* day_timer_;
 };
