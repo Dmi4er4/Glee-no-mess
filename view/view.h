@@ -15,6 +15,8 @@
 #include <QTimer>
 #include <QTextEdit>
 
+#include <vector>
+
 #include "guest.h"
 #include "typedefs.h"
 
@@ -98,6 +100,7 @@ class View : public QMainWindow {
       to->setPixmap(QPixmap());
     }
     status_->setText("");
+    bid_->setValue(1);
   }
 
   void CloseBlackJackGame() {
@@ -110,7 +113,7 @@ class View : public QMainWindow {
   }
 
   void PutPlayerCard(size_t number, QPixmap card) {
-    player_cards_ [number]->setPixmap(card);
+    player_cards_[number]->setPixmap(card);
   }
 
   void ShowSatus(const QString& status) {
@@ -138,7 +141,7 @@ class View : public QMainWindow {
     status_->setText("");
     view_->setScene(black_jack_scene_);
   }
-  
+
  private:
   View();
 
@@ -181,7 +184,7 @@ class View : public QMainWindow {
   QPushButton* back_to_menu_{};
   QWidget* shortcut_request_overlay_{};
 
-  // BlackJack
+  // Casino
   QGraphicsScene* casino_scene_{};
   QPushButton* black_jack_{};
   QPushButton* fruit_machine_{};

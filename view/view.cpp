@@ -189,16 +189,16 @@ void View::InitBlackJack() {
   croupier_->setPixmap(croupier);
 
 
-  // TODO !!!!!!
   croupier_proxy->setGeometry(QRectF{
-      width() * 0.5 - croupier.width() / 2,
+      width() * 0.5 - croupier.width() * 0.5,
       0,
       width() * 0.2,
       height() * 0.3
   });
 
-  croupier_cards_.resize(11);
-  for (int i = 0; i < 11; ++i) {
+  constexpr int kCardsCount = 11;
+  croupier_cards_.resize(kCardsCount);
+  for (int i = 0; i < kCardsCount; ++i) {
     auto proxy_card = black_jack_scene_->addWidget(
         croupier_cards_[i] = new QLabel);
 
@@ -210,8 +210,8 @@ void View::InitBlackJack() {
     });
   }
 
-  player_cards_.resize(11);
-  for (int i = 0; i < 11; ++i) {
+  player_cards_.resize(kCardsCount);
+  for (int i = 0; i < kCardsCount; ++i) {
     auto proxy_card = black_jack_scene_->addWidget(
         player_cards_[i] = new QLabel);
 

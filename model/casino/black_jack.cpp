@@ -65,7 +65,8 @@ void BlackJack::ShowNextCroupierCard() {
 QString BlackJack::GetFileNameOfCard(const cards::Cards& card) {
   QString file_name = ":casino/";
   file_name += kValueNames[static_cast<size_t>(card.value)] + "_";
-  file_name += "hearts.png"; // TODO
+  file_name += "hearts.png";  // TODO(Adamenko-Vladsislav)
+  // Add all types of cards
   // file_name += kSuitsNames[static_cast<size_t>(card.suit)] + ".png";
   return file_name;
 }
@@ -109,8 +110,11 @@ void BlackJack::CheckStatus() {
 
 void BlackJack::HitPlayer() {
   ShowNextPlayerCard();
-  if (GetScore(croupier_cards_) > 21) {
+  auto score = GetScore(player_cads_);
+  if (score > 21) {
     Loose();
+  } else if (score == 21) {
+    emit View::Instance().GetStandButton()->pressed();
   }
 }
 

@@ -177,7 +177,6 @@ void Model::StartNewGameBlackJack() {
   View::Instance().ShowSatus("");
   UpdateMoney(-bid);
   BlackJack::Instance().StartNewGame(bid);
-  // TODO BlackJack show cards
 }
 
 void Model::UpdateMoney(int delta) {
