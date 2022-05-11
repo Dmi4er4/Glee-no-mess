@@ -108,7 +108,7 @@ void View::InitGameScene() {
   time_left_->setObjectName(in_game_objects);
 
   guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
-  time_left_->setFixedSize(width() * 0.11, height() * 0.1);
+  time_left_->setFixedSize(width() * 0.115, height() * 0.1);
 
   permit_button_->setObjectName(in_game_objects);
   reject_button_->setObjectName(in_game_objects);
