@@ -52,7 +52,7 @@ void Model::ShiftQueue() {
 
 void Model::IncreaseErrorsCount() {
   errors_count_++;
-  if (errors_count_ == errors_limit_) {
+  if (errors_count_ >= errors_limit_) {
     DayFailed();
   } else {
     View::Instance().SetErrorsCount(errors_count_);
@@ -200,6 +200,21 @@ void Model::SetSettingsDay(int new_day) {
   // TODO(Kostianoy-Andrey): format in settings "hardness_day"
   QString key = settings_->value(kDifficulty).toString() + "_day";
   settings_->setValue(key, new_day);
+}
+
+QString Model::GetSettingsLevel() const {
+  // TODO(Kostianoy-Andrey): format in settings "hardness_level"
+  QString key = settings_->value(kDifficulty).toString() + "_level";
+  if (!settings_->contains(key)) {
+    settings_->setValue(key, "Gachi-club");
+  }
+  return settings_->value(key).toString();
+}
+
+void Model::SetSettingsLevel(const QString& new_level) {
+  // TODO(Kostianoy-Andrey): format in settings "hardness_level"
+  QString key = settings_->value(kDifficulty).toString() + "_level";
+  settings_->setValue(key, new_level);
 }
 
 void Model::ChangeDifficulty() {

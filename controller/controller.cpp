@@ -32,8 +32,8 @@ bool Controller::eventFilter(QObject *obj, QEvent *event) {
   if (obj == static_cast<QObject*>(View::Instance().GetContinueButton())) {
     if (event->type() == QEvent::Enter) {
       View::Instance().GetContinueButton()->setText(
-          "Level: Gachi-club\nDay: " +
-          QString::number(Model::Instance().GetSettingsDay()));
+          "Level: " + Model::Instance().GetSettingsLevel() +
+          "\nDay: " + QString::number(Model::Instance().GetSettingsDay()));
     } else if (event->type() == QEvent::Leave) {
       View::Instance().GetContinueButton()->setText("Continue");
     }

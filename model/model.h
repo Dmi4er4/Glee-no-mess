@@ -79,6 +79,9 @@ class Model : public QObject {
   int GetSettingsDay() const;
   void SetSettingsDay(int new_day);
 
+  QString GetSettingsLevel() const;
+  void SetSettingsLevel(const QString& new_level);
+
   void DayPassed();
   void DayFailed();
 
@@ -100,7 +103,7 @@ class Model : public QObject {
   size_t time_limit_;
 
   // TODO(Kostianoy-Andrey)
-  Level level_{kLevels, "club_level"};
+  Level level_{kLevels, "Gachi-club"};
 
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;

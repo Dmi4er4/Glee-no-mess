@@ -82,7 +82,7 @@ void View::InitView() {
 }
 
 void View::InitGameScene() {
-  static QString in_game_objects = "in-game";
+  static const QString kInGameObjects = "in-game";
   game_scene_ = new QGraphicsScene;
 
   LoadBackgroundFrames(":/levels/club_level/background");
@@ -103,16 +103,16 @@ void View::InitGameScene() {
   layout->addWidget(day_ = new QLabel("Day: "));
   layout->addWidget(time_left_ = new QLabel("Time: "));
 
-  guests_left_->setObjectName(in_game_objects);
-  day_->setObjectName(in_game_objects);
-  time_left_->setObjectName(in_game_objects);
+  guests_left_->setObjectName(kInGameObjects);
+  day_->setObjectName(kInGameObjects);
+  time_left_->setObjectName(kInGameObjects);
 
   guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
   time_left_->setFixedSize(width() * 0.115, height() * 0.1);
 
-  permit_button_->setObjectName(in_game_objects);
-  reject_button_->setObjectName(in_game_objects);
-  to_menu_from_game_->setObjectName(in_game_objects);
+  permit_button_->setObjectName(kInGameObjects);
+  reject_button_->setObjectName(kInGameObjects);
+  to_menu_from_game_->setObjectName(kInGameObjects);
 
   proxy->setGeometry(QRectF{
     0,
