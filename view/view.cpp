@@ -84,7 +84,7 @@ void View::InitView() {
 void View::InitGameScene() {
   game_scene_ = new QGraphicsScene;
 
-  LoadBackgroundFrames(":/club_level/background");
+  LoadBackgroundFrames(":/levels/club_level/background");
   game_background_ = game_scene_->addPixmap(background_frames_.first());
 
   auto proxy = game_scene_->addWidget(new QWidget);

@@ -1,23 +1,23 @@
 <RCC>
     <qresource>
         <file>items.json</file>
-        <file>club_level/club_level.json</file>
-        <file>club_level/background/background_frame_00.png</file>
-        <file>club_level/background/background_frame_01.png</file>
-        <file>club_level/background/background_frame_02.png</file>
-        <file>club_level/background/background_frame_03.png</file>
-        <file>club_level/background/background_frame_04.png</file>
-        <file>club_level/background/background_frame_05.png</file>
-        <file>club_level/background/background_frame_06.png</file>
-        <file>club_level/background/background_frame_07.png</file>
-        <file>club_level/background/background_frame_08.png</file>
-        <file>club_level/background/background_frame_09.png</file>
-        <file>club_level/background/background_frame_10.png</file>
-        <file>club_level/background/background_frame_11.png</file>
-        <file>club_level/background/background_frame_12.png</file>
-        <file>club_level/background/background_frame_13.png</file>
-        <file>club_level/background/background_frame_14.png</file>
-        <file>club_level/background/background_frame_15.png</file>
+        <file>levels/levels.json</file>
+        <file>levels/club_level/background/background_frame_00.png</file>
+        <file>levels/club_level/background/background_frame_01.png</file>
+        <file>levels/club_level/background/background_frame_02.png</file>
+        <file>levels/club_level/background/background_frame_03.png</file>
+        <file>levels/club_level/background/background_frame_04.png</file>
+        <file>levels/club_level/background/background_frame_05.png</file>
+        <file>levels/club_level/background/background_frame_06.png</file>
+        <file>levels/club_level/background/background_frame_07.png</file>
+        <file>levels/club_level/background/background_frame_08.png</file>
+        <file>levels/club_level/background/background_frame_09.png</file>
+        <file>levels/club_level/background/background_frame_10.png</file>
+        <file>levels/club_level/background/background_frame_11.png</file>
+        <file>levels/club_level/background/background_frame_12.png</file>
+        <file>levels/club_level/background/background_frame_13.png</file>
+        <file>levels/club_level/background/background_frame_14.png</file>
+        <file>levels/club_level/background/background_frame_15.png</file>
     </qresource>
     <qresource>
         <file>style.qss</file>

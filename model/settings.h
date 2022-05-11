@@ -21,8 +21,9 @@ const QString kErrorsCount = "errors_count";
 const QString kGuestCount = "guests_count";
 // Time
 const QString kTime = "time";
+const size_t kSeconds = 60;
 // Shortcut
 const QString kExitShortcut = "exit_shortcut";
 const QString kExitShortcutText = "Exit shortcut: ";
 // Levels
-const QString kGachiClub = ":/club_level/club_level.json";
+const QString kGachiClub = ":/levels/levels.json";

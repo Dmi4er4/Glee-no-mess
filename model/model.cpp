@@ -52,7 +52,7 @@ void Model::ShiftQueue() {
 
 void Model::IncreaseErrorsCount() {
   errors_count_++;
-  if (errors_count_ > errors_limit_) {
+  if (errors_count_ == errors_limit_) {
     DayFailed();
   } else {
     View::Instance().SetErrorsCount(errors_count_);
@@ -89,7 +89,6 @@ void Model::StartNewDay() {
   current_guest_->SetActive();
 
   day_timer_->start();
-  // TODO(Adamenko-Vladislav)
 }
 
 void Model::AddTime(size_t time) {
@@ -121,8 +120,8 @@ void Model::AddIgnoreFirstMistakeItem() {
 }
 
 QString Model::GetTimeLeft() const {
-  size_t minutes = time_left_ / 60;
-  size_t seconds = time_left_ % 60;
+  size_t minutes = time_left_ / kSeconds;
+  size_t seconds = time_left_ % kSeconds;
   QString result = "";
   result += static_cast<char>('0' + minutes);
   result += ":";
@@ -131,7 +130,7 @@ QString Model::GetTimeLeft() const {
     result += static_cast<char>('0' + seconds / 10);
     result += static_cast<char>('0' + seconds % 10);
   } else {
-    result += "0";
+    result += '0';
     result += static_cast<char>('0' + seconds);
   }
   return result;
@@ -170,7 +169,7 @@ void Model::UpdateDifficultySettings() {
 }
 
 void Model::DayPassed() {
-  // add here message for view
+  // TODO(Kostianoy-Andrey): add here message for view
   day_timer_->stop();
 
   int current_day = GetSettingsDay();
@@ -183,13 +182,13 @@ void Model::DayPassed() {
 }
 
 void Model::DayFailed() {
-  // add here message for view
+  // TODO(Kostianoy-Andrey): add here message for view
   day_timer_->stop();
   View::Instance().ShowMainMenu();
 }
 
 int Model::GetSettingsDay() const {
-  // format in settings "hardness_day"
+  // TODO(Kostianoy-Andrey): format in settings "hardness_day"
   QString key = settings_->value(kDifficulty).toString() + "_day";
   if (!settings_->contains(key)) {
     settings_->setValue(key, 1);
@@ -198,7 +197,7 @@ int Model::GetSettingsDay() const {
 }
 
 void Model::SetSettingsDay(int new_day) {
-  // format in settings "hardness_day"
+  // TODO(Kostianoy-Andrey): format in settings "hardness_day"
   QString key = settings_->value(kDifficulty).toString() + "_day";
   settings_->setValue(key, new_day);
 }

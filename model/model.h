@@ -99,8 +99,8 @@ class Model : public QObject {
   size_t guest_limit_;
   size_t time_limit_;
 
-  Level level_{kGachiClub};
   // TODO(Kostianoy-Andrey)
+  Level level_{kGachiClub};
 
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;
