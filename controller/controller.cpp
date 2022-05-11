@@ -138,6 +138,7 @@ void Controller::ContinueGame() {
   View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
   View::Instance().SetDay(Model::Instance().GetSettingsDay());
   View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
+  View::Instance().SetErrorsCount(0);
   View::Instance().ShowGame();
 }
 
