@@ -26,4 +26,4 @@ const size_t kSeconds = 60;
 const QString kExitShortcut = "exit_shortcut";
 const QString kExitShortcutText = "Exit shortcut: ";
 // Levels
-const QString kGachiClub = ":/levels/levels.json";
+const QString kLevels = ":/levels/levels.json";

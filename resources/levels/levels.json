@@ -1,6 +1,8 @@
 {
-  "days": 10,
-  "money": 10,
-  "guests_count": 10,
-  "characteristics_count": 4
+  "club_level" : {
+    "days": 10,
+    "money": 10,
+    "guests_count": 10,
+    "characteristics_count": 4
+  }
 }

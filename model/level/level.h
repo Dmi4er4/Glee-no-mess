@@ -18,7 +18,8 @@
 
 class Level {
  public:
-  explicit Level(const QString& file_name);
+  explicit Level(const QString& file_name,
+                 const QString& level_name);
 
   days_t GetDays() const {
     return days_;
