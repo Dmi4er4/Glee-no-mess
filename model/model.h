@@ -75,6 +75,9 @@ class Model : public QObject {
   // Money
   void UpdateMoney(int delta);
 
+  // Fruit Machine
+  void StartFruitMachineGame();
+
  private:
   Model();
 

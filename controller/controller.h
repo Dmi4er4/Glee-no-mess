@@ -27,6 +27,7 @@ class Controller : public QObject {
   void ConnectMainMenuSignals();
   void ConnectCasinoSignals();
   void ConnectBlackJackSignals();
+  void ConnectFruitMachineSignals();
   void Quit();
 
   QString PressedKey(Qt::KeyboardModifier key, const QString& text) {

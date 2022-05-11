@@ -47,5 +47,15 @@
         <file>casino/Jack_hearts.png</file>
         <file>casino/King_hearts.png</file>
         <file>casino/Queen_hearts.png</file>
+        <file>casino/fruit_machine.jpg</file>
+        <file>casino/machine_0.png</file>
+        <file>casino/machine_1.png</file>
+        <file>casino/machine_2.png</file>
+        <file>casino/machine_3.png</file>
+        <file>casino/machine_4.png</file>
+        <file>casino/machine_5.png</file>
+        <file>casino/machine_6.png</file>
+        <file>casino/machine_7.png</file>
+        <file>casino/machine_8.png</file>
     </qresource>
 </RCC>

@@ -18,6 +18,7 @@ void Controller::ConnectSignals() {
   ConnectShortcutSignals();
   ConnectCasinoSignals();
   ConnectBlackJackSignals();
+  ConnectFruitMachineSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -110,6 +111,10 @@ void Controller::ConnectBlackJackSignals() {
                        []{
     BlackJack::Instance().HitCroupier();
   });
+  QPushButton::connect(View::Instance().GetFruitMachineButton(),
+                       &QPushButton::pressed,
+                       &View::Instance(),
+                       &View::ShowFruitMachine);
 }
 
 void Controller::ConnectShortcutSignals() {
@@ -117,6 +122,17 @@ void Controller::ConnectShortcutSignals() {
                      &QShortcut::activated,
                      this,
                      &Controller::Quit);
+}
+
+void Controller::ConnectFruitMachineSignals() {
+  QPushButton::connect(View::Instance().GetExitFruitMachine(),
+                       &QPushButton::pressed,
+                       &View::Instance(),
+                       &View::ShowCasino);
+  QPushButton::connect(View::Instance().GetMakeBidFruitMachine(),
+                       &QPushButton::pressed,
+                       &Model::Instance(),
+                       &Model::StartFruitMachineGame);
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {

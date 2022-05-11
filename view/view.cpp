@@ -11,9 +11,10 @@ View::View() {
   InitSettings();
   InitCasino();
   InitBlackJack();
+  InitFruitMachine();
   ShowMainMenu();
-  // Debug
-  ShowCasino();
+  // (Adamenko-Vladislav) Debug Casino
+  // ShowCasino();
   show();
 }
 
@@ -246,6 +247,65 @@ void View::InitBlackJack() {
   form->addWidget(stand_ = new QPushButton("Stand!"), 1, 3);
   stand_->hide();
   form->addWidget(back_to_casino_ = new QPushButton("Exit"), 1, 4);
+}
+
+void View::InitFruitMachine() {
+  fruit_machine_scene_ = new QGraphicsScene;
+  fruit_machine_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":casino/fruit_machine.jpg").
+      scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  auto proxy_slot0 = fruit_machine_scene_->addWidget(slot0_ = new QLabel);
+  auto proxy_slot1 = fruit_machine_scene_->addWidget(slot1_ = new QLabel);
+  auto proxy_slot2 = fruit_machine_scene_->addWidget(slot2_ = new QLabel);
+
+  constexpr QSize size = {200, 150};
+
+  proxy_slot0->setGeometry({
+    width() * 0.1,
+    height() * 0.1,
+    size.width(),
+    size.height()
+  });
+
+  proxy_slot1->setGeometry({
+    width() * 0.1 + size.width() + kMargin,
+    height() * 0.1,
+    size.width(),
+    size.height()
+  });
+
+  proxy_slot2->setGeometry({
+     width() * 0.1 + 2 * (size.width() + kMargin),
+     height() * 0.1,
+     size.width(),
+     size.height()
+  });
+
+  slot0_->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png"));
+  slot1_->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png"));
+  slot2_->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png"));
+
+  auto proxy = fruit_machine_scene_->addWidget(new QWidget);
+  proxy->setGeometry(QRectF{
+    width() * 0.1,
+    height() * 0.3,
+    width() * 0.7,
+    height() * 0.4
+  });
+
+  auto form = new QGridLayout;
+  proxy->widget()->setLayout(form);
+
+  form->addWidget(bid_fruit_machine_ = new QSpinBox, 1, 0);
+  bid_fruit_machine_->setMaximumWidth(width() * 0.125);
+  bid_fruit_machine_->setMinimum(1);
+  bid_fruit_machine_->setMaximum(INT32_MAX);
+
+  form->addWidget(make_bid_fruit_machine_ =
+      new QPushButton("Make bid!"), 1, 1, 1, -1);
+  form->addWidget(money_ = new QLabel, 2, 0, 1, -1);
+  form->addWidget(exit_fruit_machine_ = new QPushButton("Exit"), 3, 0, 1, -1);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
