@@ -122,7 +122,7 @@ void Model::AddIgnoreFirstMistakeItem() {
 QString Model::GetTimeLeft() const {
   size_t minutes = time_left_ / kSeconds;
   size_t seconds = time_left_ % kSeconds;
-  QString result = "";
+  QString result;
   result += static_cast<char>('0' + minutes);
   result += ":";
 

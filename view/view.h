@@ -40,12 +40,15 @@ class View : public QMainWindow {
   void SetErrorsCount(size_t value) {
     errors_->setText("Errors: " + QString::number(value));
   }
+
   void SetGuestsLeft(size_t value) {
     guests_left_->setText("Visitors: " + QString::number(value));
   }
+
   void SetDay(size_t value) {
     day_->setText("Day: " + QString::number(value));
   }
+
   void SetTimeLeft(QString value) {
     time_left_->setText("Time: " + value);
   }

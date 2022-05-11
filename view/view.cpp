@@ -82,6 +82,7 @@ void View::InitView() {
 }
 
 void View::InitGameScene() {
+  static QString in_game_objects = "in-game";
   game_scene_ = new QGraphicsScene;
 
   LoadBackgroundFrames(":/levels/club_level/background");
@@ -102,16 +103,16 @@ void View::InitGameScene() {
   layout->addWidget(day_ = new QLabel("Day: "));
   layout->addWidget(time_left_ = new QLabel("Time: "));
 
-  guests_left_->setObjectName("in-game");
-  day_->setObjectName("in-game");
-  time_left_->setObjectName("in-game");
+  guests_left_->setObjectName(in_game_objects);
+  day_->setObjectName(in_game_objects);
+  time_left_->setObjectName(in_game_objects);
 
   guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
   time_left_->setFixedSize(width() * 0.11, height() * 0.1);
 
-  permit_button_->setObjectName("in-game");
-  reject_button_->setObjectName("in-game");
-  to_menu_from_game_->setObjectName("in-game");
+  permit_button_->setObjectName(in_game_objects);
+  reject_button_->setObjectName(in_game_objects);
+  to_menu_from_game_->setObjectName(in_game_objects);
 
   proxy->setGeometry(QRectF{
     0,
@@ -139,10 +140,10 @@ void View::InitMainMenu() {
   start_game_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   proxy->setGeometry(QRectF{
-      width() * .3,
-      height() * .3,
-      width() * .4,
-      height() * .4
+      width() * 0.3,
+      height() * 0.3,
+      width() * 0.4,
+      height() * 0.4
   });
 }
 
@@ -162,10 +163,10 @@ void View::InitChooseGame() {
   continue_button_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   proxy->setGeometry(QRectF{
-      width() * .3,
-      height() * .3,
-      width() * .4,
-      height() * .4
+      width() * 0.3,
+      height() * 0.3,
+      width() * 0.4,
+      height() * 0.4
   });
 }
 
@@ -177,10 +178,10 @@ void View::InitSettings() {
 
   auto proxy = settings_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
-      width() * .25,
-      height() * .2,
-      width() * .5,
-      height() * .6
+      width() * 0.25,
+      height() * 0.2,
+      width() * 0.5,
+      height() * 0.6
   });
   auto form = new QFormLayout;
   proxy->widget()->setLayout(form);

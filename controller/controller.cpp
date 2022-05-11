@@ -37,7 +37,6 @@ bool Controller::eventFilter(QObject *obj, QEvent *event) {
     } else if (event->type() == QEvent::Leave) {
       View::Instance().GetContinueButton()->setText("Continue");
     }
-    return QObject::eventFilter(obj, event);
   }
   return QObject::eventFilter(obj, event);
 }
@@ -84,9 +83,7 @@ void Controller::ConnectGameSignals() {
       &Model::Instance(), &Model::Reject);
   connect(
       View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
-      &Model::Instance(), [] () {
-        Model::Instance().DayFailed();
-      });
+      &Model::Instance(), &Model::DayFailed);
 }
 
 void Controller::ConnectMainMenuSignals() {
