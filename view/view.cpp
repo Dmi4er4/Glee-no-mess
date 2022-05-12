@@ -54,22 +54,6 @@ void View::HideShortcutRequestOverlay() {
   view_->setEnabled(true);
 }
 
-void View::ShowGame() {
-  view_->setScene(game_scene_);
-}
-
-void View::ShowMainMenu() {
-  view_->setScene(menu_scene_);
-}
-
-void View::ShowChooseGame() {
-  view_->setScene(choose_game_scene_);
-}
-
-void View::ShowSettings() {
-  view_->setScene(settings_scene_);
-}
-
 void View::InitView() {
   QFontDatabase::addApplicationFont(":Koulen-Regular.ttf");
   auto screen_size = QGuiApplication::primaryScreen()->size();

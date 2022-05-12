@@ -153,7 +153,7 @@ class View : public QMainWindow {
   void SetSlot2(const QPixmap& slot) { slot2_->setPixmap(slot); }
 
   // Show Scene
-=  void ShowGame() { view_->setScene(game_scene_); }
+  void ShowGame() { view_->setScene(game_scene_); }
   void ShowMainMenu() { view_->setScene(menu_scene_); }
   void ShowSettings() { view_->setScene(settings_scene_); }
   void ShowCasino() { view_->setScene(casino_scene_); }
@@ -170,11 +170,7 @@ class View : public QMainWindow {
     view_->setScene(black_jack_scene_);
   }
 
-  void ShowGame();
-  void ShowMainMenu();
-  void ShowChooseGame();
-  void ShowSettings();
-
+  void ShowChooseGame() { view_->setScene(choose_game_scene_); }
   void ShowFruitMachine() { view_->setScene(fruit_machine_scene_); }
 
  private:

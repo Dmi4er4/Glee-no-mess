@@ -296,6 +296,7 @@ void Model::UpdateMoney(int delta) {
   money += delta;
   settings_->setValue(kMoney, QString::number(money));
   View::Instance().SetPlayerMoney(money);
+  View::Instance().SetPlayerMaxBid(money);
 }
 
 void Model::StartFruitMachineGame() {

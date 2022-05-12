@@ -117,9 +117,6 @@ void Controller::ConnectBlackJackSignals() {
                        &Model::StartNewGameBlackJack);
   QPushButton::connect(View::Instance().GetHitMeButton(),
                        &QPushButton::pressed,
-                       &View::ShowChooseGame);
-  connect(View::Instance().GetQuitButton(),
-                       &QPushButton::released,
                        this,
                        []{
     BlackJack::Instance().HitPlayer();
@@ -153,6 +150,7 @@ void Controller::ConnectFruitMachineSignals() {
                        &QPushButton::pressed,
                        &Model::Instance(),
                        &Model::StartFruitMachineGame);
+}
 
 void Controller::ConnectChooseGameSignals() {
   connect(View::Instance().GetContinueButton(),
