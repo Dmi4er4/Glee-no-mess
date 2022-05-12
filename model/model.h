@@ -76,11 +76,11 @@ class Model : public QObject {
 
   void ConnectSignals();
 
-  int GetSettingsDay() const;
-  void SetSettingsDay(int new_day);
+  int LoadSettingsDay() const;
+  void UpdateSettingsDay(int new_day);
 
-  QString GetSettingsLevel() const;
-  void SetSettingsLevel(const QString& new_level);
+  QString LoadSettingsLevel() const;
+  void UpdateSettingsLevel(const QString& new_level);
 
   void DayPassed();
   void DayFailed();
@@ -103,7 +103,7 @@ class Model : public QObject {
   size_t time_limit_;
 
   // TODO(Kostianoy-Andrey)
-  Level level_{kLevels, "Gachi-club"};
+  Level level_{kLevels, "club_level"};
 
   std::deque<std::unique_ptr<Guest>> queue_;
   std::unique_ptr<Guest> current_guest_;

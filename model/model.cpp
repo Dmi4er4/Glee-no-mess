@@ -172,11 +172,11 @@ void Model::DayPassed() {
   // TODO(Kostianoy-Andrey): add here message for view
   day_timer_->stop();
 
-  int current_day = GetSettingsDay();
+  int current_day = LoadSettingsDay();
   if (current_day < level_.GetDays()) {
     current_day++;
   }
-  SetSettingsDay(current_day);
+  UpdateSettingsDay(current_day);
 
   View::Instance().ShowMainMenu();
 }
@@ -187,7 +187,7 @@ void Model::DayFailed() {
   View::Instance().ShowMainMenu();
 }
 
-int Model::GetSettingsDay() const {
+int Model::LoadSettingsDay() const {
   // TODO(Kostianoy-Andrey): format in settings "hardness_day"
   QString key = settings_->value(kDifficulty).toString() + "_day";
   if (!settings_->contains(key)) {
@@ -196,22 +196,23 @@ int Model::GetSettingsDay() const {
   return settings_->value(key).toInt();
 }
 
-void Model::SetSettingsDay(int new_day) {
+void Model::UpdateSettingsDay(int new_day) {
   // TODO(Kostianoy-Andrey): format in settings "hardness_day"
   QString key = settings_->value(kDifficulty).toString() + "_day";
   settings_->setValue(key, new_day);
 }
 
-QString Model::GetSettingsLevel() const {
+QString Model::LoadSettingsLevel() const {
   // TODO(Kostianoy-Andrey): format in settings "hardness_level"
   QString key = settings_->value(kDifficulty).toString() + "_level";
   if (!settings_->contains(key)) {
-    settings_->setValue(key, "Gachi-club");
+    QJsonDocument source = FileLoader::GetFile<QJsonDocument>(kLevels);
+    settings_->setValue(key, source["club_level"]["name"]);
   }
   return settings_->value(key).toString();
 }
 
-void Model::SetSettingsLevel(const QString& new_level) {
+void Model::UpdateSettingsLevel(const QString& new_level) {
   // TODO(Kostianoy-Andrey): format in settings "hardness_level"
   QString key = settings_->value(kDifficulty).toString() + "_level";
   settings_->setValue(key, new_level);

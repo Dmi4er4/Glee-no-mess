@@ -1,5 +1,6 @@
 {
-  "Gachi-club" : {
+  "club_level" : {
+    "name" : "Gachi-club",
     "days": 10,
     "money": 10,
     "guests_count": 10,
