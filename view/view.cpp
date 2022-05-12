@@ -13,8 +13,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   ShowMainMenu();
-  // (Adamenko-Vladislav) Debug Casino
-  // ShowCasino();
+  ShowCasino();
   show();
 }
 

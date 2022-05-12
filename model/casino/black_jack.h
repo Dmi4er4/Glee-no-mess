@@ -17,7 +17,7 @@ class BlackJack {
   int32_t GetScore(const std::vector<cards::Cards>& card_set);
   void ShowNextPlayerCard();
   void ShowNextCroupierCard();
-  QString GetFileNameOfCard(const cards::Cards& card);
+  QString GetCardFileName(const cards::Cards& card);
 
   void CheckStatus();
 

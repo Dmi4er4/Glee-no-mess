@@ -15,7 +15,7 @@ int32_t BlackJack::GetScore(const std::vector<cards::Cards>& card_set) {
   for (auto item : card_set) {
     score += item.weight;
   }
-  if (score > 21) {
+  if (score > kMaxScore) {
     score = 0;
     for (auto item : card_set) {
       if (item.value == cards::Value::kAce) {
@@ -48,7 +48,7 @@ void BlackJack::StartNewGame(size_t bid) {
 
 void BlackJack::ShowNextPlayerCard() {
   player_cads_.push_back(pack_of_cards_.GetRandomCard());
-  QString file_name = GetFileNameOfCard(player_cads_.back());
+  QString file_name = GetCardFileName(player_cads_.back());
   View::Instance().PutPlayerCard(number_player_card_,
                                    FileLoader::GetFile<QPixmap>(file_name));
   number_player_card_++;
@@ -56,19 +56,24 @@ void BlackJack::ShowNextPlayerCard() {
 
 void BlackJack::ShowNextCroupierCard() {
   croupier_cards_.push_back(pack_of_cards_.GetRandomCard());
-  QString file_name = GetFileNameOfCard(croupier_cards_.back());
+  QString file_name = GetCardFileName(croupier_cards_.back());
   View::Instance().PutCroupierCard(number_croupier_card_,
                                    FileLoader::GetFile<QPixmap>(file_name));
   number_croupier_card_++;
 }
 
-QString BlackJack::GetFileNameOfCard(const cards::Cards& card) {
+QString BlackJack::GetCardFileName(const cards::Cards& card) {
   QString file_name = ":casino/";
   file_name += kValueNames[static_cast<size_t>(card.value)] + "_";
-  // TODO(Adamenko-Vladsislav) Add all types of cards
   file_name += "hearts.png";
-  // file_name += kSuitsNames[static_cast<size_t>(card.suit)] + ".png";
   return file_name;
+
+  // TODO(Adamenko-Vladsislav) Add all types of cards
+  // QString ans =
+  //     FileLoader::GetFile<QJsonDocument>(":casino/cards.json")
+  //     [kSuitsNames[static_cast<size_t>(card.suit)]]
+  //     [kValueNames[static_cast<size_t>(card.value)]].toString();
+  // return ans;
 }
 
 void BlackJack::Draw() {
@@ -88,22 +93,22 @@ void BlackJack::Win() {
 void BlackJack::CheckStatus() {
   auto player_score = GetScore(player_cads_);
   auto croupier_score = GetScore(croupier_cards_);
-  if (player_score == 21) {
-    if (croupier_score == 21) {
+  if (player_score == kMaxScore) {
+    if (croupier_score == kMaxScore) {
       Draw();
       return;
     }
     Win();
     return;
-  } else if (croupier_score == 21) {
+  } else if (croupier_score == kMaxScore) {
     Loose();
     return;
   }
-  if (player_score > 21) {
+  if (player_score > kMaxScore) {
     Loose();
     return;
   }
-  if (croupier_score > 21) {
+  if (croupier_score > kMaxScore) {
     Win();
   }
 }
@@ -111,9 +116,9 @@ void BlackJack::CheckStatus() {
 void BlackJack::HitPlayer() {
   ShowNextPlayerCard();
   auto score = GetScore(player_cads_);
-  if (score > 21) {
+  if (score > kMaxScore) {
     Loose();
-  } else if (score == 21) {
+  } else if (score == kMaxScore) {
     emit View::Instance().GetStandButton()->pressed();
   }
 }
@@ -125,7 +130,7 @@ void BlackJack::HitCroupier() {
   CheckStatus();
   auto player_score = GetScore(player_cads_);
   auto croupier_score = GetScore(croupier_cards_);
-  if (croupier_score <= 21) {
+  if (croupier_score <= kMaxScore) {
     if (croupier_score == player_score) {
       Draw();
     } else if (croupier_score > player_score) {

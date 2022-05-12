@@ -124,7 +124,6 @@ class View : public QMainWindow {
   }
 
   // Fruit Machine
-
   auto* GetExitFruitMachine() { return exit_fruit_machine_; }
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }

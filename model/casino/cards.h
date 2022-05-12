@@ -18,6 +18,8 @@ const QString kQueen = "Queen";
 const QString kKing = "King";
 const QString kAce = "Ace";
 
+constexpr size_t kMaxScore = 21;
+
 const std::vector<QString> kSuitsNames{"clubs", "dimonds", "spades", "hearts"};
 const std::vector<QString> kValueNames{"2", "3", "4", "5", "6", "7", "8", "9",
                                        "10", "Jack", "Queen", "King", "Ace"};

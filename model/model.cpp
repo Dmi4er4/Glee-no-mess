@@ -195,12 +195,15 @@ void Model::StartFruitMachineGame() {
   auto slot0 = Random::RandomInt(0, 8);
   auto slot1 = Random::RandomInt(0, 8);
   auto slot2 = Random::RandomInt(0, 8);
+
+  static const QString path = ":casino/machine_";
+
   View::Instance().SetSlot0(FileLoader::GetFile<QPixmap>(
-      ":casino/machine_" + QString::number(slot0) + ".png"));
+      path + QString::number(slot0) + ".png"));
   View::Instance().SetSlot1(FileLoader::GetFile<QPixmap>(
-      ":casino/machine_" + QString::number(slot1) + ".png"));
+      path + QString::number(slot1) + ".png"));
   View::Instance().SetSlot2(FileLoader::GetFile<QPixmap>(
-      ":casino/machine_" + QString::number(slot2) + ".png"));
+      path + QString::number(slot2) + ".png"));
   if (slot0 == slot1 && slot0 == slot2) {
     UpdateMoney(5 * bid);
   }
