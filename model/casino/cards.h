@@ -4,20 +4,6 @@
 
 #include <vector>
 
-const QString kTwo = "2";
-const QString kThree = "3";
-const QString kFour = "4";
-const QString kFive = "5";
-const QString kSix = "6";
-const QString kSeven = "7";
-const QString kEight = "8";
-const QString kNine = "9";
-const QString kTen = "10";
-const QString kJack = "Jack";
-const QString kQueen = "Queen";
-const QString kKing = "King";
-const QString kAce = "Ace";
-
 constexpr size_t kMaxScore = 21;
 
 const std::vector<QString> kSuitsNames{"clubs", "dimonds", "spades", "hearts"};

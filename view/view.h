@@ -148,9 +148,21 @@ class View : public QMainWindow {
   auto* GetExitFruitMachine() { return exit_fruit_machine_; }
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
-  void SetSlot0(const QPixmap& slot) { slot0_->setPixmap(slot); }
-  void SetSlot1(const QPixmap& slot) { slot1_->setPixmap(slot); }
-  void SetSlot2(const QPixmap& slot) { slot2_->setPixmap(slot); }
+
+  void SetSlot0(const QPixmap& slot) {
+    slot0_->setPixmap(slot.scaled(
+        slot0_->width(), slot0_->height(), Qt::IgnoreAspectRatio));
+  }
+
+  void SetSlot1(const QPixmap& slot) {
+    slot1_->setPixmap(slot.scaled(
+        slot1_->width(), slot1_->height(), Qt::IgnoreAspectRatio));
+  }
+
+  void SetSlot2(const QPixmap& slot) {
+    slot2_->setPixmap(slot.scaled(
+        slot2_->width(), slot2_->height(), Qt::IgnoreAspectRatio));
+  }
 
   // Show Scene
   void ShowGame() { view_->setScene(game_scene_); }

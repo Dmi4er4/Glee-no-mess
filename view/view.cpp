@@ -14,6 +14,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   ShowMainMenu();
+  ShowCasino();
   show();
 }
 
