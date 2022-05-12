@@ -93,7 +93,7 @@ void Controller::ConnectMainMenuSignals() {
   connect(View::Instance().GetOpenSettingsButton(), &QPushButton::released,
           &View::Instance(), &View::ShowSettings);
   connect(View::Instance().GetStartGameButton(), &QPushButton::released,
-         &View::Instance(), &View::ShowGame);
+         &View::Instance(), &View::ShowChooseGame);
   connect(View::Instance().GetQuitButton(), &QPushButton::released,
          this, &Controller::Quit);
 }
