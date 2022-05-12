@@ -1,10 +1,11 @@
 #include "level.h"
 
-Level::Level(const QString& file_name) {
+Level::Level(const QString& file_name,
+             const QString& level_name) {
   QJsonDocument source = FileLoader::GetFile<QJsonDocument>(file_name);
-  days_ = source["days"].toInt();
-  money_ = source["money"].toInt();
-  guests_count_ = source["guests_count"].toInt();
+  days_ = source[level_name]["days"].toInt();
+  money_ = source[level_name]["money"].toInt();
+  guests_count_ = source[level_name]["guests_count"].toInt();
   characteristics_count_ = source["characteristics_count"].toInt();
   GenerateGuests();
 }

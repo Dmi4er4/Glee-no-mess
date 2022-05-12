@@ -18,6 +18,8 @@ class Controller : public QObject {
   void KeyPressInGame(QKeyEvent* event);
   void ConnectShortcutSignals();
 
+  bool eventFilter(QObject *obj, QEvent *event) override;
+
  private:
   Controller();
 
@@ -28,6 +30,9 @@ class Controller : public QObject {
   void ConnectCasinoSignals();
   void ConnectBlackJackSignals();
   void ConnectFruitMachineSignals();
+  void ConnectChooseGameSignals();
+  void StartNewGame();
+  void ContinueGame();
   void Quit();
 
   QString PressedKey(Qt::KeyboardModifier key, const QString& text) {
