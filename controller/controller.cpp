@@ -16,6 +16,7 @@ void Controller::ConnectSignals() {
   ConnectSettingsMenuSignals();
   ConnectMainMenuSignals();
   ConnectShortcutSignals();
+  ConnectChooseGameSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -25,6 +26,19 @@ void Controller::keyPressEvent(QKeyEvent* event) {
   } else if (view.IsSettings()) {
     KeyPressInSettings(event);
   }
+}
+
+bool Controller::eventFilter(QObject *obj, QEvent *event) {
+  if (obj == static_cast<QObject*>(View::Instance().GetContinueButton())) {
+    if (event->type() == QEvent::Enter) {
+      View::Instance().GetContinueButton()->setText(
+          "Level: " + Model::Instance().LoadSettingsLevel() +
+          "\nDay: " + QString::number(Model::Instance().LoadSettingsDay()));
+    } else if (event->type() == QEvent::Leave) {
+      View::Instance().GetContinueButton()->setText("Continue");
+    }
+  }
+  return QObject::eventFilter(obj, event);
 }
 
 Controller& Controller::Instance() {
@@ -67,6 +81,9 @@ void Controller::ConnectGameSignals() {
   connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
+  connect(
+      View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
+      &Model::Instance(), &Model::DayFailed);
 }
 
 void Controller::ConnectMainMenuSignals() {
@@ -77,7 +94,7 @@ void Controller::ConnectMainMenuSignals() {
   connect(View::Instance().GetStartGameButton(),
                        &QPushButton::released,
                        &View::Instance(),
-                       &View::ShowGame);
+                       &View::ShowChooseGame);
   connect(View::Instance().GetQuitButton(),
                        &QPushButton::released,
                        this,
@@ -89,6 +106,37 @@ void Controller::ConnectShortcutSignals() {
                      &QShortcut::activated,
                      this,
                      &Controller::Quit);
+}
+
+void Controller::ConnectChooseGameSignals() {
+  connect(View::Instance().GetContinueButton(),
+          &QPushButton::released,
+          this,
+          &Controller::ContinueGame);
+  connect(View::Instance().GetNewGameButton(),
+          &QPushButton::released,
+          this,
+          &Controller::StartNewGame);
+  connect(View::Instance().GetToMenuFromChooseGameButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowMainMenu);
+
+  View::Instance().GetContinueButton()->installEventFilter(this);
+}
+
+void Controller::StartNewGame() {
+  Model::Instance().UpdateSettingsDay(1);
+  ContinueGame();
+}
+
+void Controller::ContinueGame() {
+  Model::Instance().StartNewDay();
+  View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
+  View::Instance().SetDay(Model::Instance().LoadSettingsDay());
+  View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
+  View::Instance().SetErrorsCount(0);
+  View::Instance().ShowGame();
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {

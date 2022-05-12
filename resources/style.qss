@@ -35,3 +35,9 @@ QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;
 }
+
+QLabel#in-game {
+    border-width: 0.2ex;
+    border-style: solid;
+    border-color: transparent transparent transparent rgb(134,75,192);
+}

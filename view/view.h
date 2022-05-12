@@ -37,8 +37,20 @@ class View : public QMainWindow {
   // Game
   bool IsGame() const { return view_->scene() == game_scene_; }
 
-  void SetErrorsCount(int value) {
+  void SetErrorsCount(size_t value) {
     errors_->setText("Errors: " + QString::number(value));
+  }
+
+  void SetGuestsLeft(size_t value) {
+    guests_left_->setText("Visitors: " + QString::number(value));
+  }
+
+  void SetDay(size_t value) {
+    day_->setText("Day: " + QString::number(value));
+  }
+
+  void SetTimeLeft(QString value) {
+    time_left_->setText("Time: " + value);
   }
 
   void SetTimer();
@@ -46,12 +58,21 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
+  auto GetToMenuFromGameButton() const { return to_menu_from_game_;  }
   auto GetScene() const { return game_scene_; }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
   auto GetOpenSettingsButton() const { return open_settings_; }
   auto GetStartGameButton() const { return start_game_; }
+
+  // Choose game
+  bool IsChooseGame() const { return view_->scene() == choose_game_scene_; }
+  auto GetContinueButton() const { return continue_button_; }
+  auto GetNewGameButton() const { return new_game_button_; }
+  auto GetToMenuFromChooseGameButton() const {
+    return to_menu_from_choose_game_button_;
+  }
 
   // Settings
   bool IsSettings() const { return view_->scene() == settings_scene_; }
@@ -71,6 +92,7 @@ class View : public QMainWindow {
   // Show Scene
   void ShowGame();
   void ShowMainMenu();
+  void ShowChooseGame();
   void ShowSettings();
 
   // Central Widget
@@ -82,6 +104,7 @@ class View : public QMainWindow {
   void InitView();
   void InitGameScene();
   void InitMainMenu();
+  void InitChooseGame();
   void InitSettings();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
@@ -95,6 +118,10 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* errors_{};
+  QPushButton* to_menu_from_game_{};
+  QLabel* guests_left_{};
+  QLabel* day_{};
+  QLabel* time_left_{};
   QList<QPixmap> background_frames_;
   QGraphicsPixmapItem* game_background_{};
   int bg_frame_index_{};
@@ -106,6 +133,12 @@ class View : public QMainWindow {
   QPushButton* start_game_{};
   QPushButton* open_settings_{};
   QPushButton* quit_{};
+
+  // Choose game
+  QGraphicsScene* choose_game_scene_;
+  QPushButton* continue_button_;
+  QPushButton* new_game_button_;
+  QPushButton* to_menu_from_choose_game_button_;
 
   // Settings
   QGraphicsScene* settings_scene_{};

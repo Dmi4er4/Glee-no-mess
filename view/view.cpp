@@ -8,6 +8,7 @@ View::View() {
   InitView();
   InitGameScene();
   InitMainMenu();
+  InitChooseGame();
   InitSettings();
   ShowMainMenu();
   show();
@@ -58,6 +59,10 @@ void View::ShowMainMenu() {
   view_->setScene(menu_scene_);
 }
 
+void View::ShowChooseGame() {
+  view_->setScene(choose_game_scene_);
+}
+
 void View::ShowSettings() {
   view_->setScene(settings_scene_);
 }
@@ -77,9 +82,10 @@ void View::InitView() {
 }
 
 void View::InitGameScene() {
+  static const QString kInGameObjects = "in-game";
   game_scene_ = new QGraphicsScene;
 
-  LoadBackgroundFrames(":/club_level/background");
+  LoadBackgroundFrames(":/levels/club_level/background");
   game_background_ = game_scene_->addPixmap(background_frames_.first());
 
   auto proxy = game_scene_->addWidget(new QWidget);
@@ -92,9 +98,21 @@ void View::InitGameScene() {
   layout->addItem(new QSpacerItem(0, 0,
                                   QSizePolicy::Expanding,
                                   QSizePolicy::Expanding));
+  layout->addWidget(to_menu_from_game_ = new QPushButton("Back to menu"));
+  layout->addWidget(guests_left_ = new QLabel("Visitors: "));
+  layout->addWidget(day_ = new QLabel("Day: "));
+  layout->addWidget(time_left_ = new QLabel("Time: "));
 
-  permit_button_->setObjectName("in-game");
-  reject_button_->setObjectName("in-game");
+  guests_left_->setObjectName(kInGameObjects);
+  day_->setObjectName(kInGameObjects);
+  time_left_->setObjectName(kInGameObjects);
+
+  guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
+  time_left_->setFixedSize(width() * 0.115, height() * 0.1);
+
+  permit_button_->setObjectName(kInGameObjects);
+  reject_button_->setObjectName(kInGameObjects);
+  to_menu_from_game_->setObjectName(kInGameObjects);
 
   proxy->setGeometry(QRectF{
     0,
@@ -122,10 +140,33 @@ void View::InitMainMenu() {
   start_game_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   proxy->setGeometry(QRectF{
-      width() * .3,
-      height() * .3,
-      width() * .4,
-      height() * .4
+      width() * 0.3,
+      height() * 0.3,
+      width() * 0.4,
+      height() * 0.4
+  });
+}
+
+void View::InitChooseGame() {
+  choose_game_scene_ = new QGraphicsScene;
+  choose_game_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+                             ":menu/main_menu_background.jpg")
+                             .scaled(width(), height(), Qt::IgnoreAspectRatio));
+  auto* proxy = choose_game_scene_->addWidget(new QWidget);
+  auto layout = new QVBoxLayout;
+  proxy->widget()->setLayout(layout);
+  layout->addWidget(continue_button_ = new QPushButton("Continue"));
+  layout->addWidget(new_game_button_ = new QPushButton("New game"));
+  layout->addWidget(to_menu_from_choose_game_button_ =
+                        new QPushButton("Back to menu"));
+
+  continue_button_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+  proxy->setGeometry(QRectF{
+      width() * 0.3,
+      height() * 0.3,
+      width() * 0.4,
+      height() * 0.4
   });
 }
 
@@ -137,10 +178,10 @@ void View::InitSettings() {
 
   auto proxy = settings_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
-      width() * .25,
-      height() * .2,
-      width() * .5,
-      height() * .6
+      width() * 0.25,
+      height() * 0.2,
+      width() * 0.5,
+      height() * 0.6
   });
   auto form = new QFormLayout;
   proxy->widget()->setLayout(form);
