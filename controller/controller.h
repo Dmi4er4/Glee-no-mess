@@ -27,6 +27,9 @@ class Controller : public QObject {
   void ConnectGameSignals();
   void ConnectSettingsMenuSignals();
   void ConnectMainMenuSignals();
+  void ConnectCasinoSignals();
+  void ConnectBlackJackSignals();
+  void ConnectFruitMachineSignals();
   void ConnectChooseGameSignals();
   void StartNewGame();
   void ContinueGame();

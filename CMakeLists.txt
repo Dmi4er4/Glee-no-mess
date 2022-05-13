@@ -23,6 +23,7 @@ include_directories(tools)
 include_directories(view)
 include_directories(controller)
 include_directories(resources)
+include_directories(model/casino)
 
 file(GLOB CONTROLLER controller/*)
 file(GLOB VIEW view/*)
@@ -33,6 +34,7 @@ file(GLOB MODEL_GUEST model/guest/*)
 file(GLOB MODEL_LEVEL model/level/*)
 file(GLOB TOOLS tools/*)
 file(GLOB MODEL_ITEMS model/items/*)
+file(GLOB MODEL_CASINO model/casino/*)
 
 add_executable(default-target
         ${CONTROLLER}
@@ -44,6 +46,7 @@ add_executable(default-target
         ${MODEL_LEVEL}
         ${TOOLS}
         ${MODEL_ITEMS}
+        ${MODEL_CASINO}
         main.cpp)
 
 target_link_libraries(default-target

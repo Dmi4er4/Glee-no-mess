@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "all_items.h"
+#include "black_jack.h"
 #include "guest.h"
 #include "level.h"
 #include "settings.h"
@@ -58,7 +59,7 @@ class Model : public QObject {
   void ToggleSound();
 
   // Difficulty
-  QString GetDifficulty() {
+  auto GetDifficulty() {
     return settings_->value(kDifficulty).toString();
   }
 
@@ -68,8 +69,17 @@ class Model : public QObject {
   void SetExitShortcut(const QString& keys);
   QShortcut* GetExitShortcut() { return exit_shortcut_; }
 
+  // Settings
   void ResetDefaults();
 
+  // Black Jack
+  void StartNewGameBlackJack();
+
+  // Money
+  void UpdateMoney(int delta);
+
+  // Fruit Machine
+  void StartFruitMachineGame();
   size_t GetGuestsLeft() const { return guest_left_; }
   QString GetTimeLeft() const;
   QTimer* GetDayTimer() const { return day_timer_; }

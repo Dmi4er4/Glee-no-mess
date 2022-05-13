@@ -36,6 +36,10 @@ QPushButton#in-game:hover {
     border-radius: 0.5em;
 }
 
+QSpinBox {
+    color: salmon;
+}
+
 QLabel#in-game {
     border-width: 0.2ex;
     border-style: solid;

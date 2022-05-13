@@ -6,16 +6,19 @@
 #include <QFormLayout>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
+#include <QGridLayout>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
-#include <QSizePolicy>
+#include <QSpinBox>
 #include <QStyle>
-#include <QSpacerItem>
 #include <QTimer>
-#include <QVBoxLayout>
+#include <QTextEdit>
+
+#include <vector>
 
 #include "guest.h"
+#include "typedefs.h"
 
 class Model;
 class Controller;
@@ -89,14 +92,98 @@ class View : public QMainWindow {
   auto* GetExitShortcutButton() { return exit_shortcut_; }
   auto* GetQuitButton() { return quit_; }
 
-  // Show Scene
-  void ShowGame();
-  void ShowMainMenu();
-  void ShowChooseGame();
-  void ShowSettings();
+  // BlackJack
+  auto* GetExitCasinoButton() { return casino_exit_; }
+  auto* GetBlackJackButton() {return black_jack_; }
+  auto* GetFruitMachineButton() { return fruit_machine_; }
+  auto* GetExitBlackJackButton() { return back_to_casino_; }
 
-  // Central Widget
-  QWidget* GetCentralWidget() { return centralWidget(); }
+  void SetPlayerMoney(money_t x) {
+    player_money_->setText("Your money: " + QString::number(x));
+    money_->setText("Your money: " + QString::number(x));
+  }
+
+  void SetPlayerMaxBid(money_t x) {
+    bid_->setMaximum(x);
+    bid_fruit_machine_->setMaximum(x);
+  }
+
+  auto* GetMakeBidButton() { return make_bid_; }
+  auto GetBid() { return bid_->value(); }
+  auto* GetHitMeButton() { return hit_me_; }
+  auto* GetStandButton() { return stand_; }
+
+  void ShowBlackJackGame() {
+    hit_me_->show();
+    stand_->show();
+    for (auto to : croupier_cards_) {
+      to->setPixmap(QPixmap());
+    }
+    for (auto to : player_cards_) {
+      to->setPixmap(QPixmap());
+    }
+    status_->setText("");
+    bid_->setValue(1);
+  }
+
+  void CloseBlackJackGame() {
+    hit_me_->close();
+    stand_->close();
+  }
+
+  void PutCroupierCard(size_t number, QPixmap card) {
+    croupier_cards_[number]->setPixmap(card);
+  }
+
+  void PutPlayerCard(size_t number, QPixmap card) {
+    player_cards_[number]->setPixmap(card);
+  }
+
+  void ShowSatus(const QString& status) {
+    status_->setText(status);
+    CloseBlackJackGame();
+  }
+
+  // Fruit Machine
+  auto* GetExitFruitMachine() { return exit_fruit_machine_; }
+  auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
+  auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
+
+  void SetSlot0(const QPixmap& slot) {
+    slot0_->setPixmap(slot.scaled(
+        slot0_->width(), slot0_->height(), Qt::IgnoreAspectRatio));
+  }
+
+  void SetSlot1(const QPixmap& slot) {
+    slot1_->setPixmap(slot.scaled(
+        slot1_->width(), slot1_->height(), Qt::IgnoreAspectRatio));
+  }
+
+  void SetSlot2(const QPixmap& slot) {
+    slot2_->setPixmap(slot.scaled(
+        slot2_->width(), slot2_->height(), Qt::IgnoreAspectRatio));
+  }
+
+  // Show Scene
+  void ShowGame() { view_->setScene(game_scene_); }
+  void ShowMainMenu() { view_->setScene(menu_scene_); }
+  void ShowSettings() { view_->setScene(settings_scene_); }
+  void ShowCasino() { view_->setScene(casino_scene_); }
+
+  void ShowBlackJack() {
+    CloseBlackJackGame();
+    for (auto to : croupier_cards_) {
+      to->setPixmap(QPixmap());
+    }
+    for (auto to : player_cards_) {
+      to->setPixmap(QPixmap());
+    }
+    status_->setText("");
+    view_->setScene(black_jack_scene_);
+  }
+
+  void ShowChooseGame() { view_->setScene(choose_game_scene_); }
+  void ShowFruitMachine() { view_->setScene(fruit_machine_scene_); }
 
  private:
   View();
@@ -106,6 +193,9 @@ class View : public QMainWindow {
   void InitMainMenu();
   void InitChooseGame();
   void InitSettings();
+  void InitCasino();
+  void InitBlackJack();
+  void InitFruitMachine();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
@@ -148,4 +238,34 @@ class View : public QMainWindow {
   QPushButton* exit_shortcut_{};
   QPushButton* back_to_menu_{};
   QWidget* shortcut_request_overlay_{};
+
+  // Casino
+  QGraphicsScene* casino_scene_{};
+  QPushButton* black_jack_{};
+  QPushButton* fruit_machine_{};
+  QPushButton* casino_exit_{};
+
+  // Black Jack
+  QGraphicsScene* black_jack_scene_;
+  QSpinBox* bid_;
+  QPushButton* make_bid_;
+  QPushButton* back_to_casino_;
+  QLabel* player_money_;
+  QLabel* croupier_;
+  QPushButton* hit_me_{};
+  QPushButton* stand_{};
+  std::vector<QLabel*> croupier_cards_{};
+  std::vector<QLabel*> player_cards_{};
+  QLabel* status_;
+
+  // Fruit machine
+  QGraphicsScene* fruit_machine_scene_;
+  QPushButton* exit_fruit_machine_;
+  QSpinBox* bid_fruit_machine_;
+  QPushButton* make_bid_fruit_machine_;
+  QLabel* money_;
+  QLabel* machine_;
+  QLabel* slot0_;
+  QLabel* slot1_;
+  QLabel* slot2_;
 };
