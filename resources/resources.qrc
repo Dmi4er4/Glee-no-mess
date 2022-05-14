@@ -59,4 +59,7 @@
         <file>casino/machine_8.png</file>
         <file>casino/cards.json</file>
     </qresource>
+    <qresource>
+        <file>shop/shelves.png</file>
+    </qresource>
 </RCC>

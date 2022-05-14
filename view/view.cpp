@@ -13,8 +13,9 @@ View::View() {
   InitCasino();
   InitBlackJack();
   InitFruitMachine();
-  ShowMainMenu();
-  ShowCasino();
+  InitShop();
+  // ShowMainMenu();
+  ShowShop();
   show();
 }
 
@@ -342,6 +343,67 @@ void View::InitFruitMachine() {
       new QPushButton("Make bid!"), 1, 1, 1, -1);
   form->addWidget(money_ = new QLabel, 2, 0, 1, -1);
   form->addWidget(exit_fruit_machine_ = new QPushButton("Exit"), 3, 0, 1, -1);
+}
+
+void View::InitShop() {
+  shop_scene_ = new QGraphicsScene;
+  shop_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/shelves.png").
+      scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  auto proxy_shop_money = shop_scene_->addWidget(
+      shop_money_ = new QLabel);
+  proxy_shop_money->setGeometry({
+    kMargin,
+    kMargin,
+    width() * 0.3,
+    height() * 0.1
+  });
+
+  auto proxy_exit = shop_scene_->addWidget(
+      exit_shop_ = new QPushButton("Exit"));
+
+  proxy_exit->setGeometry({
+      width() - width() * 0.2,
+      height() - height() * 0.1,
+      width() * 0.2,
+      height() * 0.1
+  });
+
+  static constexpr size_t kWidth = 500;
+  static constexpr size_t kHeight = 350;
+
+  shelves_.resize(kShelves);
+  for (int i = 0; i < kShelves; ++i) {
+    shelves_[i].resize(kShelves);
+    for (int j = 0; j < kShelves; ++j) {
+      auto proxy = shop_scene_->addWidget(
+          shelves_[i][j] = new QPushButton("Buy"));
+
+      proxy->setGeometry({
+        200.0 + i * kWidth,
+        250.0 + j * kHeight,
+        300,
+        100
+      });
+    }
+  }
+
+  // items_.resize(kShelves);
+  // for (int i = 0; i < kShelves; ++i) {
+  //   items_[i].resize(kShelves);
+  //   for (int j = 0; j < kShelves; ++j) {
+  //     // auto proxy = shop_scene_->addWidget(
+  //     //     items_[i][j] = new QLabel);
+  //     //
+  //     // proxy->setGeometry({
+  //     //    200.0 + i * kWidth,
+  //     //    250.0 + j * kHeight,
+  //     //    300,
+  //     //    20
+  //     // });
+  //   }
+  // }
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

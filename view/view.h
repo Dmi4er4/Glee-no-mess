@@ -32,6 +32,7 @@ class View : public QMainWindow {
   static constexpr int kYellow = 0xfdff73;
   static constexpr int kSquareSize = 80;
   static constexpr int kMargin = 5;
+  static constexpr size_t kShelves = 3;
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
@@ -99,8 +100,10 @@ class View : public QMainWindow {
   auto* GetExitBlackJackButton() { return back_to_casino_; }
 
   void SetPlayerMoney(money_t x) {
-    player_money_->setText("Your money: " + QString::number(x));
-    money_->setText("Your money: " + QString::number(x));
+    QString text = "Your money: " + QString::number(x);
+    player_money_->setText(text);
+    money_->setText(text);
+    shop_money_->setText(text);
   }
 
   void SetPlayerMaxBid(money_t x) {
@@ -184,6 +187,7 @@ class View : public QMainWindow {
 
   void ShowChooseGame() { view_->setScene(choose_game_scene_); }
   void ShowFruitMachine() { view_->setScene(fruit_machine_scene_); }
+  void ShowShop() { view_->setScene(shop_scene_); }
 
  private:
   View();
@@ -196,6 +200,7 @@ class View : public QMainWindow {
   void InitCasino();
   void InitBlackJack();
   void InitFruitMachine();
+  void InitShop();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
@@ -268,4 +273,11 @@ class View : public QMainWindow {
   QLabel* slot0_;
   QLabel* slot1_;
   QLabel* slot2_;
+
+  // Shop
+  QGraphicsScene* shop_scene_;
+  QPushButton* exit_shop_;
+  QLabel* shop_money_;
+  std::vector<std::vector<QPushButton*>> shelves_;
+  std::vector<std::vector<QLabel*>> items_;
 };
