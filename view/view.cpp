@@ -378,7 +378,8 @@ void View::InitShop() {
     shelves_[i].resize(kShelves);
     for (int j = 0; j < kShelves; ++j) {
       auto proxy = shop_scene_->addWidget(
-          shelves_[i][j] = new QPushButton("Buy"));
+          shelves_[i][j] = new QPushButton);
+      shelves_[i][j]->setHidden(true);
 
       proxy->setGeometry({
         200.0 + i * kWidth,
@@ -389,21 +390,37 @@ void View::InitShop() {
     }
   }
 
-  // items_.resize(kShelves);
-  // for (int i = 0; i < kShelves; ++i) {
-  //   items_[i].resize(kShelves);
-  //   for (int j = 0; j < kShelves; ++j) {
-  //     // auto proxy = shop_scene_->addWidget(
-  //     //     items_[i][j] = new QLabel);
-  //     //
-  //     // proxy->setGeometry({
-  //     //    200.0 + i * kWidth,
-  //     //    250.0 + j * kHeight,
-  //     //    300,
-  //     //    20
-  //     // });
-  //   }
-  // }
+  items_.resize(kShelves);
+  for (int i = 0; i < kShelves; ++i) {
+    items_[i].resize(kShelves);
+    for (int j = 0; j < kShelves; ++j) {
+      auto proxy = shop_scene_->addWidget(
+          items_[i][j] = new QLabel);
+
+      proxy->setGeometry({
+         200.0 + i * kWidth,
+         70.0 + j * kHeight,
+         50,
+         50
+      });
+    }
+  }
+  items_[0][0]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/stand_the_world.png"));
+  shelves_[0][0]->setText("Buy: 50");
+  shelves_[0][0]->setHidden(false);
+  items_[1][0]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/ksiva.png"));
+  shelves_[1][0]->setText("Buy: 50");
+  shelves_[1][0]->setHidden(false);
+  items_[1][1]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/pandemic.png"));
+  shelves_[1][1]->setText("Buy: 50");
+  shelves_[1][1]->setHidden(false);
+  items_[2][1]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/vabank.png"));
+  shelves_[2][1]->setText("Buy: 50");
+  shelves_[2][1]->setHidden(false);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

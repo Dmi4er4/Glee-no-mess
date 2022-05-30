@@ -167,6 +167,13 @@ class View : public QMainWindow {
         slot2_->width(), slot2_->height(), Qt::IgnoreAspectRatio));
   }
 
+  // Shop
+
+  auto* GetStandTheWorldBuy() { return shelves_[0][0]; }
+  auto* GetKsivaBuy() { return shelves_[1][0]; }
+  auto* GetPandemicBuy() { return shelves_[1][1]; }
+  auto* GetVabankBuy() { return shelves_[2][1]; }
+
   // Show Scene
   void ShowGame() { view_->setScene(game_scene_); }
   void ShowMainMenu() { view_->setScene(menu_scene_); }
