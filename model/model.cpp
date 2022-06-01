@@ -44,7 +44,7 @@ void Model::ShiftQueue() {
   int current_day = LoadSettingsDay();
 
   if (guest_left_ > kQueueLength) {
-    queue_.emplace_back(level_.GetKthGuestInDay(
+    queue_.push_back(level_.GetKthGuestInDay(
         guest_limit_ - (guest_left_ - kQueueLength), current_day));
   }
 
@@ -88,7 +88,7 @@ void Model::StartNewDay() {
 
   queue_.clear();
   for (int i = 0; i < std::min(guest_limit_ - 1, kQueueLength); ++i) {
-    queue_.emplace_back(level_.GetKthGuestInDay(i + 1, current_day));
+    queue_.push_back(level_.GetKthGuestInDay(i + 1, current_day));
     queue_.back()->SetIndex(i);
   }
   current_guest_ = level_.GetKthGuestInDay(0, current_day);
@@ -174,7 +174,9 @@ void Model::UpdateDifficultySettings() {
   errors_limit_ = file[difficulty][kErrorsCount].toInt();
   guest_limit_ = file[difficulty][kGuestCount].toInt();
   time_limit_ = file[difficulty][kTime].toInt();
-  level_ = Level(kLevels, "club_level", guest_limit_);
+
+  level_.~Level();
+  new (&level_) Level(kLevels, "club_level", guest_limit_);
 }
 
 void Model::DayPassed() {
