@@ -122,4 +122,9 @@ class Model : public QObject {
   QShortcut* exit_shortcut_;
   QSettings* settings_;
   QTimer* day_timer_;
+
+  // Fruit Machine
+  int spinning_;
+  QTimer* slot_update_timer_;
+  int new_slot_pics_[3];
 };
