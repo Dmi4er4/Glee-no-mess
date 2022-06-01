@@ -19,7 +19,8 @@
 class Level {
  public:
   explicit Level(const QString& file_name,
-                 const QString& level_name);
+                 const QString& level_name,
+                 const guests_t guests_count);
 
   days_t GetDays() const {
     return days_;
@@ -30,16 +31,16 @@ class Level {
   }
 
   const std::vector<std::shared_ptr<Guest>>& GetAllGuestsInDay(int day) const {
-    return all_guests_[day];
+    return all_guests_[day - 1];
   }
 
   const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number,
                                                  int day) const {
-    return all_guests_[day][visitor_number];
+    return all_guests_[day - 1][visitor_number];
   }
 
   std::shared_ptr<BadCharacteristic> GetBadCharacteristicsInDay(int day) const {
-    return characteristic_[day];
+    return characteristic_[day - 1];
   }
 
   const std::vector<std::shared_ptr<BadCharacteristic>>&
@@ -48,12 +49,16 @@ class Level {
   }
 
  private:
+  Level(const QJsonDocument& source,
+        const QString& level_name,
+        const guests_t guests_count);
+
   void GenerateGuests();
 
-  guests_t guests_count_;
-  characteristics_t characteristics_count_;
-  days_t days_;
-  money_t money_;
+  const guests_t guests_count_;
+  const characteristics_t characteristics_count_;
+  const days_t days_;
+  const money_t money_;
   std::vector<std::vector<std::shared_ptr<Guest>>> all_guests_;
   std::vector<std::shared_ptr<BadCharacteristic>> characteristic_;
 };

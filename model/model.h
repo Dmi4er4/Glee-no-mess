@@ -112,11 +112,10 @@ class Model : public QObject {
   size_t guest_limit_;
   size_t time_limit_;
 
-  // TODO(Kostianoy-Andrey)
-  Level level_{kLevels, "club_level"};
+  Level level_{kLevels, "club_level", 0};
 
-  std::deque<std::unique_ptr<Guest>> queue_;
-  std::unique_ptr<Guest> current_guest_;
+  std::deque<std::shared_ptr<Guest>> queue_;
+  std::shared_ptr<Guest> current_guest_;
   std::vector<std::unique_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
