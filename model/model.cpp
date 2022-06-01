@@ -320,7 +320,7 @@ void Model::StartFruitMachineGame() {
   spinning_ = 3;
 
   slot_update_timer_ = new QTimer;
-  connect(slot_update_timer_, &QTimer::timeout, this, [&] {
+  connect(slot_update_timer_, &QTimer::timeout, this, [ChangePicture, this] {
     for (int i = 2; i >= 3 - spinning_; --i) {
       ChangePicture(i, Random::RandomInt(0, 8));
     }
@@ -329,17 +329,18 @@ void Model::StartFruitMachineGame() {
 
   static constexpr int delay[] = {2000, 3000, 4000};
 
-  QTimer::singleShot(delay[0], [&]{
+  QTimer::singleShot(delay[0], [ChangePicture, this] {
     --spinning_;
     ChangePicture(0, new_slot_pics_[0]);
   });
 
-  QTimer::singleShot(delay[0] + delay[1], [&]{
+  QTimer::singleShot(delay[0] + delay[1], [ChangePicture, this] {
     --spinning_;
     ChangePicture(1, new_slot_pics_[1]);
   });
 
-  QTimer::singleShot(delay[0] + delay[1] + delay[2], [&]{
+  QTimer::singleShot(delay[0] + delay[1] + delay[2],
+                     [ChangePicture, this] {
     --spinning_;
     delete slot_update_timer_;
 
