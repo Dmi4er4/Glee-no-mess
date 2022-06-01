@@ -16,6 +16,7 @@ Model::Model() {
 }
 
 void Model::Permit() {
+  // TODO(Andrey-Kostianoy): Compare with bad characteristics
   if (!Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
@@ -23,6 +24,7 @@ void Model::Permit() {
 }
 
 void Model::Reject() {
+  // TODO(Andrey-Kostianoy): Compare with bad characteristics
   if (Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
@@ -37,11 +39,13 @@ void Model::ShiftQueue() {
     return;
   }
 
-  current_guest_ = std::move(queue_.front());
+  current_guest_ = queue_.front();
   queue_.pop_front();
+  int current_day = LoadSettingsDay();
 
   if (guest_left_ > kQueueLength) {
-    queue_.emplace_back(std::make_unique<Guest>());
+    queue_.emplace_back(level_.GetKthGuestInDay(
+        guest_limit_ - (guest_left_ - kQueueLength), current_day));
   }
 
   for (int i = 0; i < queue_.size(); ++i) {
@@ -80,12 +84,14 @@ void Model::StartNewDay() {
   guest_left_ = guest_limit_;
   was_added_time_ = false;
 
+  int current_day = LoadSettingsDay();
+
   queue_.clear();
   for (int i = 0; i < std::min(guest_limit_ - 1, kQueueLength); ++i) {
-    queue_.emplace_back(std::make_unique<Guest>());
+    queue_.emplace_back(level_.GetKthGuestInDay(i + 1, current_day));
     queue_.back()->SetIndex(i);
   }
-  current_guest_ = std::make_unique<Guest>();
+  current_guest_ = level_.GetKthGuestInDay(0, current_day);
   current_guest_->SetActive();
 
   day_timer_->start();
@@ -168,6 +174,7 @@ void Model::UpdateDifficultySettings() {
   errors_limit_ = file[difficulty][kErrorsCount].toInt();
   guest_limit_ = file[difficulty][kGuestCount].toInt();
   time_limit_ = file[difficulty][kTime].toInt();
+  level_ = Level(kLevels, "club_level", guest_limit_);
 }
 
 void Model::DayPassed() {

@@ -19,7 +19,8 @@
 class Level {
  public:
   explicit Level(const QString& file_name,
-                 const QString& level_name);
+                 const QString& level_name,
+                 const int guests_count);
 
   days_t GetDays() const {
     return days_;
@@ -30,16 +31,16 @@ class Level {
   }
 
   const std::vector<std::shared_ptr<Guest>>& GetAllGuestsInDay(int day) const {
-    return all_guests_[day];
+    return all_guests_[day - 1];
   }
 
   const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number,
                                                  int day) const {
-    return all_guests_[day][visitor_number];
+    return all_guests_[day - 1][visitor_number];
   }
 
   std::shared_ptr<BadCharacteristic> GetBadCharacteristicsInDay(int day) const {
-    return characteristic_[day];
+    return characteristic_[day - 1];
   }
 
   const std::vector<std::shared_ptr<BadCharacteristic>>&
