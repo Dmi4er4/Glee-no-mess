@@ -149,19 +149,10 @@ class View : public QMainWindow {
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
-  void SetSlot0(const QPixmap& slot) {
-    slot0_->setPixmap(slot.scaled(
-        slot0_->width(), slot0_->height(), Qt::IgnoreAspectRatio));
-  }
-
-  void SetSlot1(const QPixmap& slot) {
-    slot1_->setPixmap(slot.scaled(
-        slot1_->width(), slot1_->height(), Qt::IgnoreAspectRatio));
-  }
-
-  void SetSlot2(const QPixmap& slot) {
-    slot2_->setPixmap(slot.scaled(
-        slot2_->width(), slot2_->height(), Qt::IgnoreAspectRatio));
+  void SetFruitMachineSlot(int index, const QPixmap& picture) {
+    auto slot = slots_[index];
+    slot->setPixmap(picture.scaled(
+        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
   }
 
   // Show Scene
@@ -265,7 +256,5 @@ class View : public QMainWindow {
   QPushButton* make_bid_fruit_machine_;
   QLabel* money_;
   QLabel* machine_;
-  QLabel* slot0_;
-  QLabel* slot1_;
-  QLabel* slot2_;
+  QLabel* slots_[3];
 };
