@@ -83,7 +83,7 @@ void Model::StartNewDay() {
   time_left_ = time_limit_;
   guest_left_ = guest_limit_;
   was_added_time_ = false;
-  
+
   // TODO(Adamenko-Vladislav) If you have ReduceGuestsItem, kQueueLength * 0.8
   int current_day = LoadSettingsDay();
   queue_.clear();

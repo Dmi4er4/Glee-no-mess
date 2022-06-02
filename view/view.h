@@ -158,10 +158,7 @@ class View : public QMainWindow {
         slot->width(), slot->height(), Qt::IgnoreAspectRatio));
   }
 
-  
-
   // Shop
-
   auto* GetStandTheWorldBuy() { return shelves_[0][0]; }
   auto* GetKsivaBuy() { return shelves_[1][0]; }
   auto* GetPandemicBuy() { return shelves_[1][1]; }
@@ -186,7 +183,6 @@ class View : public QMainWindow {
     shelves_[2][1]->setHidden(true);
     items_[2][1]->setHidden(true);
   }
-  
 
   // Show Scene
   void ShowGame() {
@@ -202,7 +198,7 @@ class View : public QMainWindow {
     open_settings_->setAttribute(Qt::WA_UnderMouse, false);
     quit_->setAttribute(Qt::WA_UnderMouse, false);
   }
-  
+
   void ShowSettings() {
     view_->setScene(settings_scene_);
     difficulty_->setAttribute(Qt::WA_UnderMouse, false);
@@ -237,7 +233,7 @@ class View : public QMainWindow {
   }
 
   void ShowShop() { view_->setScene(shop_scene_); }
-  
+
   void ShowChooseGame() {
     view_->setScene(choose_game_scene_);
     continue_button_->setAttribute(Qt::WA_UnderMouse, false);
@@ -335,7 +331,7 @@ class View : public QMainWindow {
   QLabel* money_;
   QLabel* machine_;
   QLabel* slots_[3];
-  
+
   // Shop
   QGraphicsScene* shop_scene_;
   QPushButton* exit_shop_;
