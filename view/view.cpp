@@ -86,6 +86,7 @@ void View::InitView() {
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
+  view_->setSceneRect(geometry());
   DisableScrollbars(view_);
   setCentralWidget(view_);
 }
@@ -366,15 +367,20 @@ void View::InitFruitMachine() {
   auto form = new QGridLayout;
   proxy->widget()->setLayout(form);
 
-  form->addWidget(bid_fruit_machine_ = new QSpinBox, 2, 2, Qt::AlignCenter);
+  form->addWidget(bid_fruit_machine_ = new QSpinBox, 2, 2);
+  bid_fruit_machine_->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
   bid_fruit_machine_->setMaximumWidth(width() * 0.125);
   bid_fruit_machine_->setMinimum(1);
   bid_fruit_machine_->setMaximum(INT32_MAX);
 
   form->addWidget(make_bid_fruit_machine_ =
                       new QPushButton("Make bid!"), 2, 3);
-  form->addWidget(money_ = new QLabel, 3, 3, Qt::AlignCenter);
+  form->addWidget(money_ = new QLabel, 3, 3);
+  money_->setAlignment(Qt::AlignCenter);
   form->addWidget(exit_fruit_machine_ = new QPushButton("Exit"), 3, 0);
+
+  bid_fruit_machine_->setMinimumWidth(width() * 0.5);
+  money_->setMinimumWidth(width() * 0.3);
 
   form->setColumnStretch(0, 1);
   form->setColumnStretch(1, 3);
