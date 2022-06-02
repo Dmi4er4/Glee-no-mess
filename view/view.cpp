@@ -337,8 +337,11 @@ void View::InitFruitMachine() {
                         all_slots_top - rect_size.height() * 1.0,
                         rect_size.width() * 2.0,
                         rect_size.height() * 3.0});
-    all_slots_border->setPixmap(FileLoader::GetFile<QPixmap>(":casino/all_slots_border.png").
-                           scaled(all_slots_border->width(), all_slots_border->height(), Qt::IgnoreAspectRatio));
+    all_slots_border->setPixmap(FileLoader::GetFile<QPixmap>
+        (":casino/all_slots_border.png").
+                           scaled(all_slots_border->width(),
+                                       all_slots_border->height(),
+                                       Qt::IgnoreAspectRatio));
   }
 
   for (int i : {0, 1, 2}) {
@@ -348,8 +351,11 @@ void View::InitFruitMachine() {
                         all_slots_top,
                         size.width(),
                         size.height()});
-    slot_border->setPixmap(FileLoader::GetFile<QPixmap>(":casino/stopped_slot_border.png").
-        scaled(slot_border->width(), slot_border->height(), Qt::IgnoreAspectRatio));
+    slot_border->setPixmap(FileLoader::GetFile<QPixmap>
+        (":casino/stopped_slot_border.png").
+        scaled(slot_border->width(),
+                                  slot_border->height(),
+                                  Qt::IgnoreAspectRatio));
   }
   for (int i : {0, 1, 2}) {
     auto& slot = slots_[i];

@@ -16,6 +16,7 @@
 #include <QTimer>
 #include <QTextEdit>
 
+#include <algorithm>
 #include <vector>
 
 #include "guest.h"
