@@ -309,10 +309,18 @@ void View::InitBlackJack() {
 }
 
 void View::InitFruitMachine() {
+  const QString kInFruit = "in-fruit";
   fruit_machine_scene_ = new QGraphicsScene;
-  fruit_machine_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":casino/fruit_machine.jpg").
-      scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  {
+    QLabel* gif_anim = new QLabel();
+    QMovie* movie = new QMovie(":casino/rich_background.gif");
+    movie->setScaledSize(size());
+    gif_anim->setMovie(movie);
+    gif_anim->setGeometry({0, 0, width(), height()});
+    movie->start();
+    fruit_machine_scene_->addWidget(gif_anim);
+  }
 
   const double rect_ratio = 2;
   QSize rect_size;
@@ -382,7 +390,12 @@ void View::InitFruitMachine() {
   bid_fruit_machine_->setMinimumWidth(width() * 0.5);
   money_->setMinimumWidth(width() * 0.3);
 
-  form->setColumnStretch(0, 1);
+  make_bid_fruit_machine_->setObjectName(kInFruit);
+  exit_fruit_machine_->setObjectName(kInFruit);
+  money_->setObjectName(kInFruit);
+  bid_fruit_machine_->setObjectName(kInFruit);
+
+  form->setColumnStretch(0, 4);
   form->setColumnStretch(1, 3);
   form->setColumnStretch(2, 1);
   form->setColumnStretch(3, 0);

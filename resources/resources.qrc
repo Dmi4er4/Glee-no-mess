@@ -60,6 +60,7 @@
         <file>casino/stopped_slot_border.png</file>
         <file>casino/spinning_slot_border.png</file>
         <file>casino/all_slots_border.png</file>
+        <file>casino/rich_background.gif</file>
         <file>casino/cards.json</file>
     </qresource>
 </RCC>

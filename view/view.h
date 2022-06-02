@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMovie>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyle>
