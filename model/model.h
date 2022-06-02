@@ -129,7 +129,7 @@ class Model : public QObject {
 
   std::deque<std::shared_ptr<Guest>> queue_;
   std::shared_ptr<Guest> current_guest_;
-  std::vector<std::unique_ptr<Item>> all_items;
+  std::vector<std::shared_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
   QSettings* settings_;
