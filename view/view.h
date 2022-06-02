@@ -150,6 +150,7 @@ class View : public QMainWindow {
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
   void SetFruitMachineSlot(int index, const QPixmap& picture);
+  void SetFruitMachineSlotBorder(int index, bool is_spinning);
 
   // Show Scene
   void ShowGame() {
@@ -294,5 +295,7 @@ class View : public QMainWindow {
   QPushButton* make_bid_fruit_machine_;
   QLabel* money_;
   QLabel* machine_;
+  QLabel* all_slots_border_;
   QLabel* slots_[3];
+  QLabel* slots_borders_[3];
 };
