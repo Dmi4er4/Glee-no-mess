@@ -3,6 +3,7 @@
 #include "controller.h"
 #include "file_loader.h"
 #include "settings.h"
+#include "polyline_animation.h"
 
 View::View() {
   InitView();
@@ -14,14 +15,13 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   ShowMainMenu();
-  // ShowCasino();
-  show();
+  this->show();
 }
 
 void View::SetTimer() {
   auto timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
-  timer->start(1000 / kFrameRate);
+  timer->start(kFrameDelay);
 }
 
 void View::ChangeFrame() {
@@ -65,6 +65,7 @@ void View::InitView() {
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
+  view_->setSceneRect(rect());
   DisableScrollbars(view_);
   setCentralWidget(view_);
 }

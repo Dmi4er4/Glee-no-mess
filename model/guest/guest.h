@@ -6,6 +6,7 @@
 
 #include "random.h"
 #include "guest_traits.h"
+#include "polyline_animation.h"
 
 class Guest {
  public:

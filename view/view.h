@@ -250,6 +250,7 @@ class View : public QMainWindow {
   int bg_frame_index_{};
 
   const int32_t kFrameRate = 10;
+  const int32_t kFrameDelay = 1000 / kFrameRate;
 
   // Menu
   QGraphicsScene* menu_scene_{};
@@ -258,10 +259,10 @@ class View : public QMainWindow {
   QPushButton* quit_{};
 
   // Choose game
-  QGraphicsScene* choose_game_scene_;
-  QPushButton* continue_button_;
-  QPushButton* new_game_button_;
-  QPushButton* to_menu_from_choose_game_button_;
+  QGraphicsScene* choose_game_scene_{};
+  QPushButton* continue_button_{};
+  QPushButton* new_game_button_{};
+  QPushButton* to_menu_from_choose_game_button_{};
 
   // Settings
   QGraphicsScene* settings_scene_{};
@@ -279,17 +280,17 @@ class View : public QMainWindow {
   QPushButton* casino_exit_{};
 
   // Black Jack
-  QGraphicsScene* black_jack_scene_;
-  QSpinBox* bid_;
-  QPushButton* make_bid_;
-  QPushButton* back_to_casino_;
-  QLabel* player_money_;
-  QLabel* croupier_;
+  QGraphicsScene* black_jack_scene_{};
+  QSpinBox* bid_{};
+  QPushButton* make_bid_{};
+  QPushButton* back_to_casino_{};
+  QLabel* player_money_{};
+  QLabel* croupier_{};
   QPushButton* hit_me_{};
   QPushButton* stand_{};
   std::vector<QLabel*> croupier_cards_{};
   std::vector<QLabel*> player_cards_{};
-  QLabel* status_;
+  QLabel* status_{};
 
   // Fruit machine
   QGraphicsScene* fruit_machine_scene_;

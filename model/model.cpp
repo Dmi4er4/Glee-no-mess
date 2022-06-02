@@ -87,7 +87,7 @@ void Model::StartNewDay() {
   int current_day = LoadSettingsDay();
 
   queue_.clear();
-  for (int i = 0; i < std::min(guest_limit_ - 1, kQueueLength); ++i) {
+  for (int i = 0; i < std::min<size_t>(guest_limit_ - 1, kQueueLength); ++i) {
     queue_.push_back(level_.GetKthGuestInDay(i + 1, current_day));
     queue_.back()->SetIndex(i);
   }

@@ -3,6 +3,8 @@ project(Glee-no-mess)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,leak,undefined")
 
+#set(CMAKE_PREFIX_PATH  "/opt/Qt/6.3.0/gcc_64/")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)

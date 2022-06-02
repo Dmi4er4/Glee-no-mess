@@ -18,6 +18,7 @@
         <file>levels/club_level/background/background_frame_13.png</file>
         <file>levels/club_level/background/background_frame_14.png</file>
         <file>levels/club_level/background/background_frame_15.png</file>
+        <file>levels/club_level/queue_coordinates.json</file>
     </qresource>
     <qresource>
         <file>style.qss</file>

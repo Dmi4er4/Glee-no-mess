@@ -40,5 +40,6 @@ class Controller : public QObject {
   }
 
   bool is_editing_keybinding_{};
+  bool is_playing_animation_{};
   std::function<void(const QString& keys)> new_hotkey_;
 };

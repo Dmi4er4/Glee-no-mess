@@ -24,7 +24,7 @@ class Model : public QObject {
  public:
   static Model& Instance();
 
-  static constexpr size_t kQueueLength = 3;
+  static constexpr int kQueueLength = 3;
 
   void Permit();
   void Reject();

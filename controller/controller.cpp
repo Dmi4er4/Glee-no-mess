@@ -98,7 +98,6 @@ void Controller::ConnectMainMenuSignals() {
          this, &Controller::Quit);
 }
 
-
 void Controller::ConnectCasinoSignals() {
   QPushButton::connect(View::Instance().GetBlackJackButton(),
                        &QPushButton::pressed,
