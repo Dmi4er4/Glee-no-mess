@@ -3,7 +3,6 @@
     "name" : "Gachi-club",
     "days": 10,
     "money": 10,
-    "guests_count": 10,
-    "characteristics_count": 4
+    "characteristics_count": 5
   }
 }

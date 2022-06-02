@@ -16,6 +16,7 @@ Model::Model() {
 }
 
 void Model::Permit() {
+  // TODO(Andrey-Kostianoy): Compare with bad characteristics
   if (!Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
@@ -23,6 +24,7 @@ void Model::Permit() {
 }
 
 void Model::Reject() {
+  // TODO(Andrey-Kostianoy): Compare with bad characteristics
   if (Instance().current_guest_->IsMale()) {
     IncreaseErrorsCount();
   }
@@ -37,11 +39,13 @@ void Model::ShiftQueue() {
     return;
   }
 
-  current_guest_ = std::move(queue_.front());
+  current_guest_ = queue_.front();
   queue_.pop_front();
+  int current_day = LoadSettingsDay();
 
   if (guest_left_ > kQueueLength) {
-    queue_.emplace_back(std::make_unique<Guest>());
+    queue_.push_back(level_.GetKthGuestInDay(
+        guest_limit_ - (guest_left_ - kQueueLength), current_day));
   }
 
   for (int i = 0; i < queue_.size(); ++i) {
@@ -79,15 +83,15 @@ void Model::StartNewDay() {
   time_left_ = time_limit_;
   guest_left_ = guest_limit_;
   was_added_time_ = false;
-
-
+  
   // TODO(Adamenko-Vladislav) If you have ReduceGuestsItem, kQueueLength * 0.8
+  int current_day = LoadSettingsDay();
   queue_.clear();
   for (int i = 0; i < std::min(guest_limit_ - 1, kQueueLength); ++i) {
-    queue_.emplace_back(std::make_unique<Guest>());
+    queue_.push_back(level_.GetKthGuestInDay(i + 1, current_day));
     queue_.back()->SetIndex(i);
   }
-  current_guest_ = std::make_unique<Guest>();
+  current_guest_ = level_.GetKthGuestInDay(0, current_day);
   current_guest_->SetActive();
 
   day_timer_->start();
@@ -191,6 +195,9 @@ void Model::UpdateDifficultySettings() {
   errors_limit_ = file[difficulty][kErrorsCount].toInt();
   guest_limit_ = file[difficulty][kGuestCount].toInt();
   time_limit_ = file[difficulty][kTime].toInt();
+
+  level_.~Level();
+  new (&level_) Level(kLevels, "club_level", guest_limit_);
 }
 
 void Model::DayPassed() {
@@ -323,29 +330,66 @@ void Model::UpdateMoney(int delta) {
 }
 
 void Model::StartFruitMachineGame() {
+  View::Instance().GetMakeBidFruitMachine()->setEnabled(false);
   auto bid = View::Instance().GetFruitMachineBid();
   if (bid == 0) {
     return;
   }
   UpdateMoney(-bid);
-  auto slot0 = Random::RandomInt(0, 8);
-  auto slot1 = Random::RandomInt(0, 8);
-  auto slot2 = Random::RandomInt(0, 8);
+  for (int i : {0, 1, 2}) {
+    new_slot_pics_[i] = Random::RandomInt(0, 8);
+  }
 
   static const QString path = ":casino/machine_";
 
-  View::Instance().SetSlot0(FileLoader::GetFile<QPixmap>(
-      path + QString::number(slot0) + ".png"));
-  View::Instance().SetSlot1(FileLoader::GetFile<QPixmap>(
-      path + QString::number(slot1) + ".png"));
-  View::Instance().SetSlot2(FileLoader::GetFile<QPixmap>(
-      path + QString::number(slot2) + ".png"));
-  if (slot0 == slot1 && slot0 == slot2) {
-    UpdateMoney(5 * bid);
-  }
-  if (slot0 == slot1 || slot0 == slot2 || slot1 == slot2) {
-    UpdateMoney(2 * bid);
-  }
+  auto ChangePicture = [&](int slot, int picture) {
+    View::Instance().SetFruitMachineSlot(slot, FileLoader::GetFile<QPixmap>(
+        path + QString::number(picture) + ".png"));
+  };
+
+  spinning_ = 3;
+
+  slot_update_timer_ = new QTimer;
+  connect(slot_update_timer_, &QTimer::timeout, this, [ChangePicture, this] {
+    for (int i = 2; i >= 3 - spinning_; --i) {
+      ChangePicture(i, Random::RandomInt(0, 8));
+    }
+  });
+  slot_update_timer_->start(100);
+
+  static constexpr int delay[] = {2000, 3000, 4000};
+
+  QTimer::singleShot(delay[0], [ChangePicture, this] {
+    --spinning_;
+    ChangePicture(0, new_slot_pics_[0]);
+  });
+
+  QTimer::singleShot(delay[0] + delay[1], [ChangePicture, this] {
+    --spinning_;
+    ChangePicture(1, new_slot_pics_[1]);
+  });
+
+  QTimer::singleShot(delay[0] + delay[1] + delay[2],
+                     [ChangePicture, this] {
+    --spinning_;
+    delete slot_update_timer_;
+
+    auto bid = View::Instance().GetFruitMachineBid();
+
+    if (new_slot_pics_[0] == new_slot_pics_[1] &&
+        new_slot_pics_[0] == new_slot_pics_[2]) {
+      UpdateMoney(5 * bid);
+      return;
+    }
+    if (new_slot_pics_[0] == new_slot_pics_[1] ||
+        new_slot_pics_[0] == new_slot_pics_[2] ||
+        new_slot_pics_[1] == new_slot_pics_[2]) {
+      UpdateMoney(2 * bid);
+    }
+
+    ChangePicture(2, new_slot_pics_[2]);
+    View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
+  });
 }
 
 void Model::AddAllInItem() {

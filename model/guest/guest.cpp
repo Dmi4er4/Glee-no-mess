@@ -8,6 +8,7 @@ Guest::Guest()
       sex_(Random::EnumChoose<guest_traits::Sex>()),
       eye_color_(Random::EnumChoose<guest_traits::EyeColor>()),
       neatness_(Random::EnumChoose<guest_traits::Neatness>()),
+      bloody_(Random::EnumChoose<guest_traits::Bloody>()),
       sprite_(new QGraphicsRectItem) {
   sprite_->setBrush(IsMale()
                     ? View::kBluePolygonBrush

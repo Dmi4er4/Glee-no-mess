@@ -27,5 +27,6 @@ class Guest {
   guest_traits::Sex sex_;
   guest_traits::EyeColor eye_color_;
   guest_traits::Neatness neatness_;
+  guest_traits::Bloody bloody_;
   std::unique_ptr<QGraphicsRectItem> sprite_;
 };

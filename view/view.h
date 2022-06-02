@@ -62,7 +62,7 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetToMenuFromGameButton() const { return to_menu_from_game_;  }
+  auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
   auto GetScene() const { return game_scene_; }
 
   // Menu
@@ -152,20 +152,13 @@ class View : public QMainWindow {
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
-  void SetSlot0(const QPixmap& slot) {
-    slot0_->setPixmap(slot.scaled(
-        slot0_->width(), slot0_->height(), Qt::IgnoreAspectRatio));
+  void SetFruitMachineSlot(int index, const QPixmap& picture) {
+    auto slot = slots_[index];
+    slot->setPixmap(picture.scaled(
+        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
   }
 
-  void SetSlot1(const QPixmap& slot) {
-    slot1_->setPixmap(slot.scaled(
-        slot1_->width(), slot1_->height(), Qt::IgnoreAspectRatio));
-  }
-
-  void SetSlot2(const QPixmap& slot) {
-    slot2_->setPixmap(slot.scaled(
-        slot2_->width(), slot2_->height(), Qt::IgnoreAspectRatio));
-  }
+  
 
   // Shop
 
@@ -193,12 +186,38 @@ class View : public QMainWindow {
     shelves_[2][1]->setHidden(true);
     items_[2][1]->setHidden(true);
   }
+  
 
   // Show Scene
-  void ShowGame() { view_->setScene(game_scene_); }
-  void ShowMainMenu() { view_->setScene(menu_scene_); }
-  void ShowSettings() { view_->setScene(settings_scene_); }
-  void ShowCasino() { view_->setScene(casino_scene_); }
+  void ShowGame() {
+    view_->setScene(game_scene_);
+    to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+    permit_button_->setAttribute(Qt::WA_UnderMouse, false);
+    reject_button_->setAttribute(Qt::WA_UnderMouse, false);
+  }
+
+  void ShowMainMenu() {
+    view_->setScene(menu_scene_);
+    start_game_->setAttribute(Qt::WA_UnderMouse, false);
+    open_settings_->setAttribute(Qt::WA_UnderMouse, false);
+    quit_->setAttribute(Qt::WA_UnderMouse, false);
+  }
+  
+  void ShowSettings() {
+    view_->setScene(settings_scene_);
+    difficulty_->setAttribute(Qt::WA_UnderMouse, false);
+    sound_->setAttribute(Qt::WA_UnderMouse, false);
+    reset_defaults_->setAttribute(Qt::WA_UnderMouse, false);
+    exit_shortcut_->setAttribute(Qt::WA_UnderMouse, false);
+    back_to_menu_->setAttribute(Qt::WA_UnderMouse, false);
+  }
+
+  void ShowCasino() {
+    view_->setScene(casino_scene_);
+    black_jack_->setAttribute(Qt::WA_UnderMouse, false);
+    fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+    casino_exit_->setAttribute(Qt::WA_UnderMouse, false);
+  }
 
   void ShowBlackJack() {
     CloseBlackJackGame();
@@ -210,11 +229,29 @@ class View : public QMainWindow {
     }
     status_->setText("");
     view_->setScene(black_jack_scene_);
+
+    make_bid_->setAttribute(Qt::WA_UnderMouse, false);
+    back_to_casino_->setAttribute(Qt::WA_UnderMouse, false);
+    hit_me_->setAttribute(Qt::WA_UnderMouse, false);
+    stand_->setAttribute(Qt::WA_UnderMouse, false);
   }
 
-  void ShowChooseGame() { view_->setScene(choose_game_scene_); }
-  void ShowFruitMachine() { view_->setScene(fruit_machine_scene_); }
   void ShowShop() { view_->setScene(shop_scene_); }
+  
+  void ShowChooseGame() {
+    view_->setScene(choose_game_scene_);
+    continue_button_->setAttribute(Qt::WA_UnderMouse, false);
+    new_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+    to_menu_from_choose_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+
+    continue_button_->setText("Continue");
+  }
+
+  void ShowFruitMachine() {
+    view_->setScene(fruit_machine_scene_);
+    exit_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+    make_bid_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+  }
 
  private:
   View();
@@ -240,7 +277,7 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* errors_{};
-  QPushButton* to_menu_from_game_{};
+  QPushButton* to_menu_from_game_button_{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};
@@ -297,10 +334,8 @@ class View : public QMainWindow {
   QPushButton* make_bid_fruit_machine_;
   QLabel* money_;
   QLabel* machine_;
-  QLabel* slot0_;
-  QLabel* slot1_;
-  QLabel* slot2_;
-
+  QLabel* slots_[3];
+  
   // Shop
   QGraphicsScene* shop_scene_;
   QPushButton* exit_shop_;

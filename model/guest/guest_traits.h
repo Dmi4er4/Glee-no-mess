@@ -26,4 +26,10 @@ namespace guest_traits {
     kState3,
     kCount
   };
+
+  enum class Bloody {
+    kBloody,
+    kNonBloody,
+    kCount
+  };
 }  // namespace guest_traits
