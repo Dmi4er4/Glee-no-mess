@@ -31,13 +31,21 @@ QPushButton#in-game {
     margin-right: 1ex;
 }
 
-QPushButton#in-shop {
-    background: rgba(70, 70, 70, 200);
-}
 
 QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;
+}
+
+QPushButton#in-shop {
+    background: rgba(70, 70, 70, 200);
+}
+
+QPushButton#in-shop:hover {
+    border-left: 0.5ex solid black;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background: rgba(111, 0, 0, 170);
 }
 
 QSpinBox {

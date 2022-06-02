@@ -400,31 +400,35 @@ void View::InitShop() {
   }
 
   const QString kInShop = "in-shop";
+  exit_shop_->setObjectName(kInShop);
 
-  items_[0][0]->setPixmap(FileLoader::GetFile<QPixmap>(
+  items_[kStandRow][kStandCol]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/stand_the_world.png").scaled(kItemWidth,
                                       kItemHeight,
                                          Qt::IgnoreAspectRatio));
-  shelves_[0][0]->show();
-  shelves_[0][0]->setObjectName(kInShop);
-  items_[1][0]->setPixmap(FileLoader::GetFile<QPixmap>(
+  shelves_[kStandRow][kStandCol]->setObjectName(kInShop);
+  shelves_[kStandRow][kStandCol]->show();
+
+  items_[kKsivaRow][kKsivaCol]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/ksiva.png").scaled(kItemWidth,
                                       kItemHeight,
                                       Qt::IgnoreAspectRatio));
-  shelves_[1][0]->show();
-  shelves_[1][0]->setObjectName(kInShop);
-  items_[1][1]->setPixmap(FileLoader::GetFile<QPixmap>(
+  shelves_[kKsivaRow][kKsivaCol]->setObjectName(kInShop);
+  shelves_[kKsivaRow][kKsivaCol]->show();
+
+  items_[kPandemicRow][kPandemicCol]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/pandemic.png").scaled(kItemWidth,
                                       kItemHeight,
                                       Qt::IgnoreAspectRatio));
-  shelves_[1][1]->show();
-  shelves_[1][1]->setObjectName(kInShop);
-  items_[2][1]->setPixmap(FileLoader::GetFile<QPixmap>(
+  shelves_[kPandemicRow][kPandemicCol]->setObjectName(kInShop);
+  shelves_[kPandemicRow][kPandemicCol]->show();
+
+  items_[kVabankRow][kVabankCol]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/vabank.png").scaled(kItemWidth,
                                 kItemHeight,
                                 Qt::IgnoreAspectRatio));
-  shelves_[2][1]->show();
-  shelves_[2][1]->setObjectName(kInShop);
+  shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
+  shelves_[kVabankRow][kVabankCol]->show();
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

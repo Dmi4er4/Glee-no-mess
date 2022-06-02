@@ -34,6 +34,15 @@ class View : public QMainWindow {
   static constexpr int kSquareSize = 80;
   static constexpr int kMargin = 5;
   static constexpr size_t kShelves = 3;
+  // reversed rows and columns!!!
+  static constexpr int kStandRow = 0;
+  static constexpr int kStandCol = 0;
+  static constexpr int kKsivaRow = 1;
+  static constexpr int kKsivaCol = 0;
+  static constexpr int kPandemicRow = 1;
+  static constexpr int kPandemicCol = 1;
+  static constexpr int kVabankRow = 2;
+  static constexpr int kVabankCol = 1;
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
@@ -160,29 +169,29 @@ class View : public QMainWindow {
   }
 
   // Shop
-  auto* GetStandTheWorldBuy() { return shelves_[0][0]; }
-  auto* GetKsivaBuy() { return shelves_[1][0]; }
-  auto* GetPandemicBuy() { return shelves_[1][1]; }
-  auto* GetVabankBuy() { return shelves_[2][1]; }
+  auto* GetStandTheWorldBuy() { return shelves_[kStandRow][kStandCol]; }
+  auto* GetKsivaBuy() { return shelves_[kKsivaRow][kKsivaCol]; }
+  auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
+  auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
 
   void HideStandTheWorld() {
-    shelves_[0][0]->setHidden(true);
-    items_[0][0]->setHidden(true);
+    shelves_[kStandRow][kStandCol]->setHidden(true);
+    items_[kStandRow][kStandCol]->setHidden(true);
   }
 
   void HideKsive() {
-    shelves_[1][0]->setHidden(true);
-    items_[1][0]->setHidden(true);
+    shelves_[kKsivaRow][kKsivaCol]->setHidden(true);
+    items_[kKsivaRow][kKsivaCol]->setHidden(true);
   }
 
   void HidePandemic() {
-    shelves_[1][1]->setHidden(true);
-    items_[1][1]->setHidden(true);
+    shelves_[kPandemicRow][kPandemicCol]->setHidden(true);
+    items_[kPandemicRow][kPandemicCol]->setHidden(true);
   }
 
   void HideVabank() {
-    shelves_[2][1]->setHidden(true);
-    items_[2][1]->setHidden(true);
+    shelves_[kVabankRow][kVabankCol]->setHidden(true);
+    items_[kVabankRow][kVabankCol]->setHidden(true);
   }
 
   // Show Scene
@@ -234,8 +243,14 @@ class View : public QMainWindow {
   }
 
   void ShowShop() {
-    // TODO(Anrey-Kostianoy): setAttribute to all buttons
     view_->setScene(shop_scene_);
+
+    exit_shop_->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kStandRow][kStandCol]->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kKsivaRow][kKsivaCol]->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kPandemicRow][kPandemicCol]->
+        setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kVabankRow][kVabankCol]->setAttribute(Qt::WA_UnderMouse, false);
   }
 
   void ShowChooseGame() {
