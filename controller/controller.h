@@ -31,6 +31,7 @@ class Controller : public QObject {
   void ConnectBlackJackSignals();
   void ConnectFruitMachineSignals();
   void ConnectChooseGameSignals();
+  void ConnectShopSignals();
   void StartNewGame();
   void ContinueGame();
   void Quit();

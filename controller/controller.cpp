@@ -20,6 +20,7 @@ void Controller::ConnectSignals() {
   ConnectBlackJackSignals();
   ConnectFruitMachineSignals();
   ConnectChooseGameSignals();
+  ConnectShopSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -167,6 +168,25 @@ void Controller::ConnectChooseGameSignals() {
           &View::ShowMainMenu);
 
   View::Instance().GetContinueButton()->installEventFilter(this);
+}
+
+void Controller::ConnectShopSignals() {
+  QPushButton::connect(View::Instance().GetStandTheWorldBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                        &Model::BuyTimeItem);
+  QPushButton::connect(View::Instance().GetVabankBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyAllInItem);
+  QPushButton::connect(View::Instance().GetPandemicBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyReduceGuestsItem);
+  QPushButton::connect(View::Instance().GetKsivaBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyAddIgnoreFirstMistakeItem);
 }
 
 void Controller::StartNewGame() {

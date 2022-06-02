@@ -63,4 +63,11 @@
         <file>casino/rich_background.gif</file>
         <file>casino/cards.json</file>
     </qresource>
+    <qresource>
+        <file>shop/shelves.png</file>
+        <file>shop/stand_the_world.png</file>
+        <file>shop/ksiva.png</file>
+        <file>shop/pandemic.png</file>
+        <file>shop/vabank.png</file>
+    </qresource>
 </RCC>

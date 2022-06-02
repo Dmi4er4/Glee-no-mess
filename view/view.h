@@ -7,6 +7,7 @@
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMovie>
@@ -35,6 +36,16 @@ class View : public QMainWindow {
   static constexpr int kYellow = 0xfdff73;
   static constexpr int kSquareSize = 80;
   static constexpr int kMargin = 5;
+  static constexpr size_t kShelves = 3;
+  // reversed rows and columns!!!
+  static constexpr int kStandRow = 0;
+  static constexpr int kStandCol = 0;
+  static constexpr int kKsivaRow = 1;
+  static constexpr int kKsivaCol = 0;
+  static constexpr int kPandemicRow = 1;
+  static constexpr int kPandemicCol = 1;
+  static constexpr int kVabankRow = 2;
+  static constexpr int kVabankCol = 1;
   static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
   static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
@@ -102,8 +113,10 @@ class View : public QMainWindow {
   auto* GetExitBlackJackButton() { return back_to_casino_; }
 
   void SetPlayerMoney(money_t x) {
-    player_money_->setText("Your money: " + QString::number(x));
-    money_->setText("Your money: " + QString::number(x));
+    QString text = "Your money: " + QString::number(x);
+    player_money_->setText(text);
+    money_->setText(text);
+    shop_money_->setText(text);
   }
 
   void SetPlayerMaxBid(money_t x) {
@@ -155,6 +168,32 @@ class View : public QMainWindow {
   void SetFruitMachineSlot(int index, const QPixmap& picture);
   void SetFruitMachineSlotBorder(int index, bool is_spinning);
 
+  // Shop
+  auto* GetStandTheWorldBuy() { return shelves_[kStandRow][kStandCol]; }
+  auto* GetKsivaBuy() { return shelves_[kKsivaRow][kKsivaCol]; }
+  auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
+  auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
+
+  void HideStandTheWorld() {
+    shelves_[kStandRow][kStandCol]->setHidden(true);
+    items_[kStandRow][kStandCol]->setHidden(true);
+  }
+
+  void HideKsive() {
+    shelves_[kKsivaRow][kKsivaCol]->setHidden(true);
+    items_[kKsivaRow][kKsivaCol]->setHidden(true);
+  }
+
+  void HidePandemic() {
+    shelves_[kPandemicRow][kPandemicCol]->setHidden(true);
+    items_[kPandemicRow][kPandemicCol]->setHidden(true);
+  }
+
+  void HideVabank() {
+    shelves_[kVabankRow][kVabankCol]->setHidden(true);
+    items_[kVabankRow][kVabankCol]->setHidden(true);
+  }
+
   // Show Scene
   void ShowGame() {
     view_->setScene(game_scene_);
@@ -203,6 +242,17 @@ class View : public QMainWindow {
     stand_->setAttribute(Qt::WA_UnderMouse, false);
   }
 
+  void ShowShop() {
+    view_->setScene(shop_scene_);
+
+    exit_shop_->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kStandRow][kStandCol]->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kKsivaRow][kKsivaCol]->setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kPandemicRow][kPandemicCol]->
+        setAttribute(Qt::WA_UnderMouse, false);
+    shelves_[kVabankRow][kVabankCol]->setAttribute(Qt::WA_UnderMouse, false);
+  }
+
   void ShowChooseGame() {
     view_->setScene(choose_game_scene_);
     continue_button_->setAttribute(Qt::WA_UnderMouse, false);
@@ -229,6 +279,7 @@ class View : public QMainWindow {
   void InitCasino();
   void InitBlackJack();
   void InitFruitMachine();
+  void InitShop();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
@@ -290,6 +341,13 @@ class View : public QMainWindow {
   std::vector<QLabel*> croupier_cards_{};
   std::vector<QLabel*> player_cards_{};
   QLabel* status_{};
+
+  // Shop
+  QGraphicsScene* shop_scene_;
+  QPushButton* exit_shop_;
+  QLabel* shop_money_;
+  std::vector<std::vector<QPushButton*>> shelves_;
+  std::vector<std::vector<QLabel*>> items_;
 
   // Fruit machine
   QGraphicsScene* fruit_machine_scene_{};

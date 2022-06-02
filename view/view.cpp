@@ -13,8 +13,9 @@ View::View() {
   InitCasino();
   InitBlackJack();
   InitFruitMachine();
-  ShowMainMenu();
-  ShowCasino();
+  InitShop();
+  // ShowMainMenu();
+  ShowShop();
   show();
 }
 
@@ -410,6 +411,108 @@ void View::InitFruitMachine() {
   form->setRowStretch(1, 3);
   form->setRowStretch(2, 1);
   form->setRowStretch(3, 0);
+}
+
+void View::InitShop() {
+  shop_scene_ = new QGraphicsScene;
+  shop_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/shelves.png").
+      scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  auto proxy_shop_money = shop_scene_->addWidget(
+      shop_money_ = new QLabel);
+  proxy_shop_money->setGeometry({
+    kMargin,
+    kMargin,
+    width() * 0.3,
+    height() * 0.1
+  });
+
+  {
+    auto proxy = shop_scene_->addWidget(new QWidget);
+    proxy->setGeometry(QRectF{
+        width() * 0.8,
+        height() * 0.85,
+        width() * 0.2,
+        height() * 0.15
+    });
+    auto form = new QHBoxLayout;
+    proxy->widget()->setLayout(form);
+    form->addWidget(exit_shop_ = new QPushButton("Exit"));
+  }
+
+  static const size_t kWidth = static_cast<size_t>(width() * 0.3);
+  static const size_t kHeight = static_cast<size_t>(height() * 0.3);
+  static const size_t kItemWidth = kWidth / 4;
+  static const size_t kItemHeight = kHeight / 2;
+
+  static const QString kCost = "∰300";
+
+  shelves_.resize(kShelves);
+  for (int i = 0; i < kShelves; ++i) {
+    shelves_[i].resize(kShelves);
+    for (int j = 0; j < kShelves; ++j) {
+      auto proxy = shop_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          width() * 0.1 + i * kWidth,
+          height() * 0.1 + j * kHeight + kItemHeight + kMargin,
+          kWidth / 2.0,
+          kHeight / 4.0
+      });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(shelves_[i][j] = new QPushButton(kCost));
+      shelves_[i][j]->hide();
+    }
+  }
+
+  items_.resize(kShelves);
+  for (int i = 0; i < kShelves; ++i) {
+    items_[i].resize(kShelves);
+    for (int j = 0; j < kShelves; ++j) {
+      auto proxy = shop_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          width() * 0.1 + i * kWidth + kItemWidth / 2,
+          height() * 0.1 + j * kHeight,
+          kItemWidth,
+          kItemHeight
+      });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(items_[i][j] = new QLabel);
+    }
+  }
+
+  const QString kInShop = "in-shop";
+  exit_shop_->setObjectName(kInShop);
+
+  items_[kStandRow][kStandCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/stand_the_world.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                         Qt::IgnoreAspectRatio));
+  shelves_[kStandRow][kStandCol]->setObjectName(kInShop);
+  shelves_[kStandRow][kStandCol]->show();
+
+  items_[kKsivaRow][kKsivaCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/ksiva.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                      Qt::IgnoreAspectRatio));
+  shelves_[kKsivaRow][kKsivaCol]->setObjectName(kInShop);
+  shelves_[kKsivaRow][kKsivaCol]->show();
+
+  items_[kPandemicRow][kPandemicCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/pandemic.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                      Qt::IgnoreAspectRatio));
+  shelves_[kPandemicRow][kPandemicCol]->setObjectName(kInShop);
+  shelves_[kPandemicRow][kPandemicCol]->show();
+
+  items_[kVabankRow][kVabankCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/vabank.png").scaled(kItemWidth,
+                                kItemHeight,
+                                Qt::IgnoreAspectRatio));
+  shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
+  shelves_[kVabankRow][kVabankCol]->show();
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

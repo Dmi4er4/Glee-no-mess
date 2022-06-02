@@ -32,10 +32,16 @@ class Model : public QObject {
   void IncreaseErrorsCount();
 
   void StartNewDay();
+
+  // Items
+
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();
-  void UpdateMistake();
+  void AddAllInItem();
+  void AddReduceGuestsItem();
 
+  // TODO(Adamenko-Vladislav) Items must do something
+  void UpdateMistake();
   void UpdateTimeLeft() {
     for (const auto& item : all_items) {
       item->TimeTrigger();
@@ -50,6 +56,13 @@ class Model : public QObject {
 
   void AddTime(size_t time);
   bool HasItem(const QString& name);
+
+  static constexpr int32_t kCost = 300;
+
+  void BuyAddIgnoreFirstMistakeItem();
+  void BuyTimeItem();
+  void BuyAllInItem();
+  void BuyReduceGuestsItem();
 
   // Sound
   bool IsSoundOn() {
@@ -116,7 +129,7 @@ class Model : public QObject {
 
   std::deque<std::shared_ptr<Guest>> queue_;
   std::shared_ptr<Guest> current_guest_;
-  std::vector<std::unique_ptr<Item>> all_items;
+  std::vector<std::shared_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
   QSettings* settings_;
