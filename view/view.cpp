@@ -14,7 +14,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   ShowMainMenu();
-  // ShowCasino();
+  ShowCasino();
   show();
 }
 
@@ -55,6 +55,27 @@ void View::HideShortcutRequestOverlay() {
   view_->setEnabled(true);
 }
 
+void View::SetFruitMachineSlot(int index, const QPixmap& picture) {
+  auto slot = slots_[index];
+  slot->setPixmap(picture.scaled(
+      slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+}
+
+void View::SetFruitMachineSlotBorder(int index, bool is_spinning) {
+  auto slot = slots_borders_[index];
+  static auto stopped_slot_border = FileLoader::GetFile<QPixmap>(
+    ":casino/stopped_slot_border.png");
+  static auto spinning_slot_border = FileLoader::GetFile<QPixmap>(
+    ":casino/spinning_slot_border.png");
+  if (is_spinning) {
+    slot->setPixmap(spinning_slot_border.scaled(
+        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+  } else {
+    slot->setPixmap(stopped_slot_border.scaled(
+        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+  }
+}
+
 void View::InitView() {
   QFontDatabase::addApplicationFont(":Koulen-Regular.ttf");
   auto screen_size = QGuiApplication::primaryScreen()->size();
@@ -65,6 +86,7 @@ void View::InitView() {
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
+  view_->setSceneRect(geometry());
   DisableScrollbars(view_);
   setCentralWidget(view_);
 }
@@ -223,7 +245,7 @@ void View::InitBlackJack() {
 
   auto croupier_proxy = black_jack_scene_->
       addWidget(croupier_ = new QLabel);
-  QPixmap croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
+  auto croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
   croupier_->setPixmap(croupier);
 
 
@@ -287,45 +309,107 @@ void View::InitBlackJack() {
 }
 
 void View::InitFruitMachine() {
+  const QString kInFruit = "in-fruit";
   fruit_machine_scene_ = new QGraphicsScene;
-  fruit_machine_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":casino/fruit_machine.jpg").
-      scaled(width(), height(), Qt::IgnoreAspectRatio));
 
-  constexpr QSize size = {200, 150};
+  {
+    QLabel* gif_anim = new QLabel();
+    QMovie* movie = new QMovie(":casino/rich_background.gif");
+    movie->setScaledSize(size());
+    gif_anim->setMovie(movie);
+    gif_anim->setGeometry({0, 0, width(), height()});
+    movie->start();
+    fruit_machine_scene_->addWidget(gif_anim);
+  }
 
+  const double rect_ratio = 2;
+  QSize rect_size;
+  rect_size.setWidth(std::min(width() * 0.8, height() * 0.5 * rect_ratio));
+  rect_size.setHeight(rect_size.width() / rect_ratio);
+  QSize size{static_cast<int>(rect_size.width() / 3.0), rect_size.height()};
+  const double all_slots_left = width() * 0.5 - 0.5 * rect_size.width();
+  const double all_slots_top = height() * 0.2;
+
+  {
+    auto& all_slots_border = all_slots_border_;
+    auto proxy = fruit_machine_scene_->addWidget(all_slots_border = new QLabel);
+    proxy->setGeometry({all_slots_left - rect_size.width() * 0.5,
+                        all_slots_top - rect_size.height() * 1.0,
+                        rect_size.width() * 2.0,
+                        rect_size.height() * 3.0});
+    all_slots_border->setPixmap(FileLoader::GetFile<QPixmap>
+        (":casino/all_slots_border.png").
+                           scaled(all_slots_border->width(),
+                                       all_slots_border->height(),
+                                       Qt::IgnoreAspectRatio));
+  }
+
+  for (int i : {0, 1, 2}) {
+    auto& slot_border = slots_borders_[i];
+    auto proxy = fruit_machine_scene_->addWidget(slot_border = new QLabel);
+    proxy->setGeometry({all_slots_left + i * (size.width()),
+                        all_slots_top,
+                        static_cast<qreal>(size.width()),
+                        static_cast<qreal>(size.height())});
+    slot_border->setPixmap(FileLoader::GetFile<QPixmap>
+        (":casino/stopped_slot_border.png").
+        scaled(slot_border->width(),
+                                  slot_border->height(),
+                                  Qt::IgnoreAspectRatio));
+  }
   for (int i : {0, 1, 2}) {
     auto& slot = slots_[i];
     auto proxy = fruit_machine_scene_->addWidget(slot = new QLabel);
     proxy->setGeometry({
-        width() * .1 + i * (size.width() + kMargin),
-        height() * .1,
-        size.width(),
-        size.height()
+        all_slots_left + i * (size.width()) + size.width() * 0.25,
+        all_slots_top + size.height() * 0.25,
+        size.width() * 0.5,
+        size.height() * 0.5
     });
-    slot->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png"));
+    slot->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png").
+        scaled(slot->width(), slot->height(), Qt::IgnoreAspectRatio));
   }
 
   auto proxy = fruit_machine_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
-    width() * 0.1,
-    height() * 0.3,
-    width() * 0.7,
-    height() * 0.4
+    0.0,
+    all_slots_top + rect_size.height() * 1.1,
+    width() * 1.0,
+    height() - (all_slots_top + rect_size.height() * 1.1)
   });
 
   auto form = new QGridLayout;
   proxy->widget()->setLayout(form);
 
-  form->addWidget(bid_fruit_machine_ = new QSpinBox, 1, 0);
+  form->addWidget(bid_fruit_machine_ = new QSpinBox, 2, 2);
+  bid_fruit_machine_->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
   bid_fruit_machine_->setMaximumWidth(width() * 0.125);
   bid_fruit_machine_->setMinimum(1);
   bid_fruit_machine_->setMaximum(INT32_MAX);
 
   form->addWidget(make_bid_fruit_machine_ =
-      new QPushButton("Make bid!"), 1, 1, 1, -1);
-  form->addWidget(money_ = new QLabel, 2, 0, 1, -1);
-  form->addWidget(exit_fruit_machine_ = new QPushButton("Exit"), 3, 0, 1, -1);
+                      new QPushButton("Make bid!"), 2, 3);
+  form->addWidget(money_ = new QLabel, 3, 3);
+  money_->setAlignment(Qt::AlignCenter);
+  form->addWidget(exit_fruit_machine_ = new QPushButton("Exit"), 3, 0);
+
+  bid_fruit_machine_->setMinimumWidth(width() * 0.5);
+  money_->setMinimumWidth(width() * 0.3);
+
+  make_bid_fruit_machine_->setObjectName(kInFruit);
+  exit_fruit_machine_->setObjectName(kInFruit);
+  money_->setObjectName(kInFruit);
+  bid_fruit_machine_->setObjectName(kInFruit);
+
+  form->setColumnStretch(0, 4);
+  form->setColumnStretch(1, 3);
+  form->setColumnStretch(2, 1);
+  form->setColumnStretch(3, 0);
+
+  form->setRowStretch(0, 1);
+  form->setRowStretch(1, 3);
+  form->setRowStretch(2, 1);
+  form->setRowStretch(3, 0);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
