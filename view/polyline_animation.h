@@ -1,11 +1,12 @@
-#ifndef POLYLINE_ANIMATION_H
-#define POLYLINE_ANIMATION_H
+#ifndef VIEW_POLYLINE_ANIMATION_H_
+#define VIEW_POLYLINE_ANIMATION_H_
 
 #include <QApplication>
 #include <QDebug>
 #include <QJsonArray>
 #include <QPoint>
 
+#include <algorithm>
 #include <numeric>
 #include <vector>
 
@@ -31,4 +32,4 @@ class PolylineAnimation {
   QWidget* host_;
 };
 
-#endif  // POLYLINE_ANIMATION_H
+#endif  // VIEW_POLYLINE_ANIMATION_H_
