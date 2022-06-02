@@ -27,3 +27,9 @@ const QString kExitShortcut = "exit_shortcut";
 const QString kExitShortcutText = "Exit shortcut: ";
 // Levels
 const QString kLevels = ":/levels/levels.json";
+// Fruit Machine
+static constexpr int kSlotsCount = 3;
+static constexpr int kBigWinIndex = 7;
+static constexpr int kBigWinRewardCoef = 105;
+static constexpr int kAllEqualRewardCoef = 42;
+static constexpr int kAnyEqualRewardCoef = 5;

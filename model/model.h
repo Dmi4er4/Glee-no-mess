@@ -125,5 +125,5 @@ class Model : public QObject {
   // Fruit Machine
   int spinning_;
   QTimer* slot_update_timer_;
-  int new_slot_pics_[3];
+  int new_slot_pics_[kSlotsCount];
 };

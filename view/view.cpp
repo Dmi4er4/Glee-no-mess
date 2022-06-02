@@ -245,7 +245,7 @@ void View::InitBlackJack() {
 
   auto croupier_proxy = black_jack_scene_->
       addWidget(croupier_ = new QLabel);
-  QPixmap croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
+  auto croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
   croupier_->setPixmap(croupier);
 
 
@@ -349,8 +349,8 @@ void View::InitFruitMachine() {
     auto proxy = fruit_machine_scene_->addWidget(slot_border = new QLabel);
     proxy->setGeometry({all_slots_left + i * (size.width()),
                         all_slots_top,
-                        size.width(),
-                        size.height()});
+                        static_cast<qreal>(size.width()),
+                        static_cast<qreal>(size.height())});
     slot_border->setPixmap(FileLoader::GetFile<QPixmap>
         (":casino/stopped_slot_border.png").
         scaled(slot_border->width(),
