@@ -330,64 +330,80 @@ void Model::UpdateMoney(int delta) {
 }
 
 void Model::StartFruitMachineGame() {
+  static constexpr int delay[] = {2000, 3000, 4000};
+
   View::Instance().GetMakeBidFruitMachine()->setEnabled(false);
   auto bid = View::Instance().GetFruitMachineBid();
   if (bid == 0) {
     return;
   }
   UpdateMoney(-bid);
-  for (int i : {0, 1, 2}) {
-    new_slot_pics_[i] = Random::RandomInt(0, 8);
+  for (int& new_slot_pic : new_slot_pics_) {
+    new_slot_pic = Random::RandomInt(0, 8);
   }
 
   static const QString path = ":casino/machine_";
 
-  auto ChangePicture = [&](int slot, int picture) {
+  auto ChangePicture = [](int slot, int picture) {
     View::Instance().SetFruitMachineSlot(slot, FileLoader::GetFile<QPixmap>(
         path + QString::number(picture) + ".png"));
   };
+  auto ChangeBorder = [](int slot, bool is_spinning) {
+    View::Instance().SetFruitMachineSlotBorder(slot, is_spinning);
+  };
 
-  spinning_ = 3;
+  for (int i = 0; i < kSlotsCount; i++) {
+    ChangeBorder(i, true);
+  }
+  spinning_ = kSlotsCount;
 
   slot_update_timer_ = new QTimer;
   connect(slot_update_timer_, &QTimer::timeout, this, [ChangePicture, this] {
-    for (int i = 2; i >= 3 - spinning_; --i) {
+    for (int i = kSlotsCount - 1; i >= kSlotsCount - spinning_; --i) {
       ChangePicture(i, Random::RandomInt(0, 8));
     }
   });
   slot_update_timer_->start(100);
 
-  static constexpr int delay[] = {2000, 3000, 4000};
+  for (int i = 0; i < kSlotsCount - 1; ++i) {
+    QTimer::singleShot(std::accumulate(delay, delay + i + 1, 0),
+                       [ChangePicture, ChangeBorder, this, i] {
+                         --spinning_;
+                         ChangeBorder(i, false);
+                         ChangePicture(i, new_slot_pics_[i]);
+                       });
+  }
 
-  QTimer::singleShot(delay[0], [ChangePicture, this] {
-    --spinning_;
-    ChangePicture(0, new_slot_pics_[0]);
-  });
-
-  QTimer::singleShot(delay[0] + delay[1], [ChangePicture, this] {
-    --spinning_;
-    ChangePicture(1, new_slot_pics_[1]);
-  });
-
-  QTimer::singleShot(delay[0] + delay[1] + delay[2],
-                     [ChangePicture, this] {
+  QTimer::singleShot(std::accumulate(delay, delay + kSlotsCount, 0),
+                     [ChangePicture, ChangeBorder, bid, this] {
+    ChangeBorder(kSlotsCount - 1, false);
+    ChangePicture(kSlotsCount - 1, new_slot_pics_[kSlotsCount - 1]);
     --spinning_;
     delete slot_update_timer_;
 
-    auto bid = View::Instance().GetFruitMachineBid();
-
-    if (new_slot_pics_[0] == new_slot_pics_[1] &&
-        new_slot_pics_[0] == new_slot_pics_[2]) {
-      UpdateMoney(5 * bid);
-      return;
-    }
-    if (new_slot_pics_[0] == new_slot_pics_[1] ||
-        new_slot_pics_[0] == new_slot_pics_[2] ||
-        new_slot_pics_[1] == new_slot_pics_[2]) {
-      UpdateMoney(2 * bid);
+    bool all_equal = true;
+    bool any_equal = false;
+    std::sort(new_slot_pics_, new_slot_pics_ + kSlotsCount);
+    for (int i = 1; i < kSlotsCount; ++i) {
+      if (new_slot_pics_[i] != new_slot_pics_[i - 1]) {
+        all_equal = false;
+      } else {
+        any_equal = true;
+      }
     }
 
-    ChangePicture(2, new_slot_pics_[2]);
+    if (all_equal) {
+      UpdateMoney(bid);
+      if (new_slot_pics_[0] == kBigWinIndex) {
+        UpdateMoney(kBigWinRewardCoef * bid);
+      } else {
+        UpdateMoney(kAllEqualRewardCoef * bid);
+      }
+    } else if (any_equal) {
+      UpdateMoney(bid);
+      UpdateMoney(kAnyEqualRewardCoef * bid);
+    }
+
     View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
   });
 }

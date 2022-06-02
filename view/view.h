@@ -10,16 +10,19 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMovie>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyle>
 #include <QTimer>
 #include <QTextEdit>
 
+#include <algorithm>
 #include <vector>
 
 #include "guest.h"
 #include "typedefs.h"
+#include "settings.h"
 
 class Model;
 class Controller;
@@ -162,11 +165,8 @@ class View : public QMainWindow {
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
-  void SetFruitMachineSlot(int index, const QPixmap& picture) {
-    auto slot = slots_[index];
-    slot->setPixmap(picture.scaled(
-        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
-  }
+  void SetFruitMachineSlot(int index, const QPixmap& picture);
+  void SetFruitMachineSlotBorder(int index, bool is_spinning);
 
   // Shop
   auto* GetStandTheWorldBuy() { return shelves_[kStandRow][kStandCol]; }
@@ -309,10 +309,10 @@ class View : public QMainWindow {
   QPushButton* quit_{};
 
   // Choose game
-  QGraphicsScene* choose_game_scene_;
-  QPushButton* continue_button_;
-  QPushButton* new_game_button_;
-  QPushButton* to_menu_from_choose_game_button_;
+  QGraphicsScene* choose_game_scene_{};
+  QPushButton* continue_button_{};
+  QPushButton* new_game_button_{};
+  QPushButton* to_menu_from_choose_game_button_{};
 
   // Settings
   QGraphicsScene* settings_scene_{};
@@ -330,26 +330,17 @@ class View : public QMainWindow {
   QPushButton* casino_exit_{};
 
   // Black Jack
-  QGraphicsScene* black_jack_scene_;
-  QSpinBox* bid_;
-  QPushButton* make_bid_;
-  QPushButton* back_to_casino_;
-  QLabel* player_money_;
-  QLabel* croupier_;
+  QGraphicsScene* black_jack_scene_{};
+  QSpinBox* bid_{};
+  QPushButton* make_bid_{};
+  QPushButton* back_to_casino_{};
+  QLabel* player_money_{};
+  QLabel* croupier_{};
   QPushButton* hit_me_{};
   QPushButton* stand_{};
   std::vector<QLabel*> croupier_cards_{};
   std::vector<QLabel*> player_cards_{};
-  QLabel* status_;
-
-  // Fruit machine
-  QGraphicsScene* fruit_machine_scene_;
-  QPushButton* exit_fruit_machine_;
-  QSpinBox* bid_fruit_machine_;
-  QPushButton* make_bid_fruit_machine_;
-  QLabel* money_;
-  QLabel* machine_;
-  QLabel* slots_[3];
+  QLabel* status_{};
 
   // Shop
   QGraphicsScene* shop_scene_;
@@ -357,4 +348,15 @@ class View : public QMainWindow {
   QLabel* shop_money_;
   std::vector<std::vector<QPushButton*>> shelves_;
   std::vector<std::vector<QLabel*>> items_;
+
+  // Fruit machine
+  QGraphicsScene* fruit_machine_scene_{};
+  QPushButton* exit_fruit_machine_{};
+  QSpinBox* bid_fruit_machine_{};
+  QPushButton* make_bid_fruit_machine_{};
+  QLabel* money_{};
+  QLabel* machine_{};
+  QLabel* all_slots_border_{};
+  QLabel* slots_[kSlotsCount]{};
+  QLabel* slots_borders_[kSlotsCount]{};
 };
