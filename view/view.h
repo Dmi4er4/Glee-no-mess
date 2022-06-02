@@ -149,11 +149,7 @@ class View : public QMainWindow {
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
-  void SetFruitMachineSlot(int index, const QPixmap& picture) {
-    auto slot = slots_[index];
-    slot->setPixmap(picture.scaled(
-        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
-  }
+  void SetFruitMachineSlot(int index, const QPixmap& picture);
 
   // Show Scene
   void ShowGame() {

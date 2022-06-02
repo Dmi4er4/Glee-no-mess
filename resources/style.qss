@@ -45,3 +45,9 @@ QLabel#in-game {
     border-style: solid;
     border-color: transparent transparent transparent rgb(134,75,192);
 }
+
+QLabel#slots {
+    border-width: 0.2ex;
+    border-style: solid;
+    border-color: rgb(134,75,192) rgb(134,75,192) rgb(134,75,192) rgb(134,75,192);
+}

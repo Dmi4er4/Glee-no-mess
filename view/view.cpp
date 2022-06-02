@@ -14,7 +14,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   ShowMainMenu();
-  // ShowCasino();
+  ShowCasino();
   show();
 }
 
@@ -53,6 +53,16 @@ void View::RequestKeyComboEnter() {
 void View::HideShortcutRequestOverlay() {
   shortcut_request_overlay_->hide();
   view_->setEnabled(true);
+}
+
+void View::SetFruitMachineSlot(int index, const QPixmap& picture) {
+  auto slot = slots_[index];
+  static auto stopped_slot_border = FileLoader::GetFile<QPixmap>(
+    ":casino/stopped_slot_border.png");
+  slot->setPixmap(stopped_slot_border.scaled(
+      slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+  slot->setPixmap(picture.scaled(
+      slot->width() * 0.5, slot->height() * 0.5, Qt::IgnoreAspectRatio));
 }
 
 void View::InitView() {
