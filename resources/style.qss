@@ -31,6 +31,10 @@ QPushButton#in-game {
     margin-right: 1ex;
 }
 
+QPushButton#in-shop {
+    background: rgba(70, 70, 70, 200);
+}
+
 QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;

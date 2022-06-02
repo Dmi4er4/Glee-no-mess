@@ -14,7 +14,8 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   InitShop();
-  ShowMainMenu();
+  // ShowMainMenu();
+  ShowShop();
   show();
 }
 
@@ -343,33 +344,41 @@ void View::InitShop() {
     height() * 0.1
   });
 
-  auto proxy_exit = shop_scene_->addWidget(
-      exit_shop_ = new QPushButton("Exit"));
+  {
+    auto proxy = shop_scene_->addWidget(new QWidget);
+    proxy->setGeometry(QRectF{
+        width() * 0.8,
+        height() * 0.85,
+        width() * 0.2,
+        height() * 0.15
+    });
+    auto form = new QHBoxLayout;
+    proxy->widget()->setLayout(form);
+    form->addWidget(exit_shop_ = new QPushButton("Exit"));
+  }
 
-  proxy_exit->setGeometry({
-      width() - width() * 0.2,
-      height() - height() * 0.1,
-      width() * 0.2,
-      height() * 0.1
-  });
+  static const size_t kWidth = static_cast<size_t>(width() * 0.3);
+  static const size_t kHeight = static_cast<size_t>(height() * 0.3);
+  static const size_t kItemWidth = kWidth / 4;
+  static const size_t kItemHeight = kHeight / 2;
 
-  static constexpr size_t kWidth = 500;
-  static constexpr size_t kHeight = 350;
+  static const QString kCost = "∰300";
 
   shelves_.resize(kShelves);
   for (int i = 0; i < kShelves; ++i) {
     shelves_[i].resize(kShelves);
     for (int j = 0; j < kShelves; ++j) {
-      auto proxy = shop_scene_->addWidget(
-          shelves_[i][j] = new QPushButton);
-      shelves_[i][j]->setHidden(true);
-
-      proxy->setGeometry({
-        200.0 + i * kWidth,
-        250.0 + j * kHeight,
-        300,
-        100
+      auto proxy = shop_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          width() * 0.1 + i * kWidth,
+          height() * 0.1 + j * kHeight + kItemHeight + kMargin,
+          kWidth / 2.0,
+          kHeight / 4.0
       });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(shelves_[i][j] = new QPushButton(kCost));
+      shelves_[i][j]->hide();
     }
   }
 
@@ -377,36 +386,45 @@ void View::InitShop() {
   for (int i = 0; i < kShelves; ++i) {
     items_[i].resize(kShelves);
     for (int j = 0; j < kShelves; ++j) {
-      auto proxy = shop_scene_->addWidget(
-          items_[i][j] = new QLabel);
-
-      proxy->setGeometry({
-         200.0 + i * kWidth,
-         70.0 + j * kHeight,
-         50,
-         50
+      auto proxy = shop_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          width() * 0.1 + i * kWidth + kItemWidth / 2,
+          height() * 0.1 + j * kHeight,
+          kItemWidth,
+          kItemHeight
       });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(items_[i][j] = new QLabel);
     }
   }
 
-  static const QString cost = "Buy: 1000";
+  const QString kInShop = "in-shop";
 
   items_[0][0]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/stand_the_world.png"));
-  shelves_[0][0]->setText(cost);
-  shelves_[0][0]->setHidden(false);
+      ":shop/stand_the_world.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                         Qt::IgnoreAspectRatio));
+  shelves_[0][0]->show();
+  shelves_[0][0]->setObjectName(kInShop);
   items_[1][0]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/ksiva.png"));
-  shelves_[1][0]->setText(cost);
-  shelves_[1][0]->setHidden(false);
+      ":shop/ksiva.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                      Qt::IgnoreAspectRatio));
+  shelves_[1][0]->show();
+  shelves_[1][0]->setObjectName(kInShop);
   items_[1][1]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/pandemic.png"));
-  shelves_[1][1]->setText(cost);
-  shelves_[1][1]->setHidden(false);
+      ":shop/pandemic.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                      Qt::IgnoreAspectRatio));
+  shelves_[1][1]->show();
+  shelves_[1][1]->setObjectName(kInShop);
   items_[2][1]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/vabank.png"));
-  shelves_[2][1]->setText(cost);
-  shelves_[2][1]->setHidden(false);
+      ":shop/vabank.png").scaled(kItemWidth,
+                                kItemHeight,
+                                Qt::IgnoreAspectRatio));
+  shelves_[2][1]->show();
+  shelves_[2][1]->setObjectName(kInShop);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {

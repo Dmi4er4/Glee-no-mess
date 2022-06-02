@@ -7,6 +7,7 @@
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
@@ -232,7 +233,10 @@ class View : public QMainWindow {
     stand_->setAttribute(Qt::WA_UnderMouse, false);
   }
 
-  void ShowShop() { view_->setScene(shop_scene_); }
+  void ShowShop() {
+    // TODO(Anrey-Kostianoy): setAttribute to all buttons
+    view_->setScene(shop_scene_);
+  }
 
   void ShowChooseGame() {
     view_->setScene(choose_game_scene_);

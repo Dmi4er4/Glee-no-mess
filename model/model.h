@@ -57,7 +57,7 @@ class Model : public QObject {
   void AddTime(size_t time);
   bool HasItem(const QString& name);
 
-  static constexpr int32_t kCost = 1000;
+  static constexpr int32_t kCost = 300;
 
   void BuyAddIgnoreFirstMistakeItem();
   void BuyTimeItem();
