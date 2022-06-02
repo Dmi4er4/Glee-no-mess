@@ -32,10 +32,16 @@ class Model : public QObject {
   void IncreaseErrorsCount();
 
   void StartNewDay();
+
+  // Items
+
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();
-  void UpdateMistake();
+  void AddAllInItem();
+  void AddReduceGuestsItem();
 
+  // TODO(Adamenko-Vladislav) Items must do something
+  void UpdateMistake();
   void UpdateTimeLeft() {
     for (const auto& item : all_items) {
       item->TimeTrigger();
@@ -50,6 +56,13 @@ class Model : public QObject {
 
   void AddTime(size_t time);
   bool HasItem(const QString& name);
+
+  static constexpr int32_t kCost = 1000;
+
+  void BuyAddIgnoreFirstMistakeItem();
+  void BuyTimeItem();
+  void BuyAllInItem();
+  void BuyReduceGuestsItem();
 
   // Sound
   bool IsSoundOn() {

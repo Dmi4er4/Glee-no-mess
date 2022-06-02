@@ -80,6 +80,8 @@ void Model::StartNewDay() {
   guest_left_ = guest_limit_;
   was_added_time_ = false;
 
+
+  // TODO(Adamenko-Vladislav) If you have ReduceGuestsItem, kQueueLength * 0.8
   queue_.clear();
   for (int i = 0; i < std::min(guest_limit_ - 1, kQueueLength); ++i) {
     queue_.emplace_back(std::make_unique<Guest>());
@@ -141,7 +143,11 @@ void Model::InitSettings() {
   for (const auto& property_name : {kMoney,
                                     kSound,
                                     kDifficulty,
-                                    kExitShortcut}) {
+                                    kExitShortcut,
+                                    kIgnoreFirstMistake,
+                                    kAddTime,
+                                    kAllin,
+                                    kReduceGuest}) {
     InitSettings(file, property_name);
   }
   View::Instance().SetDifficulty(
@@ -154,6 +160,23 @@ void Model::InitSettings() {
       &View::Instance());
   View::Instance().SetPlayerMoney(settings_->value(kMoney).toInt());
   View::Instance().SetPlayerMaxBid(settings_->value(kMoney).toInt());
+
+  if (settings_->value(kIgnoreFirstMistake).toBool()) {
+    View::Instance().HideKsive();
+    AddIgnoreFirstMistakeItem();
+  }
+  if (settings_->value(kAddTime).toBool()) {
+    View::Instance().HideStandTheWorld();
+    AddTimeItem();
+  }
+  if (settings_->value(kAllin).toBool()) {
+    View::Instance().HideVabank();
+    AddAllInItem();
+  }
+  if (settings_->value(kReduceGuest).toBool()) {
+    View::Instance().HidePandemic();
+    AddReduceGuestsItem();
+  }
 }
 
 void Model::InitSettings(const QJsonDocument& json, const QString& property) {
@@ -322,5 +345,57 @@ void Model::StartFruitMachineGame() {
   }
   if (slot0 == slot1 || slot0 == slot2 || slot1 == slot2) {
     UpdateMoney(2 * bid);
+  }
+}
+
+void Model::AddAllInItem() {
+  if (!HasItem(kAllin)) {
+    all_items.emplace_back(new Item(kAllin));
+  }
+}
+
+void Model::AddReduceGuestsItem() {
+  if (!HasItem(kReduceGuest)) {
+    all_items.emplace_back(new Item(kReduceGuest));
+  }
+}
+
+void Model::BuyAddIgnoreFirstMistakeItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddIgnoreFirstMistakeItem();
+    View::Instance().HideKsive();
+    settings_->setValue(kIgnoreFirstMistake, "1");
+  }
+}
+
+void Model::BuyTimeItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddTimeItem();
+    View::Instance().HideStandTheWorld();
+    settings_->setValue(kAddTime, "1");
+  }
+}
+
+void Model::BuyAllInItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddAllInItem();
+    View::Instance().HideVabank();
+    settings_->setValue(kAllin, "1");
+  }
+}
+
+void Model::BuyReduceGuestsItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddReduceGuestsItem();
+    View::Instance().HidePandemic();
+    settings_->setValue(kReduceGuest, "1");
   }
 }

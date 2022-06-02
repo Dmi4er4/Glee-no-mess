@@ -14,8 +14,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   InitShop();
-  // ShowMainMenu();
-  ShowShop();
+  ShowMainMenu();
   show();
 }
 
@@ -405,21 +404,24 @@ void View::InitShop() {
       });
     }
   }
+
+  static const QString cost = "Buy: 1000";
+
   items_[0][0]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/stand_the_world.png"));
-  shelves_[0][0]->setText("Buy: 50");
+  shelves_[0][0]->setText(cost);
   shelves_[0][0]->setHidden(false);
   items_[1][0]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/ksiva.png"));
-  shelves_[1][0]->setText("Buy: 50");
+  shelves_[1][0]->setText(cost);
   shelves_[1][0]->setHidden(false);
   items_[1][1]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/pandemic.png"));
-  shelves_[1][1]->setText("Buy: 50");
+  shelves_[1][1]->setText(cost);
   shelves_[1][1]->setHidden(false);
   items_[2][1]->setPixmap(FileLoader::GetFile<QPixmap>(
       ":shop/vabank.png"));
-  shelves_[2][1]->setText("Buy: 50");
+  shelves_[2][1]->setText(cost);
   shelves_[2][1]->setHidden(false);
 }
 

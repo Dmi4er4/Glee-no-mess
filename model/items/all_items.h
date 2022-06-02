@@ -8,3 +8,5 @@
 
 const QString kIgnoreFirstMistake = "ignore_first_mistake";
 const QString kAddTime = "add_time";
+const QString kAllin = "all_in";
+const QString kReduceGuest = "reduce_guest";

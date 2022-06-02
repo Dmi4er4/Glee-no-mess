@@ -174,6 +174,26 @@ class View : public QMainWindow {
   auto* GetPandemicBuy() { return shelves_[1][1]; }
   auto* GetVabankBuy() { return shelves_[2][1]; }
 
+  void HideStandTheWorld() {
+    shelves_[0][0]->setHidden(true);
+    items_[0][0]->setHidden(true);
+  }
+
+  void HideKsive() {
+    shelves_[1][0]->setHidden(true);
+    items_[1][0]->setHidden(true);
+  }
+
+  void HidePandemic() {
+    shelves_[1][1]->setHidden(true);
+    items_[1][1]->setHidden(true);
+  }
+
+  void HideVabank() {
+    shelves_[2][1]->setHidden(true);
+    items_[2][1]->setHidden(true);
+  }
+
   // Show Scene
   void ShowGame() { view_->setScene(game_scene_); }
   void ShowMainMenu() { view_->setScene(menu_scene_); }
