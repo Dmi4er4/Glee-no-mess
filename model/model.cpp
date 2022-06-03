@@ -361,17 +361,17 @@ QJsonObject Model::CurrentSave() {
 }
 
 void Model::DayPassed() {
-  View::Instance().ShowMainMenu();
   UpdateMoney(+level_->GetCurrentDay().reward_);
   if (!level_->NextDay()) {
     ++current_level_index_;
   }
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
+  View::Instance().GameOverShow();
 }
 
 void Model::DayFailed() {
-  View::Instance().ShowMainMenu();
   UpdateMoney(-level_->GetCurrentDay().penalty_);
+  View::Instance().GameOverShow();
 }
 
 void Model::StartDay() {

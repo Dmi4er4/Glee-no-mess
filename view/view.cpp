@@ -161,6 +161,25 @@ void View::InitGameScene() {
     game_pause_overlay->setStyleSheet("background: rgba(0, 0, 0, 100)");
     game_pause_overlay->hide();
   }
+
+  {
+    game_over_overlay_ = new QWidget;
+    auto proxy = game_scene_->addWidget(game_over_overlay_);
+    proxy->setGeometry(QRect{0, 0, width(), height()});
+    auto layout = new QVBoxLayout;
+    game_over_overlay_->setLayout(layout);
+
+    to_main_menu_ = new QPushButton("   Back to main menu   ");
+    to_casino_ = new QPushButton("Casino");
+    to_shop_ = new QPushButton("Shop");
+    layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
+
+    layout->addWidget(to_main_menu_);
+    layout->addWidget(to_casino_);
+    layout->addWidget(to_shop_);
+    game_over_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
+    game_over_overlay_->hide();
+  }
 }
 
 void View::InitMainMenu() {
