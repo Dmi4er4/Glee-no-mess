@@ -117,6 +117,9 @@
         <file>shop/vabank.png</file>
     </qresource>
     <qresource>
-        <file>sound_effects/gachi_level.wav</file>
+        <file>sound_effects/gachi_level.mp3</file>
+        <file>sound_effects/bsu_level.mp3</file>
+        <file>sound_effects/casino.mp3</file>
+        <file>sound_effects/menu.mp3</file>
     </qresource>
 </RCC>

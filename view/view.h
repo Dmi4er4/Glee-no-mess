@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QAudioOutput>
 #include <QApplication>
 #include <QDirIterator>
 #include <QFontDatabase>
@@ -10,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMediaPlayer>
 #include <QMovie>
 #include <QPushButton>
 #include <QSoundEffect>
@@ -365,10 +367,10 @@ class View : public QMainWindow {
   QLabel* slots_borders_[kSlotsCount]{};
 
   // All sound effects
-  QSoundEffect* menu_sound_;
-  QSoundEffect* settings_sound_;
-  QSoundEffect* casino_sound_;
-  QSoundEffect* shop_sound_;
-  QSoundEffect* gachi_level_sound_;
-  QSoundEffect* bsu_level_sound_;
+  QMediaPlayer* gachi_level_sound_;
+  QMediaPlayer* menu_sound_;
+  QMediaPlayer* settings_sound_;
+  QMediaPlayer* casino_sound_;
+  QMediaPlayer* shop_sound_;
+  QMediaPlayer* bsu_level_sound_;
 };

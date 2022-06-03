@@ -557,12 +557,26 @@ void View::InitShop() {
 }
 
 void View::ManageSounds() {
-  // gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.wav"));
-  gachi_level_sound_->setSource(QUrl(":sound_effects/gachi_level.wav"));
-  gachi_level_sound_->setLoopCount(QSoundEffect::Infinite);
-  gachi_level_sound_->setVolume(1.0f);
-  // gachi_level_sound_->setMuted(true);
-  gachi_level_sound_->setMuted(false);
+  {
+    gachi_level_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    gachi_level_sound_->setAudioOutput(audioOutput);
+    connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.mp3"));
+    audioOutput->setVolume(50);
+    gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
+    gachi_level_sound_->play();
+  }
+
+  {
+    bsu_level_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    bsu_level_sound_->setAudioOutput(audioOutput);
+    connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.mp3"));
+    audioOutput->setVolume(50);
+    bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
+  }
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
