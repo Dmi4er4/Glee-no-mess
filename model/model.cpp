@@ -4,62 +4,42 @@
 
 #include "file_loader.h"
 #include "view.h"
+#include "controller.h"
 
 Model::Model() {
-  day_timer_ = new QTimer(this);
-  day_timer_->setInterval(1000);
-
   settings_ = new QSettings("GameMasters", "Glee-no-mess");
+  ReadLevels();
   InitSettings();
-  UpdateDifficultySettings();
-  ConnectSignals();
 }
 
 void Model::Permit() {
-  // TODO(Andrey-Kostianoy): Compare with bad characteristics
-  if (!Instance().current_guest_->IsMale()) {
+  auto current_dude = queue_.front();
+  if (!current_dude->IsGood()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
 }
 
 void Model::Reject() {
-  // TODO(Andrey-Kostianoy): Compare with bad characteristics
-  if (Instance().current_guest_->IsMale()) {
+  auto current_dude = queue_.front();
+  if (!current_dude->IsGood()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
 }
 
 void Model::ShiftQueue() {
-  guest_left_--;
-  View::Instance().SetGuestsLeft(guest_left_);
-  if (guest_left_ == 0) {
-    DayPassed();
-    return;
-  }
-
-  current_guest_ = queue_.front();
+  queue_.front()->GetSprite()->hide();
   queue_.pop_front();
-  int current_day = LoadSettingsDay();
-
-  if (guest_left_ > kQueueLength) {
-    queue_.push_back(level_.GetKthGuestInDay(
-        guest_limit_ - (guest_left_ - kQueueLength), current_day));
-  }
-
-  for (int i = 0; i < queue_.size(); ++i) {
-    queue_[i]->SetIndex(i);
-  }
-  current_guest_->SetActive();
+  Controller::Instance().StartAnimation();
 }
 
 void Model::IncreaseErrorsCount() {
-  errors_count_++;
-  if (errors_count_ >= errors_limit_) {
+  level_->IncrementMistakes();
+  if (level_->DayFailed()) {
     DayFailed();
   } else {
-    View::Instance().SetErrorsCount(errors_count_);
+    View::Instance().SetLivesCount(level_->GetLives());
   }
 }
 
@@ -68,44 +48,12 @@ Model& Model::Instance() {
   return instance;
 }
 
-void Model::UpdateMistake() {
-  errors_count_++;
-  for (const auto& item : all_items) {
-    item->MistakeTrigger();
-  }
-  is_first_mistake_ = false;
-  // TODO(Adamenko-Vladislav)
-}
-
-void Model::StartNewDay() {
-  errors_count_ = 0;
-  is_first_mistake_ = true;
-  time_left_ = time_limit_;
-  guest_left_ = guest_limit_;
-  was_added_time_ = false;
-
-  int current_day = LoadSettingsDay();
-
-  queue_.clear();
-  for (int i = 0; i < std::min<size_t>(guest_limit_ - 1, kQueueLength); ++i) {
-    queue_.push_back(level_.GetKthGuestInDay(i + 1, current_day));
-    queue_.back()->SetIndex(i);
-  }
-  current_guest_ = level_.GetKthGuestInDay(0, current_day);
-  current_guest_->SetActive();
-
-  day_timer_->start();
-}
-
 void Model::AddTime(size_t time) {
-  if (!was_added_time_) {
-    time_left_ += time;
-    was_added_time_ = true;
-  }
+  level_->AddTime(time);
 }
 
 bool Model::HasItem(const QString& name) {
-  for (const auto& item : all_items) {
+  for (const auto& item : all_items_) {
     if (item->GetName() == name) {
       return true;
     }
@@ -115,31 +63,14 @@ bool Model::HasItem(const QString& name) {
 
 void Model::AddTimeItem() {
   if (!HasItem(kAddTime)) {
-    all_items.emplace_back(new TimeItem);
+    all_items_.emplace_back(new TimeItem);
   }
 }
 
 void Model::AddIgnoreFirstMistakeItem() {
   if (!HasItem(kIgnoreFirstMistake)) {
-    all_items.emplace_back(new IgnoreFirstMistakeItem);
+    all_items_.emplace_back(new IgnoreFirstMistakeItem);
   }
-}
-
-QString Model::GetTimeLeft() const {
-  size_t minutes = time_left_ / kSeconds;
-  size_t seconds = time_left_ % kSeconds;
-  QString result;
-  result += static_cast<char>('0' + minutes);
-  result += ":";
-
-  if (seconds > 9) {
-    result += static_cast<char>('0' + seconds / 10);
-    result += static_cast<char>('0' + seconds % 10);
-  } else {
-    result += '0';
-    result += static_cast<char>('0' + seconds);
-  }
-  return result;
 }
 
 void Model::InitSettings() {
@@ -148,7 +79,7 @@ void Model::InitSettings() {
                                     kSound,
                                     kDifficulty,
                                     kExitShortcut}) {
-    InitSettings(file, property_name);
+    InitSetting(file, property_name);
   }
   View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
@@ -162,71 +93,10 @@ void Model::InitSettings() {
   View::Instance().SetPlayerMaxBid(settings_->value(kMoney).toInt());
 }
 
-void Model::InitSettings(const QJsonDocument& json, const QString& property) {
+void Model::InitSetting(const QJsonDocument& json, const QString& property) {
   if (!settings_->contains(property)) {
     settings_->setValue(property, json[property]);
   }
-}
-
-void Model::UpdateDifficultySettings() {
-  auto file = FileLoader::GetFile<QJsonDocument>(kDifficultySettings);
-  auto difficulty = settings_->value(kDifficulty).toString();
-  errors_limit_ = file[difficulty][kErrorsCount].toInt();
-  guest_limit_ = file[difficulty][kGuestCount].toInt();
-  time_limit_ = file[difficulty][kTime].toInt();
-
-  level_.~Level();
-  new (&level_) Level(kLevels, "club_level", guest_limit_);
-}
-
-void Model::DayPassed() {
-  // TODO(Kostianoy-Andrey): add here message for view
-  day_timer_->stop();
-
-  int current_day = LoadSettingsDay();
-  if (current_day < level_.GetDays()) {
-    current_day++;
-  }
-  UpdateSettingsDay(current_day);
-
-  View::Instance().ShowMainMenu();
-}
-
-void Model::DayFailed() {
-  // TODO(Kostianoy-Andrey): add here message for view
-  day_timer_->stop();
-  View::Instance().ShowMainMenu();
-}
-
-int Model::LoadSettingsDay() const {
-  // TODO(Kostianoy-Andrey): format in settings "hardness_day"
-  QString key = settings_->value(kDifficulty).toString() + "_day";
-  if (!settings_->contains(key)) {
-    settings_->setValue(key, 1);
-  }
-  return settings_->value(key).toInt();
-}
-
-void Model::UpdateSettingsDay(int new_day) {
-  // TODO(Kostianoy-Andrey): format in settings "hardness_day"
-  QString key = settings_->value(kDifficulty).toString() + "_day";
-  settings_->setValue(key, new_day);
-}
-
-QString Model::LoadSettingsLevel() const {
-  // TODO(Kostianoy-Andrey): format in settings "hardness_level"
-  QString key = settings_->value(kDifficulty).toString() + "_level";
-  if (!settings_->contains(key)) {
-    QJsonDocument source = FileLoader::GetFile<QJsonDocument>(kLevels);
-    settings_->setValue(key, source["club_level"]["name"]);
-  }
-  return settings_->value(key).toString();
-}
-
-void Model::UpdateSettingsLevel(const QString& new_level) {
-  // TODO(Kostianoy-Andrey): format in settings "hardness_level"
-  QString key = settings_->value(kDifficulty).toString() + "_level";
-  settings_->setValue(key, new_level);
 }
 
 void Model::ChangeDifficulty() {
@@ -239,7 +109,6 @@ void Model::ChangeDifficulty() {
   }
   View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
-  UpdateDifficultySettings();
 }
 
 void Model::SetExitShortcut(const QString& keys) {
@@ -273,20 +142,6 @@ void Model::ResetDefaults() {
   View::Instance().SetExitShortcut(default_exit_shortcut);
   View::Instance().SetSound(default_sound);
   exit_shortcut_->setKey(QKeySequence(default_exit_shortcut));
-  UpdateDifficultySettings();
-}
-
-void Model::ConnectSignals() {
-  connect(day_timer_, &QTimer::timeout,
-          this, [this] () {
-            time_left_--;
-            QString new_visible_time = GetTimeLeft();
-            View::Instance().SetTimeLeft(new_visible_time);
-
-            if (time_left_ == 0) {
-              DayFailed();
-            }
-          });
 }
 
 void Model::StartNewGameBlackJack() {
@@ -300,7 +155,7 @@ void Model::StartNewGameBlackJack() {
   BlackJack::Instance().StartNewGame(bid);
 }
 
-void Model::UpdateMoney(int delta) {
+void Model::UpdateMoney(money_t delta) {
   money_t money = settings_->value(kMoney).toInt();
   money += delta;
   settings_->setValue(kMoney, QString::number(money));
@@ -369,4 +224,101 @@ void Model::StartFruitMachineGame() {
     ChangePicture(2, new_slot_pics_[2]);
     View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
   });
+}
+
+void Model::ReadLevels() {
+  level_names_.clear();
+  auto array = FileLoader::GetFile<QJsonDocument>(":levels/levels_list.json");
+  for (auto array_item : array.array()) {
+    level_names_.push_back(array_item.toString());
+  }
+  level_ = std::make_unique<Level>(level_names_[current_level_index_ = 0],
+                                   GetDifficulty());
+}
+
+QString Model::LoadSettingsLevel() {
+  auto json = CurrentSave();
+  if (json.isEmpty()) {
+    return "";
+  }
+  return json["level"].toString();
+}
+
+QString Model::LoadSettingsDay() {
+  auto json = CurrentSave();
+  return json["day"].toString();
+}
+
+QJsonObject Model::CurrentSave() {
+  auto key_of_save = "save_" + GetDifficulty();
+  return settings_->value(key_of_save).toJsonObject();
+}
+
+void Model::DayFailed() {
+  View::Instance().ShowMainMenu();
+  UpdateMoney(-level_->GetCurrentDay().penalty_);
+}
+
+void Model::StartDay() {
+  queue_.clear();
+  Controller::Instance().StartAnimation();
+  View::Instance().ShowGame();
+}
+
+void Model::StartNewGame() {
+  current_level_index_ = 0;
+  level_ = std::make_unique<Level>(level_names_.front(), GetDifficulty());
+  StartDay();
+}
+
+void Model::ContinueGame() {
+  if (!TryLoadSave()) {
+    StartNewGame();
+  }
+}
+
+bool Model::TryLoadSave() {
+  auto json = CurrentSave();
+  if (json.isEmpty()) {
+    return false;
+  }
+  auto level_name = json["level"].toString();
+  current_level_index_ = std::find(level_names_.begin(), level_names_.end(),
+                                   level_name) - level_names_.begin();
+  level_ = std::make_unique<Level>(level_name, GetDifficulty());
+  level_->InitState(json["day"].toInt());
+  level_->GenerateGuests();
+  StartDay();
+  return true;
+}
+
+void Model::SaveGame(const QString& level_name, int day_index) {
+  auto key_save = "save_" + GetDifficulty();
+  QJsonObject json;
+  json["level"] = level_name;
+  json["day"] = day_index;
+  settings_->setValue(key_save, json);
+}
+
+void Model::DoAnimation(int millis) {
+  if (!Controller::Instance().IsPlayingAnimation()) {
+    return;
+  }
+  for (int i = 0; i < queue_.size(); ++i) {
+    queue_[i]->DoAnimation(millis, i);
+  }
+  if (!queue_.empty() && queue_.front()->GetAnimation()->Finished()) {
+    Controller::Instance().StopAnimation();
+    return;
+  }
+  auto next = level_->GetNextGuest();
+  if (next != nullptr && (queue_.empty() ||
+      queue_.back()->GetAnimation()->GetTimePassed() >=
+      level_->GetQueueThreshold())) {
+    queue_.push_back(next);
+    auto pushed = queue_.back();
+    level_->ShiftNextGuest();
+    pushed->SetAnimation(level_->GetPath() + "animation_queue.json");
+    pushed->GetSprite()->show();
+  }
 }

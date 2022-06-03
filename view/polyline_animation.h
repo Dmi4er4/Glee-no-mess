@@ -12,14 +12,14 @@
 
 class PolylineAnimation {
  public:
-  PolylineAnimation(const QString& filename,
-                    QWidget* host,
-                    double seconds = 1);
+  PolylineAnimation(const QString& filename);
 
   void Do(int millis, double max_progress = 1);
   void Do(int millis, int index_in_queue);
   QPoint Position() const;
   bool Finished() const;
+
+  auto GetTimePassed() { return static_cast<int>(progress_ * time_ms_); }
 
  private:
   std::vector<QPoint> waypoints_;
@@ -29,7 +29,6 @@ class PolylineAnimation {
   std::vector<double> segments_;
   std::vector<double> prefix_sums_;
   double progress_;
-  QWidget* host_;
 };
 
 #endif  // VIEW_POLYLINE_ANIMATION_H_

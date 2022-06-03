@@ -3,18 +3,17 @@
 #include "view.h"
 
 PolylineAnimation::PolylineAnimation(
-    const QString& filename,
-    QWidget* host,
-    double seconds)
+    const QString& filename)
     : length_(0),
-      time_ms_(seconds * 1000),
-      progress_(0),
-      host_(host) {
-  auto parts = FileLoader::GetFile<QJsonDocument>(filename).array();
+      progress_(0) {
+  auto json = FileLoader::GetFile<QJsonDocument>(filename);
+  time_ms_ = json["duration_millis"].toInt();
+  auto parts = json["coord"].toArray();
+  auto size = View::Instance().size();
   for (auto part : parts) {
     for (auto point : part.toArray()) {
-      auto x = point[0].toDouble() * host->width();
-      auto y = point[1].toDouble() * host->height();
+      auto x = point[0].toDouble() * size.width();
+      auto y = point[1].toDouble() * size.height();
       waypoints_.emplace_back(x, y);
     }
     stops_.push_back(waypoints_.size() - 1);
@@ -32,7 +31,7 @@ PolylineAnimation::PolylineAnimation(
     length_ += r;
     segments_.push_back(r);
   }
-  prefix_sums_.resize(segments_.size() + 1);
+  prefix_sums_.resize(waypoints_.size());
   std::partial_sum(segments_.begin(),
                    segments_.end(),
                    prefix_sums_.begin() + 1);
@@ -46,7 +45,7 @@ void PolylineAnimation::Do(int millis, double max_progress) {
 void PolylineAnimation::Do(int millis, int index_in_queue) {
   auto index_in_polyline =
       stops_[std::max(0UL, stops_.size() - 1 - index_in_queue)];
-  Do(millis, prefix_sums_[index_in_polyline]);
+  Do(millis, prefix_sums_[index_in_polyline] / length_);
 }
 
 bool PolylineAnimation::Finished() const {

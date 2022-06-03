@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QJsonDocument>
 #include <QKeySequence>
 #include <QObject>
 #include <QSettings>
@@ -8,6 +9,7 @@
 
 #include <algorithm>
 #include <deque>
+#include <queue>
 #include <memory>
 #include <vector>
 
@@ -28,23 +30,24 @@ class Model : public QObject {
 
   void Permit();
   void Reject();
-  void ShiftQueue();
   void IncreaseErrorsCount();
+  QString LoadSettingsLevel();
+  QString LoadSettingsDay();
+  QJsonObject CurrentSave();
+  void DoAnimation(int millis);
+  void StartDay();
+  void StartNewGame();
+  void ContinueGame();
+  void DayFailed();
+  bool TryLoadSave();
+  void ShiftQueue();
 
-  void StartNewDay();
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();
-  void UpdateMistake();
 
   void UpdateTimeLeft() {
-    for (const auto& item : all_items) {
+    for (const auto& item : all_items_) {
       item->TimeTrigger();
-    }
-  }
-
-  void ForgiveFirstMistake() {
-    if (is_first_mistake_) {
-      errors_count_--;
     }
   }
 
@@ -76,54 +79,32 @@ class Model : public QObject {
   void StartNewGameBlackJack();
 
   // Money
-  void UpdateMoney(int delta);
+  void UpdateMoney(money_t delta);
 
   // Fruit Machine
   void StartFruitMachineGame();
-  size_t GetGuestsLeft() const { return guest_left_; }
-  QString GetTimeLeft() const;
-  QTimer* GetDayTimer() const { return day_timer_; }
-
-  void ConnectSignals();
-
-  int LoadSettingsDay() const;
-  void UpdateSettingsDay(int new_day);
-
-  QString LoadSettingsLevel() const;
-  void UpdateSettingsLevel(const QString& new_level);
-
-  void DayPassed();
-  void DayFailed();
 
  private:
   Model();
 
+  void ReadLevels();
+  void SaveGame(const QString& level_name, int day_index);
   void InitSettings();
-  void InitSettings(const QJsonDocument&, const QString&);
-  void UpdateDifficultySettings();
+  void InitSetting(const QJsonDocument& json, const QString& property);
 
-  size_t errors_count_{0};
-  size_t time_left_{0};
-  size_t guest_left_{0};
-  bool was_added_time_{false};
-  bool is_first_mistake_{true};
+  std::vector<std::unique_ptr<Item>> all_items_;
 
-  size_t errors_limit_;
-  size_t guest_limit_;
-  size_t time_limit_;
-
-  Level level_{kLevels, "club_level", 0};
-
-  std::deque<std::shared_ptr<Guest>> queue_;
-  std::shared_ptr<Guest> current_guest_;
-  std::vector<std::unique_ptr<Item>> all_items;
-
-  QShortcut* exit_shortcut_;
+  QShortcut* exit_shortcut_{};
   QSettings* settings_;
-  QTimer* day_timer_;
+
+  // Level
+  std::unique_ptr<Level> level_;
+  std::vector<QString> level_names_;
+  int current_level_index_{};
+  std::deque<Guest*> queue_;
 
   // Fruit Machine
-  int spinning_;
-  QTimer* slot_update_timer_;
-  int new_slot_pics_[3];
+  int spinning_{};
+  QTimer* slot_update_timer_{};
+  int new_slot_pics_[3]{};
 };

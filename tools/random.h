@@ -27,6 +27,12 @@ class Random {
             Instance().mersenne_twister_));
   }
 
+  template<class T>
+  static T VectorChoose(const std::vector<T>& vector) {
+    auto index = RandomInt(0, vector.size() - 1);
+    return vector[index];
+  }
+
   std::mt19937 GetRandom() { return mersenne_twister_; }
 
  private:

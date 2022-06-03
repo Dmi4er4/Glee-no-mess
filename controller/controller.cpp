@@ -32,13 +32,18 @@ void Controller::keyPressEvent(QKeyEvent* event) {
 }
 
 bool Controller::eventFilter(QObject *obj, QEvent *event) {
-  if (obj == static_cast<QObject*>(View::Instance().GetContinueButton())) {
+  auto continue_button = View::Instance().GetContinueButton();
+  if (obj == static_cast<QObject*>(continue_button)) {
     if (event->type() == QEvent::Enter) {
-      View::Instance().GetContinueButton()->setText(
-          "Level: " + Model::Instance().LoadSettingsLevel() +
-          "\nDay: " + QString::number(Model::Instance().LoadSettingsDay()));
+      auto level_name = Model::Instance().LoadSettingsLevel();
+      if (!level_name.isEmpty()) {
+        auto day_number = Model::Instance().LoadSettingsDay();
+        continue_button->setText("Level: " + level_name + "\nDay" + day_number);
+      } else {
+        continue_button->setText("New Game");
+      }
     } else if (event->type() == QEvent::Leave) {
-      View::Instance().GetContinueButton()->setText("Continue");
+      continue_button->setText("Continue");
     }
   }
   return QObject::eventFilter(obj, event);
@@ -154,32 +159,18 @@ void Controller::ConnectFruitMachineSignals() {
 void Controller::ConnectChooseGameSignals() {
   connect(View::Instance().GetContinueButton(),
           &QPushButton::released,
-          this,
-          &Controller::ContinueGame);
+          &Model::Instance(),
+          &Model::ContinueGame);
   connect(View::Instance().GetNewGameButton(),
           &QPushButton::released,
-          this,
-          &Controller::StartNewGame);
+          &Model::Instance(),
+          &Model::StartNewGame);
   connect(View::Instance().GetToMenuFromChooseGameButton(),
           &QPushButton::released,
           &View::Instance(),
           &View::ShowMainMenu);
 
   View::Instance().GetContinueButton()->installEventFilter(this);
-}
-
-void Controller::StartNewGame() {
-  Model::Instance().UpdateSettingsDay(1);
-  ContinueGame();
-}
-
-void Controller::ContinueGame() {
-  Model::Instance().StartNewDay();
-  View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
-  View::Instance().SetDay(Model::Instance().LoadSettingsDay());
-  View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
-  View::Instance().SetErrorsCount(0);
-  View::Instance().ShowGame();
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {
@@ -221,4 +212,12 @@ void Controller::Quit() {
   if (!is_editing_keybinding_) {
     View::Instance().close();
   }
+}
+
+void Controller::StartAnimation() {
+  is_playing_animation_ = true;
+}
+
+void Controller::StopAnimation() {
+  is_playing_animation_ = false;
 }

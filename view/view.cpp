@@ -4,6 +4,7 @@
 #include "file_loader.h"
 #include "settings.h"
 #include "polyline_animation.h"
+#include "model.h"
 
 View::View() {
   InitView();
@@ -25,6 +26,7 @@ void View::SetTimer() {
 }
 
 void View::ChangeFrame() {
+  Model::Instance().DoAnimation(kFrameDelay);
   if (++bg_frame_index_ == background_frames_.size()) {
     bg_frame_index_ = 0;
   }
@@ -74,7 +76,7 @@ void View::InitGameScene() {
   static const QString kInGameObjects = "in-game";
   game_scene_ = new QGraphicsScene;
 
-  LoadBackgroundFrames(":/levels/club_level/background");
+  LoadBackgroundFrames(":/levels/gachi_club/background");
   game_background_ = game_scene_->addPixmap(background_frames_.first());
 
   auto proxy = game_scene_->addWidget(new QWidget);
@@ -111,7 +113,7 @@ void View::InitGameScene() {
     height() * 0.1
   });
 
-  SetErrorsCount(0);
+  SetLivesCount(0);
   SetTimer();
 }
 
@@ -358,4 +360,10 @@ QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
   auto* res = new QLabel(text);
   res->setAlignment(align);
   return res;
+}
+
+void View::AddGuestSprite(Guest* guest, const QPixmap& pixmap) {
+  auto item = game_scene_->addPixmap(
+      pixmap.scaled(width() * 0.1, height() * 0.23, Qt::KeepAspectRatio));
+  guest->SetSprite(item);
 }

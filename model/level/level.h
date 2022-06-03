@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QFile>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QJsonObject>
@@ -11,54 +12,59 @@
 #include <memory>
 #include <vector>
 
-#include "bad_characteristic.h"
 #include "file_loader.h"
 #include "guest.h"
 #include "typedefs.h"
+#include "settings.h"
 
 class Level {
  public:
-  explicit Level(const QString& file_name,
-                 const QString& level_name,
-                 const guests_t guests_count);
+  Level(const QString& level_name, const QString& difficulty);
 
-  days_t GetDays() const {
-    return days_;
-  }
+  void InitState(int day = 0);
+  void GenerateGuests();
+  void SetDay(int day);
+  bool NextDay();
+  auto GetCurrentDay() { return days_[state_.current_day_]; }
+  void AddTime(int time);
+  void DecrementTimeLeft() { --state_.seconds_left_; }
+  void IncrementMistakes() { ++state_.errors_count_; }
+  bool DayFailed() { return state_.errors_count_ >= errors_max_; }
+  Guest* GetNextGuest();
+  void ShiftNextGuest();
 
-  money_t GetMoneyPerDayCount() const {
-    return money_;
-  }
-
-  const std::vector<std::shared_ptr<Guest>>& GetAllGuestsInDay(int day) const {
-    return all_guests_[day - 1];
-  }
-
-  const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number,
-                                                 int day) const {
-    return all_guests_[day - 1][visitor_number];
-  }
-
-  std::shared_ptr<BadCharacteristic> GetBadCharacteristicsInDay(int day) const {
-    return characteristic_[day - 1];
-  }
-
-  const std::vector<std::shared_ptr<BadCharacteristic>>&
-    GetAllBadCharacteristics() const {
-      return characteristic_;
-  }
+  auto GetTimeLeft() { return state_.seconds_left_; }
+  auto GetLives() { return errors_max_ - state_.errors_count_; }
+  auto GetQueueThreshold() { return queue_threshold_millis_; }
+  auto GetPath() { return path_; }
 
  private:
-  Level(const QJsonDocument& source,
-        const QString& level_name,
-        const guests_t guests_count);
+  struct Day {
+    QString intro_;
+    QSet<QString> allowed_dudes_;
+    int reward_;
+    int penalty_;
+  };
+  struct State {
+    int current_day_;
+    int errors_count_;
+    int seconds_left_;
+    int guests_left_;
+    bool was_added_time_;
+    int next_guest_index_;
+  };
 
-  void GenerateGuests();
+  QString path_;
+  QString level_name_;
+  QString level_intro_;
+  int errors_max_{};
+  int duration_seconds_{};
+  int guests_max_{};
+  std::vector<QString> traits_;
+  std::vector<QString> dudes_;
+  int queue_threshold_millis_;
 
-  const guests_t guests_count_;
-  const characteristics_t characteristics_count_;
-  const days_t days_;
-  const money_t money_;
-  std::vector<std::vector<std::shared_ptr<Guest>>> all_guests_;
-  std::vector<std::shared_ptr<BadCharacteristic>> characteristic_;
+  std::vector<Day> days_;
+  State state_{};
+  std::vector<std::unique_ptr<Guest>> guests_;
 };

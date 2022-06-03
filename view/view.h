@@ -40,8 +40,10 @@ class View : public QMainWindow {
   // Game
   bool IsGame() const { return view_->scene() == game_scene_; }
 
-  void SetErrorsCount(size_t value) {
-    errors_->setText("Errors: " + QString::number(value));
+  void AddGuestSprite(Guest* guest, const QPixmap& pixmap);
+
+  void SetLivesCount(size_t value) {
+    errors_->setText("Lives: " + QString::number(value));
   }
 
   void SetGuestsLeft(size_t value) {
@@ -62,7 +64,7 @@ class View : public QMainWindow {
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
   auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
-  auto GetScene() const { return game_scene_; }
+  auto GetGameScene() const { return game_scene_; }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }

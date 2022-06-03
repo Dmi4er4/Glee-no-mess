@@ -20,6 +20,10 @@ class Controller : public QObject {
 
   bool eventFilter(QObject *obj, QEvent *event) override;
 
+  void StartAnimation();
+  void StopAnimation();
+  auto IsPlayingAnimation() { return is_playing_animation_; }
+
  private:
   Controller();
 
@@ -31,8 +35,6 @@ class Controller : public QObject {
   void ConnectBlackJackSignals();
   void ConnectFruitMachineSignals();
   void ConnectChooseGameSignals();
-  void StartNewGame();
-  void ContinueGame();
   void Quit();
 
   QString PressedKey(Qt::KeyboardModifier key, const QString& text) {
