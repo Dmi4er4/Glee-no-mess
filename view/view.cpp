@@ -84,7 +84,10 @@ void View::InitView() {
   setFixedSize(screen_size);
   auto font_size = QString::number(
       static_cast<int>(screen_size.height() * .05));
+  auto tooltip_font_size = QString::number(
+      static_cast<int>(screen_size.height() * .03));
   qApp->setStyleSheet("* { font-size: " + font_size + "px; }" +
+                      "QToolTip { font-size: " + tooltip_font_size + "px; }" +
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
@@ -94,48 +97,69 @@ void View::InitView() {
 }
 
 void View::InitGameScene() {
-  static const QString kInGameObjects = "in-game";
-  game_scene_ = new QGraphicsScene;
+  {
+    static const QString kInGameObjects = "in-game";
+    game_scene_ = new QGraphicsScene;
 
-  LoadBackgroundFrames(":/levels/club_level/background");
-  game_background_ = game_scene_->addPixmap(background_frames_.first());
+    LoadBackgroundFrames(":/levels/club_level/background");
+    game_background_ = game_scene_->addPixmap(background_frames_.first());
 
-  auto proxy = game_scene_->addWidget(new QWidget);
-  auto layout = new QHBoxLayout;
-  proxy->widget()->setLayout(layout);
+    auto proxy = game_scene_->addWidget(new QWidget);
+    auto layout = new QHBoxLayout;
+    proxy->widget()->setLayout(layout);
 
-  layout->addWidget(permit_button_ = new QPushButton("OK"));
-  layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
-  layout->addWidget(errors_ = new QLabel("Placeholder"));
-  layout->addItem(new QSpacerItem(0, 0,
-                                  QSizePolicy::Expanding,
-                                  QSizePolicy::Expanding));
-  layout->addWidget(to_menu_from_game_button_ =
-                        new QPushButton("Back to menu"));
-  layout->addWidget(guests_left_ = new QLabel("Visitors: "));
-  layout->addWidget(day_ = new QLabel("Day: "));
-  layout->addWidget(time_left_ = new QLabel("Time: "));
+    layout->addWidget(permit_button_ = new QPushButton("OK"));
+    layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
+    layout->addWidget(errors_ = new QLabel("Placeholder"));
+    layout->addItem(new QSpacerItem(0, 0,
+                                    QSizePolicy::Expanding,
+                                    QSizePolicy::Expanding));
+    layout->addWidget(game_pause_button =
+                          new QPushButton("Pause"));
+    layout->addWidget(guests_left_ = new QLabel("Visitors: "));
+    layout->addWidget(day_ = new QLabel("Day: "));
+    layout->addWidget(time_left_ = new QLabel("Time: "));
 
-  guests_left_->setObjectName(kInGameObjects);
-  day_->setObjectName(kInGameObjects);
-  time_left_->setObjectName(kInGameObjects);
+    guests_left_->setObjectName(kInGameObjects);
+    day_->setObjectName(kInGameObjects);
+    time_left_->setObjectName(kInGameObjects);
 
-  guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
-  time_left_->setFixedSize(width() * 0.115, height() * 0.1);
+    guests_left_->setFixedSize(width() * 0.13, height() * 0.1);
+    time_left_->setFixedSize(width() * 0.115, height() * 0.1);
 
-  permit_button_->setObjectName(kInGameObjects);
-  reject_button_->setObjectName(kInGameObjects);
-  to_menu_from_game_button_->setObjectName(kInGameObjects);
+    permit_button_->setObjectName(kInGameObjects);
+    reject_button_->setObjectName(kInGameObjects);
+    game_pause_button->setObjectName(kInGameObjects);
 
-  proxy->setGeometry(QRectF{
-      0,
-      height() * 0.9,
-      width() * 1.0,
-      height() * 0.1
-  });
+    proxy->setGeometry(QRectF{
+        0,
+        height() * 0.9,
+        width() * 1.0,
+        height() * 0.1
+    });
+  }
 
   SetErrorsCount(0);
   SetTimer();
+
+  {
+    game_pause_overlay = new QWidget;
+    auto proxy = game_scene_->addWidget(game_pause_overlay);
+    proxy->setGeometry(QRect{0, 0, width(), height()});
+    auto layout = new QVBoxLayout;
+
+    game_pause_overlay->setLayout(layout);
+    game_exit_ = new QPushButton("   Back to main menu   ");
+    game_continue_ = new QPushButton("Continue");
+
+    layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
+
+    layout->addWidget(game_exit_);
+    layout->addWidget(game_continue_);
+    game_pause_overlay->setStyleSheet("background: rgba(0, 0, 0, 100)");
+
+    game_pause_overlay->hide();
+  }
 }
 
 void View::InitMainMenu() {
@@ -500,7 +524,7 @@ void View::InitShop() {
     for (int j = 0; j < kShelves; ++j) {
       auto proxy = shop_scene_->addWidget(new QWidget);
       proxy->setGeometry(QRectF{
-          width() * 0.1 + i * kWidth,
+          20.0 * kMargin + i * kWidth,
           height() * 0.1 + j * kHeight + kItemHeight + kMargin,
           kWidth / 2.0,
           kHeight / 4.0
@@ -518,7 +542,7 @@ void View::InitShop() {
     for (int j = 0; j < kShelves; ++j) {
       auto proxy = shop_scene_->addWidget(new QWidget);
       proxy->setGeometry(QRectF{
-          width() * 0.1 + i * kWidth + kItemWidth / 2,
+          20.0 * kMargin + i * kWidth + kItemWidth / 2,
           height() * 0.1 + j * kHeight,
           kItemWidth,
           kItemHeight
@@ -532,11 +556,14 @@ void View::InitShop() {
   const QString kInShop = "in-shop";
   exit_shop_->setObjectName(kInShop);
 
-  items_[kStandRow][kStandCol]->
-      setPixmap(FileLoader::GetFile<QPixmap>(
-                    ":shop/stand_the_world.png").scaled(kItemWidth,
-                                                      kItemHeight,
-                                                      Qt::IgnoreAspectRatio));
+  items_[kStandRow][kStandCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/stand_the_world.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                         Qt::IgnoreAspectRatio));
+
+  items_[kStandRow][kStandCol]->setToolTip(
+      "     Stand \"The World!\"  \nAdds 9 seconds to the end\nof the shift.");
+
   shelves_[kStandRow][kStandCol]->setObjectName(kInShop);
   shelves_[kStandRow][kStandCol]->show();
 
@@ -548,21 +575,29 @@ void View::InitShop() {
   shelves_[kKsivaRow][kKsivaCol]->setObjectName(kInShop);
   shelves_[kKsivaRow][kKsivaCol]->show();
 
-  items_[kPandemicRow][kPandemicCol]->
-      setPixmap(FileLoader::GetFile<QPixmap>(
-                    ":shop/pandemic.png").scaled(kItemWidth,
-                            kItemHeight,
-                            Qt::IgnoreAspectRatio));
+  items_[kKsivaRow][kKsivaCol]->setToolTip(
+      "         Ksiva!  \nForgive first mistake.");
+
+  items_[kPandemicRow][kPandemicCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/pandemic.png").scaled(kItemWidth,
+                                      kItemHeight,
+                                      Qt::IgnoreAspectRatio));
   shelves_[kPandemicRow][kPandemicCol]->setObjectName(kInShop);
   shelves_[kPandemicRow][kPandemicCol]->show();
 
-  items_[kVabankRow][kVabankCol]->
-      setPixmap(FileLoader::GetFile<QPixmap>(
-                    ":shop/vabank.png").scaled(kItemWidth,
-                            kItemHeight,
-                            Qt::IgnoreAspectRatio));
+  items_[kPandemicRow][kPandemicCol]->setToolTip(
+      "         Pandemic!  \nReduces the number of\nguests by half.");
+
+  items_[kVabankRow][kVabankCol]->setPixmap(FileLoader::GetFile<QPixmap>(
+      ":shop/vabank.png").scaled(kItemWidth,
+                                kItemHeight,
+                                Qt::IgnoreAspectRatio));
+
   shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
   shelves_[kVabankRow][kVabankCol]->show();
+
+  items_[kVabankRow][kVabankCol]->setToolTip(
+      "         All in!  \nif you win, salary x2\nif you loose, no salary.");
 }
 
 void View::ManageSounds() {

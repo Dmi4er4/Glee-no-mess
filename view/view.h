@@ -78,8 +78,21 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
+  auto GetPauseGameButton() const { return game_pause_button;  }
   auto GetScene() const { return game_scene_; }
+
+  void GamePauseStart() { game_pause_overlay->setHidden(false); }
+  void GamePauseFinish() { game_pause_overlay->hide(); }
+
+  void DisableGameButtons() {
+    permit_button_->setEnabled(false);
+    reject_button_->setEnabled(false);
+  }
+
+  void EnableGameButtons() {
+    permit_button_->setEnabled(true);
+    reject_button_->setEnabled(true);
+  }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -131,6 +144,8 @@ class View : public QMainWindow {
   auto GetBid() { return bid_->value(); }
   auto* GetHitMeButton() { return hit_me_; }
   auto* GetStandButton() { return stand_; }
+  auto* GetGameExitButton() { return game_exit_; }
+  auto* GetGameContinueButton() { return game_continue_; }
 
   void ShowBlackJackGame() {
     hit_me_->show();
@@ -179,24 +194,26 @@ class View : public QMainWindow {
   auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
   auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
 
+  const QString kBought = "Bought";
+
   void HideStandTheWorld() {
-    shelves_[kStandRow][kStandCol]->setHidden(true);
-    items_[kStandRow][kStandCol]->setHidden(true);
+    shelves_[kStandRow][kStandCol]->setText(kBought);
+    shelves_[kStandRow][kStandCol]->setEnabled(false);
   }
 
   void HideKsive() {
-    shelves_[kKsivaRow][kKsivaCol]->setHidden(true);
-    items_[kKsivaRow][kKsivaCol]->setHidden(true);
+    shelves_[kKsivaRow][kKsivaCol]->setText(kBought);
+    shelves_[kKsivaRow][kKsivaCol]->setEnabled(false);
   }
 
   void HidePandemic() {
-    shelves_[kPandemicRow][kPandemicCol]->setHidden(true);
-    items_[kPandemicRow][kPandemicCol]->setHidden(true);
+    shelves_[kPandemicRow][kPandemicCol]->setText(kBought);
+    shelves_[kPandemicRow][kPandemicCol]->setEnabled(false);
   }
 
   void HideVabank() {
-    shelves_[kVabankRow][kVabankCol]->setHidden(true);
-    items_[kVabankRow][kVabankCol]->setHidden(true);
+    shelves_[kVabankRow][kVabankCol]->setText(kBought);
+    shelves_[kVabankRow][kVabankCol]->setEnabled(false);
   }
 
   // Show Scene
@@ -237,7 +254,7 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* errors_{};
-  QPushButton* to_menu_from_game_button_{};
+  QPushButton* game_pause_button{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};
@@ -246,6 +263,10 @@ class View : public QMainWindow {
   int bg_frame_index_{};
 
   const int32_t kFrameRate = 10;
+
+  QWidget* game_pause_overlay;
+  QPushButton* game_exit_;
+  QPushButton* game_continue_;
 
   // Menu
   QGraphicsScene* menu_scene_{};

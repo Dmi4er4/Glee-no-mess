@@ -85,9 +85,33 @@ void Controller::ConnectGameSignals() {
   connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
-  connect(
-      View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
-      &Model::Instance(), &Model::DayFailed);
+  connect(View::Instance().GetPauseGameButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseStart();
+      Model::Instance().GetDayTimer()->stop();
+      View::Instance().DisableGameButtons();
+      is_game_pause = true;
+  });
+  connect(View::Instance().GetGameExitButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseFinish();
+      Model::Instance().DayFailed();
+      View::Instance().EnableGameButtons();
+      is_game_pause = false;
+  });
+  connect(View::Instance().GetGameContinueButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseFinish();
+      Model::Instance().GetDayTimer()->start();
+      View::Instance().EnableGameButtons();
+      is_game_pause = false;
+  });
 }
 
 void Controller::ConnectMainMenuSignals() {
@@ -228,11 +252,15 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
   auto& model = Model::Instance();
   switch (event->key()) {
     case Qt::Key_D: {
-      model.Reject();
+      if (!is_game_pause) {
+        model.Reject();
+      }
       break;
     }
     case Qt::Key_A: {
-      model.Permit();
+      if (!is_game_pause) {
+        model.Permit();
+      }
       break;
     }
   }
