@@ -45,7 +45,8 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with: 
         version: "6.2.0"
-        
+        modules: 'addons.qtmultimedia'
+    
     - name: install_qt_deps
       run: sudo apt-get install libgstreamer-plugins-base1.0-dev
 
