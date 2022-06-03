@@ -116,4 +116,7 @@
         <file>shop/pandemic.png</file>
         <file>shop/vabank.png</file>
     </qresource>
+    <qresource>
+        <file>sound_effects/gachi_level.wav</file>
+    </qresource>
 </RCC>

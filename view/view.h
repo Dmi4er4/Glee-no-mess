@@ -12,6 +12,7 @@
 #include <QMainWindow>
 #include <QMovie>
 #include <QPushButton>
+#include <QSoundEffect>
 #include <QSpinBox>
 #include <QStyle>
 #include <QTimer>
@@ -282,6 +283,7 @@ class View : public QMainWindow {
   void InitBlackJack();
   void InitFruitMachine();
   void InitShop();
+  void ManageSounds();
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
@@ -361,4 +363,12 @@ class View : public QMainWindow {
   QLabel* all_slots_border_{};
   QLabel* slots_[kSlotsCount]{};
   QLabel* slots_borders_[kSlotsCount]{};
+
+  // All sound effects
+  QSoundEffect* menu_sound_;
+  QSoundEffect* settings_sound_;
+  QSoundEffect* casino_sound_;
+  QSoundEffect* shop_sound_;
+  QSoundEffect* gachi_level_sound_;
+  QSoundEffect* bsu_level_sound_;
 };

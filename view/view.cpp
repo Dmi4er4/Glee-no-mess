@@ -14,6 +14,7 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   InitShop();
+  ManageSounds();
   ShowMainMenu();
   // ShowCasino();
   show();
@@ -553,6 +554,15 @@ void View::InitShop() {
                                 Qt::IgnoreAspectRatio));
   shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
   shelves_[kVabankRow][kVabankCol]->show();
+}
+
+void View::ManageSounds() {
+  // gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.wav"));
+  gachi_level_sound_->setSource(QUrl(":sound_effects/gachi_level.wav"));
+  gachi_level_sound_->setLoopCount(QSoundEffect::Infinite);
+  gachi_level_sound_->setVolume(1.0f);
+  // gachi_level_sound_->setMuted(true);
+  gachi_level_sound_->setMuted(false);
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
