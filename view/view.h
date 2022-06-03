@@ -148,11 +148,13 @@ class View : public QMainWindow {
   }
 
   void PutCroupierCard(size_t number, QPixmap card) {
-    croupier_cards_[number]->setPixmap(card);
+    croupier_cards_[number]->setPixmap(
+        card.scaled(width() * 0.11, height() * 0.3));
   }
 
   void PutPlayerCard(size_t number, QPixmap card) {
-    player_cards_[number]->setPixmap(card);
+    player_cards_[number]->setPixmap(
+        card.scaled(width() * 0.11, height() * 0.3));
   }
 
   void ShowSatus(const QString& status) {
