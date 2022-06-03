@@ -26,7 +26,7 @@ void Controller::ConnectSignals() {
 void Controller::keyPressEvent(QKeyEvent* event) {
   auto& view = View::Instance();
   if (view.IsGame()) {
-    KeyPressInGame(event);5
+    KeyPressInGame(event);
   } else if (view.IsSettings()) {
     KeyPressInSettings(event);
   }
