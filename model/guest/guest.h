@@ -18,7 +18,7 @@ class Guest {
   bool IsGood() { return good_; }
   void SetAnimation(const QString& filename);
   void SetSprite(QGraphicsPixmapItem* sprite);
-  void DoAnimation(int millis, int index_in_queue);
+  bool DoAnimation(int millis, int index_in_queue);
   void ReloadPosition();
 
   auto GetAnimation() { return animation_.get(); }

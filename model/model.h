@@ -26,8 +26,6 @@ class Model : public QObject {
  public:
   static Model& Instance();
 
-  static constexpr int kQueueLength = 3;
-
   void Permit();
   void Reject();
   void IncreaseErrorsCount();
@@ -39,8 +37,11 @@ class Model : public QObject {
   void StartNewGame();
   void ContinueGame();
   void DayFailed();
+  void DayPassed();
   bool TryLoadSave();
   void ShiftQueue();
+
+  auto GetLevel() { return level_.get(); }
 
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();

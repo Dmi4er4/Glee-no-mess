@@ -31,6 +31,9 @@ void Model::Reject() {
 void Model::ShiftQueue() {
   queue_.front()->GetSprite()->hide();
   queue_.pop_front();
+  if (queue_.empty() && level_->GetNextGuest() == nullptr) {
+    return DayPassed();
+  }
   Controller::Instance().StartAnimation();
 }
 
@@ -38,8 +41,6 @@ void Model::IncreaseErrorsCount() {
   level_->IncrementMistakes();
   if (level_->DayFailed()) {
     DayFailed();
-  } else {
-    View::Instance().SetLivesCount(level_->GetLives());
   }
 }
 
@@ -246,12 +247,21 @@ QString Model::LoadSettingsLevel() {
 
 QString Model::LoadSettingsDay() {
   auto json = CurrentSave();
-  return json["day"].toString();
+  return QString::number(json["day"].toInt() + 1);
 }
 
 QJsonObject Model::CurrentSave() {
   auto key_of_save = "save_" + GetDifficulty();
   return settings_->value(key_of_save).toJsonObject();
+}
+
+void Model::DayPassed() {
+  View::Instance().ShowMainMenu();
+  UpdateMoney(+level_->GetCurrentDay().reward_);
+  if (!level_->NextDay()) {
+    ++current_level_index_;
+  }
+  SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
 }
 
 void Model::DayFailed() {
@@ -263,6 +273,7 @@ void Model::StartDay() {
   queue_.clear();
   Controller::Instance().StartAnimation();
   View::Instance().ShowGame();
+  SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
 }
 
 void Model::StartNewGame() {
@@ -293,6 +304,7 @@ bool Model::TryLoadSave() {
 }
 
 void Model::SaveGame(const QString& level_name, int day_index) {
+  qDebug() << day_index;
   auto key_save = "save_" + GetDifficulty();
   QJsonObject json;
   json["level"] = level_name;
@@ -304,10 +316,11 @@ void Model::DoAnimation(int millis) {
   if (!Controller::Instance().IsPlayingAnimation()) {
     return;
   }
+  bool finished = false;
   for (int i = 0; i < queue_.size(); ++i) {
-    queue_[i]->DoAnimation(millis, i);
+    finished = !queue_[i]->DoAnimation(millis, i);
   }
-  if (!queue_.empty() && queue_.front()->GetAnimation()->Finished()) {
+  if (finished) {
     Controller::Instance().StopAnimation();
     return;
   }

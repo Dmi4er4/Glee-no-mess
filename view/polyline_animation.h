@@ -14,8 +14,8 @@ class PolylineAnimation {
  public:
   PolylineAnimation(const QString& filename);
 
-  void Do(int millis, double max_progress = 1);
-  void Do(int millis, int index_in_queue);
+  bool Do(int millis, double max_progress = 1);
+  bool Do(int millis, int index_in_queue);
   QPoint Position() const;
   bool Finished() const;
 

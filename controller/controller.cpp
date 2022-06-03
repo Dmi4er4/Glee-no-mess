@@ -35,10 +35,11 @@ bool Controller::eventFilter(QObject *obj, QEvent *event) {
   auto continue_button = View::Instance().GetContinueButton();
   if (obj == static_cast<QObject*>(continue_button)) {
     if (event->type() == QEvent::Enter) {
-      auto level_name = Model::Instance().LoadSettingsLevel();
+      auto level_name = Model::Instance().LoadSettingsLevel().replace('_', ' ');
       if (!level_name.isEmpty()) {
         auto day_number = Model::Instance().LoadSettingsDay();
-        continue_button->setText("Level: " + level_name + "\nDay" + day_number);
+        continue_button->setText("Level: " + level_name +
+            "\nDay " + day_number);
       } else {
         continue_button->setText("New Game");
       }

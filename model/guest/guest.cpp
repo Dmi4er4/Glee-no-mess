@@ -22,7 +22,8 @@ void Guest::ReloadPosition() {
   sprite_->setPos(x, y - sprite_->boundingRect().height());
 }
 
-void Guest::DoAnimation(int millis, int index_in_queue) {
-  animation_->Do(millis, index_in_queue);
+bool Guest::DoAnimation(int millis, int index_in_queue) {
+  auto res = animation_->Do(millis, index_in_queue);
   ReloadPosition();
+  return res;
 }

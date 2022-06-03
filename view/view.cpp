@@ -31,6 +31,7 @@ void View::ChangeFrame() {
     bg_frame_index_ = 0;
   }
   game_background_->setPixmap(background_frames_[bg_frame_index_]);
+  UpdateLevelStats();
 }
 
 View& View::Instance() {
@@ -85,7 +86,7 @@ void View::InitGameScene() {
 
   layout->addWidget(permit_button_ = new QPushButton("OK"));
   layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
-  layout->addWidget(errors_ = new QLabel("Placeholder"));
+  layout->addWidget(lives_ = new QLabel("Placeholder"));
   layout->addItem(new QSpacerItem(0, 0,
                                   QSizePolicy::Expanding,
                                   QSizePolicy::Expanding));
@@ -113,7 +114,6 @@ void View::InitGameScene() {
     height() * 0.1
   });
 
-  SetLivesCount(0);
   SetTimer();
 }
 
@@ -364,6 +364,40 @@ QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
 
 void View::AddGuestSprite(Guest* guest, const QPixmap& pixmap) {
   auto item = game_scene_->addPixmap(
-      pixmap.scaled(width() * 0.1, height() * 0.23, Qt::KeepAspectRatio));
+      pixmap.scaled(width() * 0.1, height() * 0.23, Qt::KeepAspectRatio)
+          .transformed(QTransform().scale(-1, 1)));
   guest->SetSprite(item);
 }
+
+void View::UpdateLevelStats() {
+  auto level = Model::Instance().GetLevel();
+  auto lives = QString::number(level->GetLives());
+  auto guests = QString::number(level->GetGuestsLeft());
+  auto seconds = level->GetTimeLeft();
+  auto minutes = seconds / 60;
+  seconds %= 60;
+  auto time = QString::number(minutes) + ":" +
+              (seconds < 10 ? "0" : "") +
+              QString::number(seconds);
+  auto day = QString::number(level->GetDayIndex() + 1);
+  lives_->setText("Lives: " + lives);
+  guests_left_->setText("Visitors: " + guests);
+  time_left_->setText(time);
+  day_->setText("Day: " + day);
+}
+
+// void View::SetLivesCount() {
+//   auto lives = Model::Instance().Get
+// }
+//
+// void View::SetGuestsLeft() {
+//
+// }
+//
+// void View::SetTimeLeft() {
+//
+// }
+//
+// void View::SetDay() {
+//
+// }

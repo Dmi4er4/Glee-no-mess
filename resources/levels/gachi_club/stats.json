@@ -98,5 +98,5 @@
     "biker",
     "visitor"
   ],
-  "queue_threshold_millis" : 1000
+  "queue_threshold_millis" : 5000
 }

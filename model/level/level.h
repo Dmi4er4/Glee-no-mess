@@ -35,6 +35,8 @@ class Level {
 
   auto GetTimeLeft() { return state_.seconds_left_; }
   auto GetLives() { return errors_max_ - state_.errors_count_; }
+  auto GetDayIndex() { return state_.current_day_; }
+  auto GetGuestsLeft() { return state_.current_day_; }
   auto GetQueueThreshold() { return queue_threshold_millis_; }
   auto GetPath() { return path_; }
 

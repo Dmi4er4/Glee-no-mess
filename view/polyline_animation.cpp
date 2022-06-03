@@ -37,15 +37,22 @@ PolylineAnimation::PolylineAnimation(
                    prefix_sums_.begin() + 1);
 }
 
-void PolylineAnimation::Do(int millis, double max_progress) {
+bool PolylineAnimation::Do(int millis, double max_progress) {
   double delta = millis / time_ms_;
-  progress_ = std::min(max_progress, progress_ + delta);
+  double new_value = progress_ + delta;
+  if (new_value > max_progress) {
+    progress_ = max_progress;
+    return false;
+  } else {
+    progress_ = new_value;
+    return true;
+  }
 }
 
-void PolylineAnimation::Do(int millis, int index_in_queue) {
+bool PolylineAnimation::Do(int millis, int index_in_queue) {
   auto index_in_polyline =
       stops_[std::max(0UL, stops_.size() - 1 - index_in_queue)];
-  Do(millis, prefix_sums_[index_in_polyline] / length_);
+  return Do(millis, prefix_sums_[index_in_polyline] / length_);
 }
 
 bool PolylineAnimation::Finished() const {

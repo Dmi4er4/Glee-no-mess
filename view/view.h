@@ -28,12 +28,7 @@ class View : public QMainWindow {
 
  public:
   static View& Instance();
-  static constexpr int kBlue = 0x0dc1fb;
-  static constexpr int kYellow = 0xfdff73;
-  static constexpr int kSquareSize = 80;
   static constexpr int kMargin = 5;
-  static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
-  static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
 
@@ -42,21 +37,7 @@ class View : public QMainWindow {
 
   void AddGuestSprite(Guest* guest, const QPixmap& pixmap);
 
-  void SetLivesCount(size_t value) {
-    errors_->setText("Lives: " + QString::number(value));
-  }
-
-  void SetGuestsLeft(size_t value) {
-    guests_left_->setText("Visitors: " + QString::number(value));
-  }
-
-  void SetDay(size_t value) {
-    day_->setText("Day: " + QString::number(value));
-  }
-
-  void SetTimeLeft(QString value) {
-    time_left_->setText("Time: " + value);
-  }
+  void UpdateLevelStats();
 
   void SetTimer();
   void ChangeFrame();
@@ -242,7 +223,7 @@ class View : public QMainWindow {
   QGraphicsScene* game_scene_{};
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
-  QLabel* errors_{};
+  QLabel* lives_{};
   QPushButton* to_menu_from_game_button_{};
   QLabel* guests_left_{};
   QLabel* day_{};
