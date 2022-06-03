@@ -145,13 +145,13 @@ QString Model::GetTimeLeft() const {
 void Model::InitSettings() {
   auto file = FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
   for (const auto& property_name : {kMoney,
-                                    kSound,
-                                    kDifficulty,
-                                    kExitShortcut,
-                                    kIgnoreFirstMistake,
-                                    kAddTime,
-                                    kAllin,
-                                    kReduceGuest}) {
+                                   kSound,
+                                   kDifficulty,
+                                   kExitShortcut,
+                                   kIgnoreFirstMistake,
+                                   kAddTime,
+                                   kAllin,
+                                   kReduceGuest}) {
     InitSettings(file, property_name);
   }
   View::Instance().SetDifficulty(
@@ -180,6 +180,10 @@ void Model::InitSettings() {
   if (settings_->value(kReduceGuest).toBool()) {
     View::Instance().HidePandemic();
     AddReduceGuestsItem();
+  }
+
+  if (IsSoundOn()) {
+    View::Instance().ShowMainMenu();
   }
 }
 
@@ -272,10 +276,13 @@ void Model::SetExitShortcut(const QString& keys) {
 void Model::ToggleSound() {
   if (settings_->value(kSound) == kOff) {
     settings_->setValue(kSound, kOn);
+    View::Instance().SetSound(settings_->value(kSound).toString());
+    View::Instance().ShowSettings();
   } else {
     settings_->setValue(kSound, kOff);
+    View::Instance().SetSound(settings_->value(kSound).toString());
+    View::Instance().StopAllSounds();
   }
-  View::Instance().SetSound(settings_->value(kSound).toString());
 }
 
 void Model::ResetDefaults() {
@@ -293,6 +300,7 @@ void Model::ResetDefaults() {
   View::Instance().SetDifficulty(default_difficulty);
   View::Instance().SetExitShortcut(default_exit_shortcut);
   View::Instance().SetSound(default_sound);
+  View::Instance().ShowSettings();
   exit_shortcut_->setKey(QKeySequence(default_exit_shortcut));
   UpdateDifficultySettings();
 }
@@ -345,8 +353,10 @@ void Model::StartFruitMachineGame() {
   static const QString path = ":casino/machine_";
 
   auto ChangePicture = [](int slot, int picture) {
-    View::Instance().SetFruitMachineSlot(slot, FileLoader::GetFile<QPixmap>(
-        path + QString::number(picture) + ".png"));
+    View::Instance().
+        SetFruitMachineSlot(slot,
+                            FileLoader::GetFile<QPixmap>(
+                                path + QString::number(picture) + ".png"));
   };
   auto ChangeBorder = [](int slot, bool is_spinning) {
     View::Instance().SetFruitMachineSlotBorder(slot, is_spinning);
@@ -376,36 +386,38 @@ void Model::StartFruitMachineGame() {
 
   QTimer::singleShot(std::accumulate(delay, delay + kSlotsCount, 0),
                      [ChangePicture, ChangeBorder, bid, this] {
-    ChangeBorder(kSlotsCount - 1, false);
-    ChangePicture(kSlotsCount - 1, new_slot_pics_[kSlotsCount - 1]);
-    --spinning_;
-    delete slot_update_timer_;
+                       ChangeBorder(kSlotsCount - 1, false);
+                       ChangePicture(kSlotsCount - 1,
+                                     new_slot_pics_[kSlotsCount - 1]);
+                       --spinning_;
+                       delete slot_update_timer_;
 
-    bool all_equal = true;
-    bool any_equal = false;
-    std::sort(new_slot_pics_, new_slot_pics_ + kSlotsCount);
-    for (int i = 1; i < kSlotsCount; ++i) {
-      if (new_slot_pics_[i] != new_slot_pics_[i - 1]) {
-        all_equal = false;
-      } else {
-        any_equal = true;
-      }
-    }
+                       bool all_equal = true;
+                       bool any_equal = false;
+                       std::sort(new_slot_pics_, new_slot_pics_ + kSlotsCount);
+                       for (int i = 1; i < kSlotsCount; ++i) {
+                         if (new_slot_pics_[i] != new_slot_pics_[i - 1]) {
+                           all_equal = false;
+                         } else {
+                           any_equal = true;
+                         }
+                       }
 
-    if (all_equal) {
-      UpdateMoney(bid);
-      if (new_slot_pics_[0] == kBigWinIndex) {
-        UpdateMoney(kBigWinRewardCoef * bid);
-      } else {
-        UpdateMoney(kAllEqualRewardCoef * bid);
-      }
-    } else if (any_equal) {
-      UpdateMoney(bid);
-      UpdateMoney(kAnyEqualRewardCoef * bid);
-    }
+                       if (all_equal) {
+                         UpdateMoney(bid);
+                         if (new_slot_pics_[0] == kBigWinIndex) {
+                           UpdateMoney(kBigWinRewardCoef * bid);
+                         } else {
+                           UpdateMoney(kAllEqualRewardCoef * bid);
+                         }
+                       } else if (any_equal) {
+                         UpdateMoney(bid);
+                         UpdateMoney(kAnyEqualRewardCoef * bid);
+                       }
 
-    View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
-  });
+                       View::Instance().
+                           GetMakeBidFruitMachine()->setEnabled(true);
+                     });
 }
 
 void Model::AddAllInItem() {

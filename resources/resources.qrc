@@ -26,9 +26,11 @@
     <qresource>
         <file>settings/default_settings.json</file>
         <file>settings/difficulty_settings.json</file>
+        <file>settings/settings.gif</file>
     </qresource>
     <qresource>
         <file>menu/main_menu_background.jpg</file>
+        <file>menu/main_menu.gif</file>
     </qresource>
     <qresource>
         <file>casino/casino.jpg</file>
@@ -90,7 +92,7 @@
         <file>casino/Jack_clubs.png</file>
         <file>casino/King_clubs.png</file>
         <file>casino/Queen_clubs.png</file>
-        
+
         <file>casino/fruit_machine.jpg</file>
         <file>casino/machine_0.png</file>
         <file>casino/machine_1.png</file>
@@ -114,5 +116,13 @@
         <file>shop/pandemic.png</file>
         <file>shop/vabank.png</file>
         <file>shop/background.png</file>
+    </qresource>
+    <qresource>
+        <file>sound_effects/gachi_level.mp3</file>
+        <file>sound_effects/bsu_level.mp3</file>
+        <file>sound_effects/casino.mp3</file>
+        <file>sound_effects/menu.mp3</file>
+        <file>sound_effects/shop.mp3</file>
+        <file>sound_effects/settings.mp3</file>
     </qresource>
 </RCC>
