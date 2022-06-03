@@ -262,7 +262,8 @@ void View::InitBlackJack() {
     auto form = new QHBoxLayout;
     croupier_proxy->widget()->setLayout(form);
     form->addWidget(croupier_ = new QLabel);
-    croupier_->setPixmap(croupier);
+    croupier_->setPixmap(
+        croupier.scaled(width() * 0.2, height() * 0.3, Qt::IgnoreAspectRatio));
   }
 
   constexpr int kCardsCount = 11;
@@ -298,29 +299,31 @@ void View::InitBlackJack() {
     }
   }
 
-  auto proxy = black_jack_scene_->addWidget(new QWidget);
-  proxy->setGeometry(QRectF{
-      0,
-      height() * 0.7,
-      width() * 1.0,
-      height() * 0.3
-  });
-  auto form = new QGridLayout;
-  proxy->widget()->setLayout(form);
+  {
+    auto proxy = black_jack_scene_->addWidget(new QWidget);
+    proxy->setGeometry(QRectF{
+        0,
+        height() * 0.8,
+        width() * 1.0,
+        height() * 0.2
+    });
+    auto form = new QGridLayout;
+    proxy->widget()->setLayout(form);
 
-  form->addWidget(make_bid_ = new QPushButton("Make bid!"), 1, 0);
-  form->addWidget(player_money_ = new QLabel, 0, 0);
+    form->addWidget(make_bid_ = new QPushButton("Make bid!"), 1, 0);
+    form->addWidget(player_money_ = new QLabel, 0, 0);
 
-  form->addWidget(bid_ = new QSpinBox, 1, 1);
-  bid_->setMaximumWidth(width() * 0.125);
-  bid_->setMinimum(1);
-  bid_->setMaximum(INT32_MAX);
+    form->addWidget(bid_ = new QSpinBox, 1, 1);
+    bid_->setMaximumWidth(width() * 0.125);
+    bid_->setMinimum(1);
+    bid_->setMaximum(INT32_MAX);
 
-  form->addWidget(hit_me_ = new QPushButton("Hit me!"), 1, 2);
-  hit_me_->hide();
-  form->addWidget(stand_ = new QPushButton("Stand!"), 1, 3);
-  stand_->hide();
-  form->addWidget(back_to_casino_ = new QPushButton("Exit"), 1, 4);
+    form->addWidget(hit_me_ = new QPushButton("Hit me!"), 1, 2);
+    hit_me_->hide();
+    form->addWidget(stand_ = new QPushButton("Stand!"), 1, 3);
+    stand_->hide();
+    form->addWidget(back_to_casino_ = new QPushButton("Exit"), 1, 4);
+  }
 }
 
 void View::InitFruitMachine() {
