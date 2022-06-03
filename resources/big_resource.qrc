@@ -1,10 +1,10 @@
 <RCC>
     <qresource>
-        <file>sound_effects/gachi_level.mp3</file>
-        <file>sound_effects/bsu_level.mp3</file>
-        <file>sound_effects/casino.mp3</file>
-        <file>sound_effects/menu.mp3</file>
-        <file>sound_effects/shop.mp3</file>
-        <file>sound_effects/settings.mp3</file>
+        <file>sound_effects/gachi_level.ogg</file>
+        <file>sound_effects/bsu_level.ogg</file>
+        <file>sound_effects/casino.ogg</file>
+        <file>sound_effects/menu.ogg</file>
+        <file>sound_effects/shop.ogg</file>
+        <file>sound_effects/settings.ogg</file>
     </qresource>
 </RCC>
