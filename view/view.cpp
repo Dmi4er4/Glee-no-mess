@@ -566,7 +566,7 @@ void View::InitShop() {
   shelves_[kVabankRow][kVabankCol]->show();
 
   items_[kVabankRow][kVabankCol]->setToolTip(
-      "         All in!  \nif you win, salary x2\nif you loose, no slsary.");
+      "         All in!  \nif you win, salary x2\nif you loose, no salary.");
 }
 
 void View::DisableScrollbars(QGraphicsView* graphics) {
