@@ -181,6 +181,10 @@ void Model::InitSettings() {
     View::Instance().HidePandemic();
     AddReduceGuestsItem();
   }
+
+  if (IsSoundOn()) {
+    View::Instance().ShowMainMenu();
+  }
 }
 
 void Model::InitSettings(const QJsonDocument& json, const QString& property) {
