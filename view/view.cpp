@@ -14,8 +14,8 @@ View::View() {
   InitBlackJack();
   InitFruitMachine();
   InitShop();
-  // ShowMainMenu();
-  ShowCasino();
+  ShowMainMenu();
+  // ShowCasino();
   show();
 }
 
@@ -139,9 +139,17 @@ void View::InitGameScene() {
 
 void View::InitMainMenu() {
   menu_scene_ = new QGraphicsScene;
-  menu_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":menu/main_menu_background.jpg")
-          .scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  {
+    QLabel* gif_anim = new QLabel();
+    QMovie* movie = new QMovie(":menu/main_menu.gif");
+    movie->setScaledSize(size());
+    gif_anim->setMovie(movie);
+    gif_anim->setGeometry({0, 0, width(), height()});
+    movie->start();
+    menu_scene_->addWidget(gif_anim);
+  }
+
   auto* proxy = menu_scene_->addWidget(new QWidget);
   auto layout = new QVBoxLayout;
   proxy->widget()->setLayout(layout);
@@ -161,9 +169,17 @@ void View::InitMainMenu() {
 
 void View::InitChooseGame() {
   choose_game_scene_ = new QGraphicsScene;
-  choose_game_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-                             ":menu/main_menu_background.jpg")
-                             .scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  {
+    QLabel* gif_anim = new QLabel();
+    QMovie* movie = new QMovie(":menu/main_menu.gif");
+    movie->setScaledSize(size());
+    gif_anim->setMovie(movie);
+    gif_anim->setGeometry({0, 0, width(), height()});
+    movie->start();
+    choose_game_scene_->addWidget(gif_anim);
+  }
+
   auto* proxy = choose_game_scene_->addWidget(new QWidget);
   auto layout = new QVBoxLayout;
   proxy->widget()->setLayout(layout);
@@ -184,9 +200,16 @@ void View::InitChooseGame() {
 
 void View::InitSettings() {
   settings_scene_ = new QGraphicsScene;
-  settings_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":menu/main_menu_background.jpg")
-          .scaled(width(), height(), Qt::IgnoreAspectRatio));
+
+  {
+    QLabel* gif_anim = new QLabel();
+    QMovie* movie = new QMovie(":settings/settings.gif");
+    movie->setScaledSize(size());
+    gif_anim->setMovie(movie);
+    gif_anim->setGeometry({0, 0, width(), height()});
+    movie->start();
+    settings_scene_->addWidget(gif_anim);
+  }
 
   auto proxy = settings_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
