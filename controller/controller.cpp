@@ -118,6 +118,27 @@ void Controller::ConnectGameSignals() {
       View::Instance().EnableGameButtons();
       is_game_pause = false;
   });
+  connect(View::Instance().GetToMainMenuButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GameOverHide();
+      View::Instance().ShowMainMenu();
+  });
+  connect(View::Instance().GetToCasinoButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+            View::Instance().GameOverHide();
+            View::Instance().ShowCasino();
+  });
+  connect(View::Instance().GetToShopButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+            View::Instance().GameOverHide();
+            View::Instance().ShowShop();
+  });
 }
 
 void Controller::ConnectMainMenuSignals() {

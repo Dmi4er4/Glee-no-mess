@@ -67,6 +67,13 @@ class View : public QMainWindow {
   void GamePauseStart() { game_pause_overlay->setHidden(false); }
   void GamePauseFinish() { game_pause_overlay->hide(); }
 
+  void GameOverShow() { game_over_overlay_->setHidden(false); }
+  void GameOverHide() { game_over_overlay_->hide(); }
+
+  auto* GetToMainMenuButton() { return to_main_menu_; }
+  auto* GetToCasinoButton() { return to_casino_; }
+  auto* GetToShopButton() { return to_shop_; }
+
   void DisableGameButtons() {
     permit_button_->setEnabled(false);
     reject_button_->setEnabled(false);
@@ -259,6 +266,11 @@ class View : public QMainWindow {
   QWidget* game_pause_overlay;
   QPushButton* game_exit_;
   QPushButton* game_continue_;
+
+  QWidget* game_over_overlay_;
+  QPushButton* to_main_menu_;
+  QPushButton* to_casino_;
+  QPushButton* to_shop_;
 
   // Menu
   QGraphicsScene* menu_scene_{};
