@@ -143,7 +143,7 @@ void View::InitGameScene() {
   }
 
   SetTimer();
-  
+
   {
     game_pause_overlay = new QWidget;
     auto proxy = game_scene_->addWidget(game_pause_overlay);

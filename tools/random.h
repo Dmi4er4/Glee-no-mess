@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <vector>
 
 class Random {
  public:

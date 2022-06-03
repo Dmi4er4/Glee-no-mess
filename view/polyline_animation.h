@@ -12,7 +12,7 @@
 
 class PolylineAnimation {
  public:
-  PolylineAnimation(const QString& filename);
+  explicit PolylineAnimation(const QString& filename);
 
   bool Do(int millis, double max_progress = 1);
   bool Do(int millis, int index_in_queue);

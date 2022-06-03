@@ -291,7 +291,7 @@ class View : public QMainWindow {
   std::vector<QLabel*> croupier_cards_{};
   std::vector<QLabel*> player_cards_{};
   QLabel* status_{};
-  
+
   // Shop
   QGraphicsScene* shop_scene_;
   QPushButton* exit_shop_;
