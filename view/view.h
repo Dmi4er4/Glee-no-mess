@@ -191,24 +191,26 @@ class View : public QMainWindow {
   auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
   auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
 
+  const QString kBought = "Bought";
+
   void HideStandTheWorld() {
-    shelves_[kStandRow][kStandCol]->setHidden(true);
-    items_[kStandRow][kStandCol]->setHidden(true);
+    shelves_[kStandRow][kStandCol]->setText(kBought);
+    shelves_[kStandRow][kStandCol]->setEnabled(false);
   }
 
   void HideKsive() {
-    shelves_[kKsivaRow][kKsivaCol]->setHidden(true);
-    items_[kKsivaRow][kKsivaCol]->setHidden(true);
+    shelves_[kKsivaRow][kKsivaCol]->setText(kBought);
+    shelves_[kKsivaRow][kKsivaCol]->setEnabled(false);
   }
 
   void HidePandemic() {
-    shelves_[kPandemicRow][kPandemicCol]->setHidden(true);
-    items_[kPandemicRow][kPandemicCol]->setHidden(true);
+    shelves_[kPandemicRow][kPandemicCol]->setText(kBought);
+    shelves_[kPandemicRow][kPandemicCol]->setEnabled(false);
   }
 
   void HideVabank() {
-    shelves_[kVabankRow][kVabankCol]->setHidden(true);
-    items_[kVabankRow][kVabankCol]->setHidden(true);
+    shelves_[kVabankRow][kVabankCol]->setText(kBought);
+    shelves_[kVabankRow][kVabankCol]->setEnabled(false);
   }
 
   // Show Scene

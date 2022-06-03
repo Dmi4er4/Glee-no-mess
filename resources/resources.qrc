@@ -113,5 +113,6 @@
         <file>shop/ksiva.png</file>
         <file>shop/pandemic.png</file>
         <file>shop/vabank.png</file>
+        <file>shop/background.png</file>
     </qresource>
 </RCC>
