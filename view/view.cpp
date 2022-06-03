@@ -236,52 +236,66 @@ void View::InitBlackJack() {
       scaled(width(), height(), Qt::IgnoreAspectRatio));
 
 
-  auto proxy_status = black_jack_scene_->addWidget(status_ = new QLabel);
-  proxy_status->setGeometry(QRectF{
-    0,
-    0,
-    width() * 0.3,
-    height() * 0.1
-  });
+  {
+    auto proxy = black_jack_scene_->addWidget(new QWidget);
+    proxy->setGeometry(QRectF{
+        0,
+        0,
+        width() * 0.3,
+        height() * 0.1
+    });
+    auto form = new QHBoxLayout;
+    proxy->widget()->setLayout(form);
+    form->addWidget(status_ = new QLabel);
+  }
 
-  auto croupier_proxy = black_jack_scene_->
-      addWidget(croupier_ = new QLabel);
-  auto croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
-  croupier_->setPixmap(croupier);
+  auto croupier_proxy = black_jack_scene_->addWidget(new QWidget);;
 
-
-  croupier_proxy->setGeometry(QRectF{
-      width() * 0.5 - croupier.width() * 0.5,
-      0,
-      width() * 0.2,
-      height() * 0.3
-  });
+  {
+    auto croupier = FileLoader::GetFile<QPixmap>(":casino/croupier.png");
+    croupier_proxy->setGeometry(QRectF{
+        width() * 0.5 - croupier.width() * 0.5,
+        0,
+        width() * 0.2,
+        height() * 0.3
+    });
+    auto form = new QHBoxLayout;
+    croupier_proxy->widget()->setLayout(form);
+    form->addWidget(croupier_ = new QLabel);
+    croupier_->setPixmap(croupier);
+  }
 
   constexpr int kCardsCount = 11;
   croupier_cards_.resize(kCardsCount);
   for (int i = 0; i < kCardsCount; ++i) {
-    auto proxy_card = black_jack_scene_->addWidget(
-        croupier_cards_[i] = new QLabel);
-
-    proxy_card->setGeometry(QRectF{
-        i * 80.0 + kMargin,
-        croupier_proxy->geometry().height() + 15 * kMargin,
-        width() * 0.35,
-        height() * 0.35
-    });
+    {
+      auto proxy = black_jack_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          i * 80.0 + kMargin,
+          croupier_proxy->geometry().height() + 15 * kMargin,
+          width() * 0.35,
+          height() * 0.35
+      });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(croupier_cards_[i] = new QLabel);
+    }
   }
 
   player_cards_.resize(kCardsCount);
   for (int i = 0; i < kCardsCount; ++i) {
-    auto proxy_card = black_jack_scene_->addWidget(
-        player_cards_[i] = new QLabel);
-
-    proxy_card->setGeometry(QRectF{
-        width() * 0.5 + i * 80.0 + kMargin,
-        croupier_proxy->geometry().height() + 15 * kMargin,
-        width() * 0.35,
-        height() * 0.35
-    });
+    {
+      auto proxy = black_jack_scene_->addWidget(new QWidget);
+      proxy->setGeometry(QRectF{
+          width() * 0.5 + i * 80.0 + kMargin,
+          croupier_proxy->geometry().height() + 15 * kMargin,
+          width() * 0.35,
+          height() * 0.35
+      });
+      auto form = new QHBoxLayout;
+      proxy->widget()->setLayout(form);
+      form->addWidget(player_cards_[i] = new QLabel);
+    }
   }
 
   auto proxy = black_jack_scene_->addWidget(new QWidget);
