@@ -235,8 +235,10 @@ void View::InitSettings() {
 
 void View::InitCasino() {
   casino_scene_ = new QGraphicsScene;
-  casino_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-                               ":casino/casino.jpg").scaled(width(), height(), Qt::IgnoreAspectRatio));
+  casino_scene_->addPixmap(
+      FileLoader::GetFile<QPixmap>(
+          ":casino/casino.jpg").scaled(width(),
+                  height(), Qt::IgnoreAspectRatio));
 
   auto proxy = casino_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
@@ -257,11 +259,13 @@ void View::InitBlackJack() {
   black_jack_scene_ = new QGraphicsScene;
   black_jack_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
                                    ":casino/black_jack.jpg").
-                               scaled(width(), height(), Qt::IgnoreAspectRatio));
+                               scaled(width(),
+                                      height(), Qt::IgnoreAspectRatio));
 
 
   {
-    auto proxy = black_jack_scene_->addWidget(new QWidget);
+    auto proxy =
+        black_jack_scene_->addWidget(new QWidget);
     proxy->setGeometry(QRectF{
         0,
         0,
@@ -409,7 +413,8 @@ void View::InitFruitMachine() {
         size.height() * 0.5
     });
     slot->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png").
-                    scaled(slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+                    scaled(slot->width(),
+                           slot->height(), Qt::IgnoreAspectRatio));
   }
 
   auto proxy = fruit_machine_scene_->addWidget(new QWidget);
@@ -527,31 +532,35 @@ void View::InitShop() {
   const QString kInShop = "in-shop";
   exit_shop_->setObjectName(kInShop);
 
-  items_[kStandRow][kStandCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-                                              ":shop/stand_the_world.png").scaled(kItemWidth,
+  items_[kStandRow][kStandCol]->
+      setPixmap(FileLoader::GetFile<QPixmap>(
+                    ":shop/stand_the_world.png").scaled(kItemWidth,
                                                       kItemHeight,
                                                       Qt::IgnoreAspectRatio));
   shelves_[kStandRow][kStandCol]->setObjectName(kInShop);
   shelves_[kStandRow][kStandCol]->show();
 
-  items_[kKsivaRow][kKsivaCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-                                              ":shop/ksiva.png").scaled(kItemWidth,
-                                                      kItemHeight,
-                                                      Qt::IgnoreAspectRatio));
+  items_[kKsivaRow][kKsivaCol]->
+      setPixmap(FileLoader::GetFile<QPixmap>(
+                    ":shop/ksiva.png").scaled(kItemWidth,
+                            kItemHeight,
+                            Qt::IgnoreAspectRatio));
   shelves_[kKsivaRow][kKsivaCol]->setObjectName(kInShop);
   shelves_[kKsivaRow][kKsivaCol]->show();
 
-  items_[kPandemicRow][kPandemicCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-                                                    ":shop/pandemic.png").scaled(kItemWidth,
-                                                            kItemHeight,
-                                                            Qt::IgnoreAspectRatio));
+  items_[kPandemicRow][kPandemicCol]->
+      setPixmap(FileLoader::GetFile<QPixmap>(
+                    ":shop/pandemic.png").scaled(kItemWidth,
+                            kItemHeight,
+                            Qt::IgnoreAspectRatio));
   shelves_[kPandemicRow][kPandemicCol]->setObjectName(kInShop);
   shelves_[kPandemicRow][kPandemicCol]->show();
 
-  items_[kVabankRow][kVabankCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-                                                ":shop/vabank.png").scaled(kItemWidth,
-                                                        kItemHeight,
-                                                        Qt::IgnoreAspectRatio));
+  items_[kVabankRow][kVabankCol]->
+      setPixmap(FileLoader::GetFile<QPixmap>(
+                    ":shop/vabank.png").scaled(kItemWidth,
+                            kItemHeight,
+                            Qt::IgnoreAspectRatio));
   shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
   shelves_[kVabankRow][kVabankCol]->show();
 }
@@ -561,7 +570,8 @@ void View::ManageSounds() {
     gachi_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     gachi_level_sound_->setAudioOutput(audioOutput);
-    connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.mp3"));
     audioOutput->setVolume(50);
     gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -571,7 +581,8 @@ void View::ManageSounds() {
     bsu_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     bsu_level_sound_->setAudioOutput(audioOutput);
-    connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.mp3"));
     audioOutput->setVolume(50);
     bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -581,7 +592,8 @@ void View::ManageSounds() {
     menu_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     menu_sound_->setAudioOutput(audioOutput);
-    connect(menu_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(menu_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.mp3"));
     audioOutput->setVolume(50);
     menu_sound_->setLoops(QMediaPlayer::Infinite);
@@ -591,7 +603,8 @@ void View::ManageSounds() {
     shop_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     shop_sound_->setAudioOutput(audioOutput);
-    connect(shop_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(shop_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.mp3"));
     audioOutput->setVolume(50);
     shop_sound_->setLoops(QMediaPlayer::Infinite);
@@ -601,7 +614,8 @@ void View::ManageSounds() {
     casino_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     casino_sound_->setAudioOutput(audioOutput);
-    connect(casino_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(casino_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.mp3"));
     audioOutput->setVolume(50);
     casino_sound_->setLoops(QMediaPlayer::Infinite);
@@ -611,7 +625,8 @@ void View::ManageSounds() {
     settings_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput;
     settings_sound_->setAudioOutput(audioOutput);
-    connect(settings_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(settings_sound_, SIGNAL(positionChanged(qint64)),
+            this, SLOT(positionChanged(qint64)));
     settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.mp3"));
     audioOutput->setVolume(50);
     settings_sound_->setLoops(QMediaPlayer::Infinite);

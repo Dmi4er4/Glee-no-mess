@@ -349,8 +349,10 @@ void Model::StartFruitMachineGame() {
   static const QString path = ":casino/machine_";
 
   auto ChangePicture = [](int slot, int picture) {
-    View::Instance().SetFruitMachineSlot(slot, FileLoader::GetFile<QPixmap>(
-                                                   path + QString::number(picture) + ".png"));
+    View::Instance().
+        SetFruitMachineSlot(slot,
+                            FileLoader::GetFile<QPixmap>(
+                                path + QString::number(picture) + ".png"));
   };
   auto ChangeBorder = [](int slot, bool is_spinning) {
     View::Instance().SetFruitMachineSlotBorder(slot, is_spinning);
@@ -381,7 +383,8 @@ void Model::StartFruitMachineGame() {
   QTimer::singleShot(std::accumulate(delay, delay + kSlotsCount, 0),
                      [ChangePicture, ChangeBorder, bid, this] {
                        ChangeBorder(kSlotsCount - 1, false);
-                       ChangePicture(kSlotsCount - 1, new_slot_pics_[kSlotsCount - 1]);
+                       ChangePicture(kSlotsCount - 1,
+                                     new_slot_pics_[kSlotsCount - 1]);
                        --spinning_;
                        delete slot_update_timer_;
 
@@ -408,7 +411,8 @@ void Model::StartFruitMachineGame() {
                          UpdateMoney(kAnyEqualRewardCoef * bid);
                        }
 
-                       View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
+                       View::Instance().
+                           GetMakeBidFruitMachine()->setEnabled(true);
                      });
 }
 
