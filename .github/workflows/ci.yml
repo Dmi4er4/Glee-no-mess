@@ -44,7 +44,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with: 
-        version: "6.2.0"
+        version: "6.3.0"
         modules: 'addons.qtmultimedia'
     
     - name: install_qt_deps
