@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <vector>
 
 class Random {
  public:
@@ -25,6 +26,12 @@ class Random {
         std::uniform_int_distribution<int32_t>
             (0, static_cast<int>(T::kCount) - 1)(
             Instance().mersenne_twister_));
+  }
+
+  template<class T>
+  static T VectorChoose(const std::vector<T>& vector) {
+    auto index = RandomInt(0, vector.size() - 1);
+    return vector[index];
   }
 
   std::mt19937 GetRandom() { return mersenne_twister_; }

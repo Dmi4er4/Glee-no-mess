@@ -3,6 +3,8 @@ project(Glee-no-mess)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,leak,undefined")
 
+#set(CMAKE_PREFIX_PATH  "/opt/Qt/6.3.0/gcc_64/")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -36,6 +38,8 @@ file(GLOB MODEL_LEVEL model/level/*)
 file(GLOB TOOLS tools/*)
 file(GLOB MODEL_ITEMS model/items/*)
 file(GLOB MODEL_CASINO model/casino/*)
+
+qt_add_big_resources(GLOB big_resource.qrc)
 
 add_executable(default-target
         ${CONTROLLER}

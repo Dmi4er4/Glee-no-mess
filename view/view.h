@@ -35,9 +35,6 @@ class View : public QMainWindow {
 
  public:
   static View& Instance();
-  static constexpr int kBlue = 0x0dc1fb;
-  static constexpr int kYellow = 0xfdff73;
-  static constexpr int kSquareSize = 80;
   static constexpr int kMargin = 5;
   static constexpr size_t kShelves = 3;
   // reversed rows and columns!!!
@@ -49,37 +46,23 @@ class View : public QMainWindow {
   static constexpr int kPandemicCol = 1;
   static constexpr int kVabankRow = 2;
   static constexpr int kVabankCol = 1;
-  static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
-  static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
 
   // Game
   bool IsGame() const { return view_->scene() == game_scene_; }
 
-  void SetErrorsCount(size_t value) {
-    errors_->setText("Errors: " + QString::number(value));
-  }
+  void AddGuestSprite(Guest* guest, const QPixmap& pixmap);
 
-  void SetGuestsLeft(size_t value) {
-    guests_left_->setText("Visitors: " + QString::number(value));
-  }
-
-  void SetDay(size_t value) {
-    day_->setText("Day: " + QString::number(value));
-  }
-
-  void SetTimeLeft(QString value) {
-    time_left_->setText("Time: " + value);
-  }
+  void UpdateLevelStats();
 
   void SetTimer();
   void ChangeFrame();
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetPauseGameButton() const { return game_pause_button;  }
-  auto GetScene() const { return game_scene_; }
+  auto GetGameScene() const { return game_scene_; }
+  auto GetPauseGameButton() const { return game_pause_button_; }
 
   void GamePauseStart() { game_pause_overlay->setHidden(false); }
   void GamePauseFinish() { game_pause_overlay->hide(); }
@@ -253,8 +236,8 @@ class View : public QMainWindow {
   QGraphicsScene* game_scene_{};
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
-  QLabel* errors_{};
-  QPushButton* game_pause_button{};
+  QLabel* lives_{};
+  QPushButton* game_pause_button_{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};
@@ -263,6 +246,7 @@ class View : public QMainWindow {
   int bg_frame_index_{};
 
   const int32_t kFrameRate = 10;
+  const int32_t kFrameDelay = 1000 / kFrameRate;
 
   QWidget* game_pause_overlay;
   QPushButton* game_exit_;

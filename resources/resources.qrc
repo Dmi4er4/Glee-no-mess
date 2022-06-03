@@ -1,23 +1,47 @@
 <RCC>
     <qresource>
         <file>items.json</file>
-        <file>levels/levels.json</file>
-        <file>levels/club_level/background/background_frame_00.png</file>
-        <file>levels/club_level/background/background_frame_01.png</file>
-        <file>levels/club_level/background/background_frame_02.png</file>
-        <file>levels/club_level/background/background_frame_03.png</file>
-        <file>levels/club_level/background/background_frame_04.png</file>
-        <file>levels/club_level/background/background_frame_05.png</file>
-        <file>levels/club_level/background/background_frame_06.png</file>
-        <file>levels/club_level/background/background_frame_07.png</file>
-        <file>levels/club_level/background/background_frame_08.png</file>
-        <file>levels/club_level/background/background_frame_09.png</file>
-        <file>levels/club_level/background/background_frame_10.png</file>
-        <file>levels/club_level/background/background_frame_11.png</file>
-        <file>levels/club_level/background/background_frame_12.png</file>
-        <file>levels/club_level/background/background_frame_13.png</file>
-        <file>levels/club_level/background/background_frame_14.png</file>
-        <file>levels/club_level/background/background_frame_15.png</file>
+        <file>levels/levels_list.json</file>
+
+        <file>levels/gachi_club/background/background_frame_00.png</file>
+        <file>levels/gachi_club/background/background_frame_01.png</file>
+        <file>levels/gachi_club/background/background_frame_02.png</file>
+        <file>levels/gachi_club/background/background_frame_03.png</file>
+        <file>levels/gachi_club/background/background_frame_04.png</file>
+        <file>levels/gachi_club/background/background_frame_05.png</file>
+        <file>levels/gachi_club/background/background_frame_06.png</file>
+        <file>levels/gachi_club/background/background_frame_07.png</file>
+        <file>levels/gachi_club/background/background_frame_08.png</file>
+        <file>levels/gachi_club/background/background_frame_09.png</file>
+        <file>levels/gachi_club/background/background_frame_10.png</file>
+        <file>levels/gachi_club/background/background_frame_11.png</file>
+        <file>levels/gachi_club/background/background_frame_12.png</file>
+        <file>levels/gachi_club/background/background_frame_13.png</file>
+        <file>levels/gachi_club/background/background_frame_14.png</file>
+        <file>levels/gachi_club/background/background_frame_15.png</file>
+
+        <file>levels/gachi_club/dudes/biker.png</file>
+        <file>levels/gachi_club/dudes/biker_blood.png</file>
+        <file>levels/gachi_club/dudes/biker_black.png</file>
+        <file>levels/gachi_club/dudes/biker_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/gay.png</file>
+        <file>levels/gachi_club/dudes/gay_blood.png</file>
+        <file>levels/gachi_club/dudes/gay_black.png</file>
+        <file>levels/gachi_club/dudes/gay_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/cowboy.png</file>
+        <file>levels/gachi_club/dudes/cowboy_blood.png</file>
+        <file>levels/gachi_club/dudes/cowboy_black.png</file>
+        <file>levels/gachi_club/dudes/cowboy_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/visitor.png</file>
+        <file>levels/gachi_club/dudes/visitor_blood.png</file>
+        <file>levels/gachi_club/dudes/visitor_black.png</file>
+        <file>levels/gachi_club/dudes/visitor_black_blood.png</file>
+
+        <file>levels/gachi_club/animation_queue.json</file>
+        <file>levels/gachi_club/stats.json</file>
     </qresource>
     <qresource>
         <file>style.qss</file>
@@ -25,7 +49,6 @@
     </qresource>
     <qresource>
         <file>settings/default_settings.json</file>
-        <file>settings/difficulty_settings.json</file>
         <file>settings/settings.gif</file>
     </qresource>
     <qresource>
@@ -116,13 +139,5 @@
         <file>shop/pandemic.png</file>
         <file>shop/vabank.png</file>
         <file>shop/background.png</file>
-    </qresource>
-    <qresource>
-        <file>sound_effects/gachi_level.mp3</file>
-        <file>sound_effects/bsu_level.mp3</file>
-        <file>sound_effects/casino.mp3</file>
-        <file>sound_effects/menu.mp3</file>
-        <file>sound_effects/shop.mp3</file>
-        <file>sound_effects/settings.mp3</file>
     </qresource>
 </RCC>

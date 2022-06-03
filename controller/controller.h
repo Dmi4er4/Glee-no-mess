@@ -20,6 +20,10 @@ class Controller : public QObject {
 
   bool eventFilter(QObject *obj, QEvent *event) override;
 
+  void StartAnimation();
+  void StopAnimation();
+  auto IsPlayingAnimation() { return is_playing_animation_; }
+
  private:
   Controller();
 
@@ -41,6 +45,7 @@ class Controller : public QObject {
   }
 
   bool is_editing_keybinding_{};
+  bool is_playing_animation_{};
   std::function<void(const QString& keys)> new_hotkey_;
 
   bool is_game_pause{false};

@@ -13,7 +13,6 @@ const QString kDifficulty = "difficulty";
 const QString kEasy = "easy";
 const QString kHard = "hard";
 const QString kMedium = "medium";
-const QString kDifficultySettings = ":/settings/difficulty_settings.json";
 const QString kDefaultSettings = ":/settings/default_settings.json";
 // Errors
 const QString kErrorsCount = "errors_count";

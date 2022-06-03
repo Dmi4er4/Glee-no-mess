@@ -7,5 +7,5 @@ IgnoreFirstMistakeItem::IgnoreFirstMistakeItem() :
 }
 
 void IgnoreFirstMistakeItem::MistakeTrigger() {
-  Model::Instance().ForgiveFirstMistake();
+  // Model::Instance().ForgiveFirstMistake();
 }

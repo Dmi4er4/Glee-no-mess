@@ -3,6 +3,8 @@
 #include "controller.h"
 #include "file_loader.h"
 #include "settings.h"
+#include "polyline_animation.h"
+#include "model.h"
 
 View::View() {
   InitView();
@@ -16,21 +18,22 @@ View::View() {
   InitShop();
   ManageSounds();
   ShowMainMenu();
-  // ShowCasino();
-  show();
+  this->show();
 }
 
 void View::SetTimer() {
   auto timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
-  timer->start(1000 / kFrameRate);
+  timer->start(kFrameDelay);
 }
 
 void View::ChangeFrame() {
+  Model::Instance().DoAnimation(kFrameDelay);
   if (++bg_frame_index_ == background_frames_.size()) {
     bg_frame_index_ = 0;
   }
   game_background_->setPixmap(background_frames_[bg_frame_index_]);
+  UpdateLevelStats();
 }
 
 View& View::Instance() {
@@ -101,7 +104,7 @@ void View::InitGameScene() {
     static const QString kInGameObjects = "in-game";
     game_scene_ = new QGraphicsScene;
 
-    LoadBackgroundFrames(":/levels/club_level/background");
+    LoadBackgroundFrames(":/levels/gachi_club/background");
     game_background_ = game_scene_->addPixmap(background_frames_.first());
 
     auto proxy = game_scene_->addWidget(new QWidget);
@@ -110,11 +113,11 @@ void View::InitGameScene() {
 
     layout->addWidget(permit_button_ = new QPushButton("OK"));
     layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
-    layout->addWidget(errors_ = new QLabel("Placeholder"));
+    layout->addWidget(lives_ = new QLabel("Placeholder"));
     layout->addItem(new QSpacerItem(0, 0,
                                     QSizePolicy::Expanding,
                                     QSizePolicy::Expanding));
-    layout->addWidget(game_pause_button =
+    layout->addWidget(game_pause_button_ =
                           new QPushButton("Pause"));
     layout->addWidget(guests_left_ = new QLabel("Visitors: "));
     layout->addWidget(day_ = new QLabel("Day: "));
@@ -129,7 +132,7 @@ void View::InitGameScene() {
 
     permit_button_->setObjectName(kInGameObjects);
     reject_button_->setObjectName(kInGameObjects);
-    game_pause_button->setObjectName(kInGameObjects);
+    game_pause_button_->setObjectName(kInGameObjects);
 
     proxy->setGeometry(QRectF{
         0,
@@ -139,7 +142,6 @@ void View::InitGameScene() {
     });
   }
 
-  SetErrorsCount(0);
   SetTimer();
 
   {
@@ -157,7 +159,6 @@ void View::InitGameScene() {
     layout->addWidget(game_exit_);
     layout->addWidget(game_continue_);
     game_pause_overlay->setStyleSheet("background: rgba(0, 0, 0, 100)");
-
     game_pause_overlay->hide();
   }
 }
@@ -544,8 +545,8 @@ void View::InitShop() {
       proxy->setGeometry(QRectF{
           20.0 * kMargin + i * kWidth + kItemWidth / 2,
           height() * 0.1 + j * kHeight,
-          kItemWidth,
-          kItemHeight
+          kItemWidth * 1.0,
+          kItemHeight * 1.0
       });
       auto form = new QHBoxLayout;
       proxy->widget()->setLayout(form);
@@ -603,66 +604,66 @@ void View::InitShop() {
 void View::ManageSounds() {
   {
     gachi_level_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     gachi_level_sound_->setAudioOutput(audioOutput);
-    connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.mp3"));
+    // connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.ogg"));
     audioOutput->setVolume(50);
     gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
   }
 
   {
     bsu_level_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     bsu_level_sound_->setAudioOutput(audioOutput);
-    connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.mp3"));
+    // connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.ogg"));
     audioOutput->setVolume(50);
     bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
   }
 
   {
     menu_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     menu_sound_->setAudioOutput(audioOutput);
-    connect(menu_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.mp3"));
+    // connect(menu_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.ogg"));
     audioOutput->setVolume(50);
     menu_sound_->setLoops(QMediaPlayer::Infinite);
   }
 
   {
     shop_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     shop_sound_->setAudioOutput(audioOutput);
-    connect(shop_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.mp3"));
+    // connect(shop_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.ogg"));
     audioOutput->setVolume(50);
     shop_sound_->setLoops(QMediaPlayer::Infinite);
   }
 
   {
     casino_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     casino_sound_->setAudioOutput(audioOutput);
-    connect(casino_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.mp3"));
+    // connect(casino_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.ogg"));
     audioOutput->setVolume(50);
     casino_sound_->setLoops(QMediaPlayer::Infinite);
   }
 
   {
     settings_sound_ = new QMediaPlayer(this);
-    auto audioOutput = new QAudioOutput;
+    auto audioOutput = new QAudioOutput(this);
     settings_sound_->setAudioOutput(audioOutput);
-    connect(settings_sound_, SIGNAL(positionChanged(qint64)),
-            this, SLOT(positionChanged(qint64)));
-    settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.mp3"));
+    // connect(settings_sound_, SIGNAL(positionChanged(qint64)),
+    //         this, SLOT(positionChanged(qint64)));
+    settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.ogg"));
     audioOutput->setVolume(50);
     settings_sound_->setLoops(QMediaPlayer::Infinite);
   }
@@ -697,6 +698,30 @@ QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
   auto* res = new QLabel(text);
   res->setAlignment(align);
   return res;
+}
+
+void View::AddGuestSprite(Guest* guest, const QPixmap& pixmap) {
+  auto item = game_scene_->addPixmap(
+      pixmap.scaled(width() * 0.1, height() * 0.23, Qt::KeepAspectRatio)
+          .transformed(QTransform().scale(-1, 1)));
+  guest->SetSprite(item);
+}
+
+void View::UpdateLevelStats() {
+  auto level = Model::Instance().GetLevel();
+  auto lives = QString::number(level->GetLives());
+  auto guests = QString::number(level->GetGuestsLeft());
+  auto seconds = level->GetTimeLeft();
+  auto minutes = seconds / 60;
+  seconds %= 60;
+  auto time = QString::number(minutes) + ":" +
+              (seconds < 10 ? "0" : "") +
+              QString::number(seconds);
+  auto day = QString::number(level->GetDayIndex() + 1);
+  lives_->setText("Lives: " + lives);
+  guests_left_->setText("Visitors: " + guests);
+  time_left_->setText(time);
+  day_->setText("Day: " + day);
 }
 
 void View::StopAllSounds(QMediaPlayer* except) {
