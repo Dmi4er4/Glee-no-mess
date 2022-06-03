@@ -722,7 +722,8 @@ void View::StopAllSounds(QMediaPlayer* except) {
 
 void View::ShowGame() {
   view_->setScene(game_scene_);
-  to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+  game_exit_->setAttribute(Qt::WA_UnderMouse, false);
+  game_continue_->setAttribute(Qt::WA_UnderMouse, false);
   permit_button_->setAttribute(Qt::WA_UnderMouse, false);
   reject_button_->setAttribute(Qt::WA_UnderMouse, false);
 
