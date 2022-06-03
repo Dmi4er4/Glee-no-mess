@@ -46,7 +46,7 @@ jobs:
       with: 
         version: "6.3.0"
         
-   - name: install_qt_deps
+    - name: install_qt_deps
       run: sudo apt-get install libgstreamer-plugins-base1.0-dev
 
     - name: Create Makefile
