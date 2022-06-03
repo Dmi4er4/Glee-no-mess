@@ -194,21 +194,25 @@ class View : public QMainWindow {
   void HideStandTheWorld() {
     shelves_[kStandRow][kStandCol]->setHidden(true);
     items_[kStandRow][kStandCol]->setHidden(true);
+    stand_the_world_description_->hide();
   }
 
   void HideKsive() {
     shelves_[kKsivaRow][kKsivaCol]->setHidden(true);
     items_[kKsivaRow][kKsivaCol]->setHidden(true);
+    ksiva_description_->hide();
   }
 
   void HidePandemic() {
     shelves_[kPandemicRow][kPandemicCol]->setHidden(true);
     items_[kPandemicRow][kPandemicCol]->setHidden(true);
+    pandemic_description_->hide();
   }
 
   void HideVabank() {
     shelves_[kVabankRow][kVabankCol]->setHidden(true);
     items_[kVabankRow][kVabankCol]->setHidden(true);
+    vabank_description_->hide();
   }
 
   // Show Scene
@@ -369,6 +373,10 @@ class View : public QMainWindow {
   QLabel* shop_money_;
   std::vector<std::vector<QPushButton*>> shelves_;
   std::vector<std::vector<QLabel*>> items_;
+  QLabel* stand_the_world_description_;
+  QLabel* ksiva_description_;
+  QLabel* pandemic_description_;
+  QLabel* vabank_description_;
 
   // Fruit machine
   QGraphicsScene* fruit_machine_scene_{};
