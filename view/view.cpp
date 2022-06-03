@@ -66,9 +66,9 @@ void View::SetFruitMachineSlot(int index, const QPixmap& picture) {
 void View::SetFruitMachineSlotBorder(int index, bool is_spinning) {
   auto slot = slots_borders_[index];
   static auto stopped_slot_border = FileLoader::GetFile<QPixmap>(
-    ":casino/stopped_slot_border.png");
+      ":casino/stopped_slot_border.png");
   static auto spinning_slot_border = FileLoader::GetFile<QPixmap>(
-    ":casino/spinning_slot_border.png");
+      ":casino/spinning_slot_border.png");
   if (is_spinning) {
     slot->setPixmap(spinning_slot_border.scaled(
         slot->width(), slot->height(), Qt::IgnoreAspectRatio));
@@ -128,10 +128,10 @@ void View::InitGameScene() {
   to_menu_from_game_button_->setObjectName(kInGameObjects);
 
   proxy->setGeometry(QRectF{
-    0,
-    height() * 0.9,
-    width() * 1.0,
-    height() * 0.1
+      0,
+      height() * 0.9,
+      width() * 1.0,
+      height() * 0.1
   });
 
   SetErrorsCount(0);
@@ -236,7 +236,7 @@ void View::InitSettings() {
 void View::InitCasino() {
   casino_scene_ = new QGraphicsScene;
   casino_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":casino/casino.jpg").scaled(width(), height(), Qt::IgnoreAspectRatio));
+                               ":casino/casino.jpg").scaled(width(), height(), Qt::IgnoreAspectRatio));
 
   auto proxy = casino_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
@@ -256,8 +256,8 @@ void View::InitCasino() {
 void View::InitBlackJack() {
   black_jack_scene_ = new QGraphicsScene;
   black_jack_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":casino/black_jack.jpg").
-      scaled(width(), height(), Qt::IgnoreAspectRatio));
+                                   ":casino/black_jack.jpg").
+                               scaled(width(), height(), Qt::IgnoreAspectRatio));
 
 
   {
@@ -380,8 +380,8 @@ void View::InitFruitMachine() {
                         rect_size.width() * 2.0,
                         rect_size.height() * 3.0});
     all_slots_border->setPixmap(FileLoader::GetFile<QPixmap>
-        (":casino/all_slots_border.png").
-                           scaled(all_slots_border->width(),
+                                (":casino/all_slots_border.png").
+                                scaled(all_slots_border->width(),
                                        all_slots_border->height(),
                                        Qt::IgnoreAspectRatio));
   }
@@ -394,8 +394,8 @@ void View::InitFruitMachine() {
                         static_cast<qreal>(size.width()),
                         static_cast<qreal>(size.height())});
     slot_border->setPixmap(FileLoader::GetFile<QPixmap>
-        (":casino/stopped_slot_border.png").
-        scaled(slot_border->width(),
+                           (":casino/stopped_slot_border.png").
+                           scaled(slot_border->width(),
                                   slot_border->height(),
                                   Qt::IgnoreAspectRatio));
   }
@@ -409,15 +409,15 @@ void View::InitFruitMachine() {
         size.height() * 0.5
     });
     slot->setPixmap(FileLoader::GetFile<QPixmap>(":casino/machine_1.png").
-        scaled(slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+                    scaled(slot->width(), slot->height(), Qt::IgnoreAspectRatio));
   }
 
   auto proxy = fruit_machine_scene_->addWidget(new QWidget);
   proxy->setGeometry(QRectF{
-    0.0,
-    all_slots_top + rect_size.height() * 1.1,
-    width() * 1.0,
-    height() - (all_slots_top + rect_size.height() * 1.1)
+      0.0,
+      all_slots_top + rect_size.height() * 1.1,
+      width() * 1.0,
+      height() - (all_slots_top + rect_size.height() * 1.1)
   });
 
   auto form = new QGridLayout;
@@ -457,16 +457,16 @@ void View::InitFruitMachine() {
 void View::InitShop() {
   shop_scene_ = new QGraphicsScene;
   shop_scene_->addPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/shelves.png").
-      scaled(width(), height(), Qt::IgnoreAspectRatio));
+                             ":shop/shelves.png").
+                         scaled(width(), height(), Qt::IgnoreAspectRatio));
 
   auto proxy_shop_money = shop_scene_->addWidget(
       shop_money_ = new QLabel);
   proxy_shop_money->setGeometry({
-    kMargin,
-    kMargin,
-    width() * 0.3,
-    height() * 0.1
+      kMargin,
+      kMargin,
+      width() * 0.3,
+      height() * 0.1
   });
 
   {
@@ -528,30 +528,30 @@ void View::InitShop() {
   exit_shop_->setObjectName(kInShop);
 
   items_[kStandRow][kStandCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/stand_the_world.png").scaled(kItemWidth,
-                                      kItemHeight,
-                                         Qt::IgnoreAspectRatio));
+                                              ":shop/stand_the_world.png").scaled(kItemWidth,
+                                                      kItemHeight,
+                                                      Qt::IgnoreAspectRatio));
   shelves_[kStandRow][kStandCol]->setObjectName(kInShop);
   shelves_[kStandRow][kStandCol]->show();
 
   items_[kKsivaRow][kKsivaCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/ksiva.png").scaled(kItemWidth,
-                                      kItemHeight,
-                                      Qt::IgnoreAspectRatio));
+                                              ":shop/ksiva.png").scaled(kItemWidth,
+                                                      kItemHeight,
+                                                      Qt::IgnoreAspectRatio));
   shelves_[kKsivaRow][kKsivaCol]->setObjectName(kInShop);
   shelves_[kKsivaRow][kKsivaCol]->show();
 
   items_[kPandemicRow][kPandemicCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/pandemic.png").scaled(kItemWidth,
-                                      kItemHeight,
-                                      Qt::IgnoreAspectRatio));
+                                                    ":shop/pandemic.png").scaled(kItemWidth,
+                                                            kItemHeight,
+                                                            Qt::IgnoreAspectRatio));
   shelves_[kPandemicRow][kPandemicCol]->setObjectName(kInShop);
   shelves_[kPandemicRow][kPandemicCol]->show();
 
   items_[kVabankRow][kVabankCol]->setPixmap(FileLoader::GetFile<QPixmap>(
-      ":shop/vabank.png").scaled(kItemWidth,
-                                kItemHeight,
-                                Qt::IgnoreAspectRatio));
+                                                ":shop/vabank.png").scaled(kItemWidth,
+                                                        kItemHeight,
+                                                        Qt::IgnoreAspectRatio));
   shelves_[kVabankRow][kVabankCol]->setObjectName(kInShop);
   shelves_[kVabankRow][kVabankCol]->show();
 }
@@ -565,7 +565,6 @@ void View::ManageSounds() {
     gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.mp3"));
     audioOutput->setVolume(50);
     gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
-    gachi_level_sound_->play();
   }
 
   {
@@ -576,6 +575,46 @@ void View::ManageSounds() {
     bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.mp3"));
     audioOutput->setVolume(50);
     bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
+  }
+
+  {
+    menu_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    menu_sound_->setAudioOutput(audioOutput);
+    connect(menu_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.mp3"));
+    audioOutput->setVolume(50);
+    menu_sound_->setLoops(QMediaPlayer::Infinite);
+  }
+
+  {
+    shop_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    shop_sound_->setAudioOutput(audioOutput);
+    connect(shop_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.mp3"));
+    audioOutput->setVolume(50);
+    shop_sound_->setLoops(QMediaPlayer::Infinite);
+  }
+
+  {
+    casino_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    casino_sound_->setAudioOutput(audioOutput);
+    connect(casino_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.mp3"));
+    audioOutput->setVolume(50);
+    casino_sound_->setLoops(QMediaPlayer::Infinite);
+  }
+
+  {
+    settings_sound_ = new QMediaPlayer(this);
+    auto audioOutput = new QAudioOutput;
+    settings_sound_->setAudioOutput(audioOutput);
+    connect(settings_sound_, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.mp3"));
+    audioOutput->setVolume(50);
+    settings_sound_->setLoops(QMediaPlayer::Infinite);
   }
 }
 
@@ -608,4 +647,139 @@ QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
   auto* res = new QLabel(text);
   res->setAlignment(align);
   return res;
+}
+
+void View::StopAllSounds(QMediaPlayer* except) {
+  if (except != gachi_level_sound_) {
+    gachi_level_sound_->stop();
+  }
+  if (except != bsu_level_sound_) {
+    bsu_level_sound_->stop();
+  }
+  if (except != casino_sound_) {
+    casino_sound_->stop();
+  }
+  if (except != shop_sound_) {
+    shop_sound_->stop();
+  }
+  if (except != settings_sound_) {
+    settings_sound_->stop();
+  }
+  if (except != menu_sound_) {
+    menu_sound_->stop();
+  }
+}
+
+void View::ShowGame() {
+  view_->setScene(game_scene_);
+  to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+  permit_button_->setAttribute(Qt::WA_UnderMouse, false);
+  reject_button_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    // TODO(Andrey-Kostianoy): add music for bsu_level
+    StopAllSounds();
+    gachi_level_sound_->play();
+  }
+}
+
+void View::ShowMainMenu() {
+  view_->setScene(menu_scene_);
+  start_game_->setAttribute(Qt::WA_UnderMouse, false);
+  open_settings_->setAttribute(Qt::WA_UnderMouse, false);
+  quit_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(menu_sound_);
+    menu_sound_->play();
+  }
+}
+
+void View::ShowSettings() {
+  view_->setScene(settings_scene_);
+  difficulty_->setAttribute(Qt::WA_UnderMouse, false);
+  sound_->setAttribute(Qt::WA_UnderMouse, false);
+  reset_defaults_->setAttribute(Qt::WA_UnderMouse, false);
+  exit_shortcut_->setAttribute(Qt::WA_UnderMouse, false);
+  back_to_menu_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(settings_sound_);
+    settings_sound_->play();
+  }
+}
+
+void View::ShowCasino() {
+  view_->setScene(casino_scene_);
+  black_jack_->setAttribute(Qt::WA_UnderMouse, false);
+  fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+  casino_exit_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(casino_sound_);
+    casino_sound_->play();
+  }
+}
+
+void View::ShowBlackJack() {
+  CloseBlackJackGame();
+  for (auto to : croupier_cards_) {
+    to->setPixmap(QPixmap());
+  }
+  for (auto to : player_cards_) {
+    to->setPixmap(QPixmap());
+  }
+  status_->setText("");
+  view_->setScene(black_jack_scene_);
+
+  make_bid_->setAttribute(Qt::WA_UnderMouse, false);
+  back_to_casino_->setAttribute(Qt::WA_UnderMouse, false);
+  hit_me_->setAttribute(Qt::WA_UnderMouse, false);
+  stand_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(casino_sound_);
+    casino_sound_->play();
+  }
+}
+
+void View::ShowShop() {
+  view_->setScene(shop_scene_);
+
+  exit_shop_->setAttribute(Qt::WA_UnderMouse, false);
+  shelves_[kStandRow][kStandCol]->setAttribute(Qt::WA_UnderMouse, false);
+  shelves_[kKsivaRow][kKsivaCol]->setAttribute(Qt::WA_UnderMouse, false);
+  shelves_[kPandemicRow][kPandemicCol]->
+      setAttribute(Qt::WA_UnderMouse, false);
+  shelves_[kVabankRow][kVabankCol]->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds();
+    shop_sound_->play();
+  }
+}
+
+void View::ShowChooseGame() {
+  view_->setScene(choose_game_scene_);
+  continue_button_->setAttribute(Qt::WA_UnderMouse, false);
+  new_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+  to_menu_from_choose_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+
+  continue_button_->setText("Continue");
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(menu_sound_);
+    menu_sound_->play();
+  }
+}
+
+void View::ShowFruitMachine() {
+  view_->setScene(fruit_machine_scene_);
+  exit_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+  make_bid_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
+
+  if (sound_->text() == kOn) {
+    StopAllSounds(casino_sound_);
+    casino_sound_->play();
+  }
 }

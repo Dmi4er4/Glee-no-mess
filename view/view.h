@@ -200,78 +200,16 @@ class View : public QMainWindow {
   }
 
   // Show Scene
-  void ShowGame() {
-    view_->setScene(game_scene_);
-    to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-    permit_button_->setAttribute(Qt::WA_UnderMouse, false);
-    reject_button_->setAttribute(Qt::WA_UnderMouse, false);
-  }
+  void ShowGame();
+  void ShowMainMenu();
+  void ShowSettings();
+  void ShowCasino();
+  void ShowBlackJack();
+  void ShowShop();
+  void ShowChooseGame();
+  void ShowFruitMachine();
 
-  void ShowMainMenu() {
-    view_->setScene(menu_scene_);
-    start_game_->setAttribute(Qt::WA_UnderMouse, false);
-    open_settings_->setAttribute(Qt::WA_UnderMouse, false);
-    quit_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowSettings() {
-    view_->setScene(settings_scene_);
-    difficulty_->setAttribute(Qt::WA_UnderMouse, false);
-    sound_->setAttribute(Qt::WA_UnderMouse, false);
-    reset_defaults_->setAttribute(Qt::WA_UnderMouse, false);
-    exit_shortcut_->setAttribute(Qt::WA_UnderMouse, false);
-    back_to_menu_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowCasino() {
-    view_->setScene(casino_scene_);
-    black_jack_->setAttribute(Qt::WA_UnderMouse, false);
-    fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-    casino_exit_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowBlackJack() {
-    CloseBlackJackGame();
-    for (auto to : croupier_cards_) {
-      to->setPixmap(QPixmap());
-    }
-    for (auto to : player_cards_) {
-      to->setPixmap(QPixmap());
-    }
-    status_->setText("");
-    view_->setScene(black_jack_scene_);
-
-    make_bid_->setAttribute(Qt::WA_UnderMouse, false);
-    back_to_casino_->setAttribute(Qt::WA_UnderMouse, false);
-    hit_me_->setAttribute(Qt::WA_UnderMouse, false);
-    stand_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowShop() {
-    view_->setScene(shop_scene_);
-
-    exit_shop_->setAttribute(Qt::WA_UnderMouse, false);
-    shelves_[kStandRow][kStandCol]->setAttribute(Qt::WA_UnderMouse, false);
-    shelves_[kKsivaRow][kKsivaCol]->setAttribute(Qt::WA_UnderMouse, false);
-    shelves_[kPandemicRow][kPandemicCol]->
-        setAttribute(Qt::WA_UnderMouse, false);
-    shelves_[kVabankRow][kVabankCol]->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowChooseGame() {
-    view_->setScene(choose_game_scene_);
-    continue_button_->setAttribute(Qt::WA_UnderMouse, false);
-    new_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-    to_menu_from_choose_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-
-    continue_button_->setText("Continue");
-  }
-
-  void ShowFruitMachine() {
-    view_->setScene(fruit_machine_scene_);
-    exit_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-    make_bid_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-  }
+  void StopAllSounds(QMediaPlayer* except = nullptr);
 
  private:
   View();
@@ -286,6 +224,7 @@ class View : public QMainWindow {
   void InitFruitMachine();
   void InitShop();
   void ManageSounds();
+
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
