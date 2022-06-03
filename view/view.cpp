@@ -104,7 +104,7 @@ void View::InitGameScene() {
     static const QString kInGameObjects = "in-game";
     game_scene_ = new QGraphicsScene;
 
-    LoadBackgroundFrames(":/levels/club_level/background");
+    LoadBackgroundFrames(":/levels/gachi_club/background");
     game_background_ = game_scene_->addPixmap(background_frames_.first());
 
     auto proxy = game_scene_->addWidget(new QWidget);
