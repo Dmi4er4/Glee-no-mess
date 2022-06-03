@@ -15,7 +15,7 @@ View::View() {
   InitFruitMachine();
   InitShop();
   // ShowMainMenu();
-  ShowShop();
+  ShowCasino();
   show();
 }
 

@@ -29,20 +29,20 @@
     "King" : ":casino/King_spades.png",
     "Ace" : ":casino/Ace_spades.png"
   },
-  "dimonds" : {
-    "2" : ":casino/2_dimonds.png",
-    "3" : ":casino/3_dimonds.png",
-    "4" : ":casino/4_dimonds.png",
-    "5" : ":casino/5_dimonds.png",
-    "6" : ":casino/6_dimonds.png",
-    "7" : ":casino/7_dimonds.png",
-    "8" : ":casino/8_dimonds.png",
-    "9" : ":casino/9_dimonds.png",
-    "10" : ":casino/10_dimonds.png",
-    "Jack" : ":casino/Jack_dimonds.png",
-    "Queen" : ":casino/Queen_dimonds.png",
-    "King" : ":casino/King_dimonds.png",
-    "Ace" : ":casino/Ace_dimonds.png"
+  "diamonds" : {
+    "2" : ":casino/2_diamonds.png",
+    "3" : ":casino/3_diamonds.png",
+    "4" : ":casino/4_diamonds.png",
+    "5" : ":casino/5_diamonds.png",
+    "6" : ":casino/6_diamonds.png",
+    "7" : ":casino/7_diamonds.png",
+    "8" : ":casino/8_diamonds.png",
+    "9" : ":casino/9_diamonds.png",
+    "10" : ":casino/10_diamonds.png",
+    "Jack" : ":casino/Jack_diamonds.png",
+    "Queen" : ":casino/Queen_diamonds.png",
+    "King" : ":casino/King_diamonds.png",
+    "Ace" : ":casino/Ace_diamonds.png"
   },
   "clubs" : {
     "2" : ":casino/2_clubs.png",

@@ -34,6 +34,7 @@
         <file>casino/casino.jpg</file>
         <file>casino/black_jack.jpg</file>
         <file>casino/croupier.png</file>
+
         <file>casino/2_hearts.png</file>
         <file>casino/3_hearts.png</file>
         <file>casino/4_hearts.png</file>
@@ -47,6 +48,49 @@
         <file>casino/Jack_hearts.png</file>
         <file>casino/King_hearts.png</file>
         <file>casino/Queen_hearts.png</file>
+
+        <file>casino/2_diamonds.png</file>
+        <file>casino/3_diamonds.png</file>
+        <file>casino/4_diamonds.png</file>
+        <file>casino/5_diamonds.png</file>
+        <file>casino/6_diamonds.png</file>
+        <file>casino/7_diamonds.png</file>
+        <file>casino/8_diamonds.png</file>
+        <file>casino/9_diamonds.png</file>
+        <file>casino/10_diamonds.png</file>
+        <file>casino/Ace_diamonds.png</file>
+        <file>casino/Jack_diamonds.png</file>
+        <file>casino/King_diamonds.png</file>
+        <file>casino/Queen_diamonds.png</file>
+
+        <file>casino/2_spades.png</file>
+        <file>casino/3_spades.png</file>
+        <file>casino/4_spades.png</file>
+        <file>casino/5_spades.png</file>
+        <file>casino/6_spades.png</file>
+        <file>casino/7_spades.png</file>
+        <file>casino/8_spades.png</file>
+        <file>casino/9_spades.png</file>
+        <file>casino/10_spades.png</file>
+        <file>casino/Ace_spades.png</file>
+        <file>casino/Jack_spades.png</file>
+        <file>casino/King_spades.png</file>
+        <file>casino/Queen_spades.png</file>
+
+        <file>casino/2_clubs.png</file>
+        <file>casino/3_clubs.png</file>
+        <file>casino/4_clubs.png</file>
+        <file>casino/5_clubs.png</file>
+        <file>casino/6_clubs.png</file>
+        <file>casino/7_clubs.png</file>
+        <file>casino/8_clubs.png</file>
+        <file>casino/9_clubs.png</file>
+        <file>casino/10_clubs.png</file>
+        <file>casino/Ace_clubs.png</file>
+        <file>casino/Jack_clubs.png</file>
+        <file>casino/King_clubs.png</file>
+        <file>casino/Queen_clubs.png</file>
+        
         <file>casino/fruit_machine.jpg</file>
         <file>casino/machine_0.png</file>
         <file>casino/machine_1.png</file>

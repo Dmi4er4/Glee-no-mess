@@ -6,14 +6,14 @@
 
 constexpr size_t kMaxScore = 21;
 
-const std::vector<QString> kSuitsNames{"clubs", "dimonds", "spades", "hearts"};
+const std::vector<QString> kSuitsNames{"clubs", "diamonds", "spades", "hearts"};
 const std::vector<QString> kValueNames{"2", "3", "4", "5", "6", "7", "8", "9",
                                        "10", "Jack", "Queen", "King", "Ace"};
 
 namespace cards {
 enum class Suit {
   kClub,
-  kDimond,
+  kDiamond,
   kSpade,
   kHeart,
   kCount

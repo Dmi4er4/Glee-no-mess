@@ -63,17 +63,10 @@ void BlackJack::ShowNextCroupierCard() {
 }
 
 QString BlackJack::GetCardFileName(const cards::Cards& card) {
-  QString file_name = ":casino/";
-  file_name += kValueNames[static_cast<size_t>(card.value)] + "_";
-  file_name += "hearts.png";
-  return file_name;
-
-  // TODO(Adamenko-Vladsislav) Add all types of cards
-  // QString ans =
-  //     FileLoader::GetFile<QJsonDocument>(":casino/cards.json")
-  //     [kSuitsNames[static_cast<size_t>(card.suit)]]
-  //     [kValueNames[static_cast<size_t>(card.value)]].toString();
-  // return ans;
+  return
+      FileLoader::GetFile<QJsonDocument>(":casino/cards.json")
+      [kSuitsNames[static_cast<size_t>(card.suit)]]
+      [kValueNames[static_cast<size_t>(card.value)]].toString();
 }
 
 void BlackJack::Draw() {
