@@ -140,12 +140,4 @@
         <file>shop/vabank.png</file>
         <file>shop/background.png</file>
     </qresource>
-    <qresource>
-        <file>sound_effects/gachi_level.mp3</file>
-        <file>sound_effects/bsu_level.mp3</file>
-        <file>sound_effects/casino.mp3</file>
-        <file>sound_effects/menu.mp3</file>
-        <file>sound_effects/shop.mp3</file>
-        <file>sound_effects/settings.mp3</file>
-    </qresource>
 </RCC>
