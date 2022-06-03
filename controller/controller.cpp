@@ -85,9 +85,24 @@ void Controller::ConnectGameSignals() {
   connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
-  connect(
-      View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
-      &Model::Instance(), &Model::DayFailed);
+  connect(View::Instance().GetPauseGameButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseStart();
+      Model::Instance().GetDayTimer()->stop();
+  });
+  connect(View::Instance().GetGameExitButton(),
+          &QPushButton::released,
+          &Model::Instance(),
+          &Model::DayFailed);
+  connect(View::Instance().GetGameContinueButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseFinish();
+      Model::Instance().GetDayTimer()->start();
+  });
 }
 
 void Controller::ConnectMainMenuSignals() {
