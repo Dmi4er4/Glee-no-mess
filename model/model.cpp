@@ -88,7 +88,7 @@ void Model::InitSettings() {
                                    kAddTime,
                                    kAllin,
                                    kReduceGuest}) {
-    InitSettings(file, property_name);
+    InitSetting(file, property_name);
   }
   View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
@@ -282,13 +282,13 @@ void Model::StartFruitMachineGame() {
 
 void Model::AddAllInItem() {
   if (!HasItem(kAllin)) {
-    all_items.emplace_back(new Item(kAllin));
+    all_items_.emplace_back(new Item(kAllin));
   }
 }
 
 void Model::AddReduceGuestsItem() {
   if (!HasItem(kReduceGuest)) {
-    all_items.emplace_back(new Item(kReduceGuest));
+    all_items_.emplace_back(new Item(kReduceGuest));
   }
 }
 

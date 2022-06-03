@@ -43,6 +43,7 @@ class Model : public QObject {
   void DayTimerTick();
 
   auto GetLevel() { return level_.get(); }
+  auto GetDayTimer() { return day_timer_.get(); }
 
   // Items
   void AddIgnoreFirstMistakeItem();
@@ -107,16 +108,6 @@ class Model : public QObject {
   void InitSetting(const QJsonDocument& json, const QString& property);
 
   std::vector<std::unique_ptr<Item>> all_items_;
-
-  size_t errors_limit_;
-  size_t guest_limit_;
-  size_t time_limit_;
-
-  Level level_{kLevels, "club_level", 0};
-
-  std::deque<std::shared_ptr<Guest>> queue_;
-  std::shared_ptr<Guest> current_guest_;
-  std::vector<std::shared_ptr<Item>> all_items;
 
   QShortcut* exit_shortcut_;
   QSettings* settings_;

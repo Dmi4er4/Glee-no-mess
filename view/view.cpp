@@ -113,11 +113,11 @@ void View::InitGameScene() {
 
     layout->addWidget(permit_button_ = new QPushButton("OK"));
     layout->addWidget(reject_button_ = new QPushButton("NOT OK"));
-    layout->addWidget(errors_ = new QLabel("Placeholder"));
+    layout->addWidget(lives_ = new QLabel("Placeholder"));
     layout->addItem(new QSpacerItem(0, 0,
                                     QSizePolicy::Expanding,
                                     QSizePolicy::Expanding));
-    layout->addWidget(game_pause_button =
+    layout->addWidget(game_pause_button_ =
                           new QPushButton("Pause"));
     layout->addWidget(guests_left_ = new QLabel("Visitors: "));
     layout->addWidget(day_ = new QLabel("Day: "));
@@ -132,7 +132,7 @@ void View::InitGameScene() {
 
     permit_button_->setObjectName(kInGameObjects);
     reject_button_->setObjectName(kInGameObjects);
-    game_pause_button->setObjectName(kInGameObjects);
+    game_pause_button_->setObjectName(kInGameObjects);
 
     proxy->setGeometry(QRectF{
         0,
@@ -142,7 +142,6 @@ void View::InitGameScene() {
     });
   }
 
-  SetErrorsCount(0);
   SetTimer();
   
   {
@@ -546,8 +545,8 @@ void View::InitShop() {
       proxy->setGeometry(QRectF{
           20.0 * kMargin + i * kWidth + kItemWidth / 2,
           height() * 0.1 + j * kHeight,
-          kItemWidth,
-          kItemHeight
+          kItemWidth * 1.0,
+          kItemHeight * 1.0
       });
       auto form = new QHBoxLayout;
       proxy->widget()->setLayout(form);

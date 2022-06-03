@@ -46,8 +46,6 @@ class View : public QMainWindow {
   static constexpr int kPandemicCol = 1;
   static constexpr int kVabankRow = 2;
   static constexpr int kVabankCol = 1;
-  static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
-  static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
 
@@ -63,10 +61,8 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
   auto GetGameScene() const { return game_scene_; }
-  auto GetPauseGameButton() const { return game_pause_button;  }
-  auto GetScene() const { return game_scene_; }
+  auto GetPauseGameButton() const { return game_pause_button_; }
 
   void GamePauseStart() { game_pause_overlay->setHidden(false); }
   void GamePauseFinish() { game_pause_overlay->hide(); }
@@ -241,7 +237,7 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* lives_{};
-  QPushButton* game_pause_button{};
+  QPushButton* game_pause_button_{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};

@@ -218,20 +218,6 @@ void Controller::ConnectShopSignals() {
                        &Model::BuyAddIgnoreFirstMistakeItem);
 }
 
-void Controller::StartNewGame() {
-  Model::Instance().UpdateSettingsDay(1);
-  ContinueGame();
-}
-
-void Controller::ContinueGame() {
-  Model::Instance().StartNewDay();
-  View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
-  View::Instance().SetDay(Model::Instance().LoadSettingsDay());
-  View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
-  View::Instance().SetErrorsCount(0);
-  View::Instance().ShowGame();
-}
-
 void Controller::KeyPressInSettings(QKeyEvent* event) {
   if (is_editing_keybinding_) {
     switch (event->key()) {
