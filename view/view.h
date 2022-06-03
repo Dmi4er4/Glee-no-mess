@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QAudioOutput>
 #include <QApplication>
 #include <QDirIterator>
 #include <QFontDatabase>
@@ -7,18 +8,24 @@
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMediaPlayer>
+#include <QMovie>
 #include <QPushButton>
+#include <QSoundEffect>
 #include <QSpinBox>
 #include <QStyle>
 #include <QTimer>
 #include <QTextEdit>
 
+#include <algorithm>
 #include <vector>
 
 #include "guest.h"
 #include "typedefs.h"
+#include "settings.h"
 
 class Model;
 class Controller;
@@ -29,6 +36,18 @@ class View : public QMainWindow {
  public:
   static View& Instance();
   static constexpr int kMargin = 5;
+  static constexpr size_t kShelves = 3;
+  // reversed rows and columns!!!
+  static constexpr int kStandRow = 0;
+  static constexpr int kStandCol = 0;
+  static constexpr int kKsivaRow = 1;
+  static constexpr int kKsivaCol = 0;
+  static constexpr int kPandemicRow = 1;
+  static constexpr int kPandemicCol = 1;
+  static constexpr int kVabankRow = 2;
+  static constexpr int kVabankCol = 1;
+  static inline const QBrush kBluePolygonBrush = QBrush(QColor(kBlue));
+  static inline const QBrush kYellowPolygonBrush = QBrush(QColor(kYellow));
 
   void keyPressEvent(QKeyEvent* event) override;
 
@@ -46,6 +65,21 @@ class View : public QMainWindow {
   auto GetRejectButton() const { return reject_button_; }
   auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
   auto GetGameScene() const { return game_scene_; }
+  auto GetPauseGameButton() const { return game_pause_button;  }
+  auto GetScene() const { return game_scene_; }
+
+  void GamePauseStart() { game_pause_overlay->setHidden(false); }
+  void GamePauseFinish() { game_pause_overlay->hide(); }
+
+  void DisableGameButtons() {
+    permit_button_->setEnabled(false);
+    reject_button_->setEnabled(false);
+  }
+
+  void EnableGameButtons() {
+    permit_button_->setEnabled(true);
+    reject_button_->setEnabled(true);
+  }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -82,8 +116,10 @@ class View : public QMainWindow {
   auto* GetExitBlackJackButton() { return back_to_casino_; }
 
   void SetPlayerMoney(money_t x) {
-    player_money_->setText("Your money: " + QString::number(x));
-    money_->setText("Your money: " + QString::number(x));
+    QString text = "Your money: " + QString::number(x);
+    player_money_->setText(text);
+    money_->setText(text);
+    shop_money_->setText(text);
   }
 
   void SetPlayerMaxBid(money_t x) {
@@ -95,6 +131,8 @@ class View : public QMainWindow {
   auto GetBid() { return bid_->value(); }
   auto* GetHitMeButton() { return hit_me_; }
   auto* GetStandButton() { return stand_; }
+  auto* GetGameExitButton() { return game_exit_; }
+  auto* GetGameContinueButton() { return game_continue_; }
 
   void ShowBlackJackGame() {
     hit_me_->show();
@@ -115,11 +153,13 @@ class View : public QMainWindow {
   }
 
   void PutCroupierCard(size_t number, QPixmap card) {
-    croupier_cards_[number]->setPixmap(card);
+    croupier_cards_[number]->setPixmap(
+        card.scaled(width() * 0.11, height() * 0.3));
   }
 
   void PutPlayerCard(size_t number, QPixmap card) {
-    player_cards_[number]->setPixmap(card);
+    player_cards_[number]->setPixmap(
+        card.scaled(width() * 0.11, height() * 0.3));
   }
 
   void ShowSatus(const QString& status) {
@@ -132,74 +172,48 @@ class View : public QMainWindow {
   auto GetFruitMachineBid() { return bid_fruit_machine_->value(); }
   auto* GetMakeBidFruitMachine() { return make_bid_fruit_machine_; }
 
-  void SetFruitMachineSlot(int index, const QPixmap& picture) {
-    auto slot = slots_[index];
-    slot->setPixmap(picture.scaled(
-        slot->width(), slot->height(), Qt::IgnoreAspectRatio));
+  void SetFruitMachineSlot(int index, const QPixmap& picture);
+  void SetFruitMachineSlotBorder(int index, bool is_spinning);
+
+  // Shop
+  auto* GetStandTheWorldBuy() { return shelves_[kStandRow][kStandCol]; }
+  auto* GetKsivaBuy() { return shelves_[kKsivaRow][kKsivaCol]; }
+  auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
+  auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
+
+  const QString kBought = "Bought";
+
+  void HideStandTheWorld() {
+    shelves_[kStandRow][kStandCol]->setText(kBought);
+    shelves_[kStandRow][kStandCol]->setEnabled(false);
+  }
+
+  void HideKsive() {
+    shelves_[kKsivaRow][kKsivaCol]->setText(kBought);
+    shelves_[kKsivaRow][kKsivaCol]->setEnabled(false);
+  }
+
+  void HidePandemic() {
+    shelves_[kPandemicRow][kPandemicCol]->setText(kBought);
+    shelves_[kPandemicRow][kPandemicCol]->setEnabled(false);
+  }
+
+  void HideVabank() {
+    shelves_[kVabankRow][kVabankCol]->setText(kBought);
+    shelves_[kVabankRow][kVabankCol]->setEnabled(false);
   }
 
   // Show Scene
-  void ShowGame() {
-    view_->setScene(game_scene_);
-    to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-    permit_button_->setAttribute(Qt::WA_UnderMouse, false);
-    reject_button_->setAttribute(Qt::WA_UnderMouse, false);
-  }
+  void ShowGame();
+  void ShowMainMenu();
+  void ShowSettings();
+  void ShowCasino();
+  void ShowBlackJack();
+  void ShowShop();
+  void ShowChooseGame();
+  void ShowFruitMachine();
 
-  void ShowMainMenu() {
-    view_->setScene(menu_scene_);
-    start_game_->setAttribute(Qt::WA_UnderMouse, false);
-    open_settings_->setAttribute(Qt::WA_UnderMouse, false);
-    quit_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowSettings() {
-    view_->setScene(settings_scene_);
-    difficulty_->setAttribute(Qt::WA_UnderMouse, false);
-    sound_->setAttribute(Qt::WA_UnderMouse, false);
-    reset_defaults_->setAttribute(Qt::WA_UnderMouse, false);
-    exit_shortcut_->setAttribute(Qt::WA_UnderMouse, false);
-    back_to_menu_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowCasino() {
-    view_->setScene(casino_scene_);
-    black_jack_->setAttribute(Qt::WA_UnderMouse, false);
-    fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-    casino_exit_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowBlackJack() {
-    CloseBlackJackGame();
-    for (auto to : croupier_cards_) {
-      to->setPixmap(QPixmap());
-    }
-    for (auto to : player_cards_) {
-      to->setPixmap(QPixmap());
-    }
-    status_->setText("");
-    view_->setScene(black_jack_scene_);
-
-    make_bid_->setAttribute(Qt::WA_UnderMouse, false);
-    back_to_casino_->setAttribute(Qt::WA_UnderMouse, false);
-    hit_me_->setAttribute(Qt::WA_UnderMouse, false);
-    stand_->setAttribute(Qt::WA_UnderMouse, false);
-  }
-
-  void ShowChooseGame() {
-    view_->setScene(choose_game_scene_);
-    continue_button_->setAttribute(Qt::WA_UnderMouse, false);
-    new_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-    to_menu_from_choose_game_button_->setAttribute(Qt::WA_UnderMouse, false);
-
-    continue_button_->setText("Continue");
-  }
-
-  void ShowFruitMachine() {
-    view_->setScene(fruit_machine_scene_);
-    exit_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-    make_bid_fruit_machine_->setAttribute(Qt::WA_UnderMouse, false);
-  }
+  void StopAllSounds(QMediaPlayer* except = nullptr);
 
  private:
   View();
@@ -212,6 +226,9 @@ class View : public QMainWindow {
   void InitCasino();
   void InitBlackJack();
   void InitFruitMachine();
+  void InitShop();
+  void ManageSounds();
+
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
   void LoadBackgroundFrames(const QString& folder);
@@ -224,7 +241,7 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* lives_{};
-  QPushButton* to_menu_from_game_button_{};
+  QPushButton* game_pause_button{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};
@@ -234,6 +251,10 @@ class View : public QMainWindow {
 
   const int32_t kFrameRate = 10;
   const int32_t kFrameDelay = 1000 / kFrameRate;
+
+  QWidget* game_pause_overlay;
+  QPushButton* game_exit_;
+  QPushButton* game_continue_;
 
   // Menu
   QGraphicsScene* menu_scene_{};
@@ -274,13 +295,30 @@ class View : public QMainWindow {
   std::vector<QLabel*> croupier_cards_{};
   std::vector<QLabel*> player_cards_{};
   QLabel* status_{};
+  
+  // Shop
+  QGraphicsScene* shop_scene_;
+  QPushButton* exit_shop_;
+  QLabel* shop_money_;
+  std::vector<std::vector<QPushButton*>> shelves_;
+  std::vector<std::vector<QLabel*>> items_;
 
   // Fruit machine
-  QGraphicsScene* fruit_machine_scene_;
-  QPushButton* exit_fruit_machine_;
-  QSpinBox* bid_fruit_machine_;
-  QPushButton* make_bid_fruit_machine_;
-  QLabel* money_;
-  QLabel* machine_;
-  QLabel* slots_[3];
+  QGraphicsScene* fruit_machine_scene_{};
+  QPushButton* exit_fruit_machine_{};
+  QSpinBox* bid_fruit_machine_{};
+  QPushButton* make_bid_fruit_machine_{};
+  QLabel* money_{};
+  QLabel* machine_{};
+  QLabel* all_slots_border_{};
+  QLabel* slots_[kSlotsCount]{};
+  QLabel* slots_borders_[kSlotsCount]{};
+
+  // All sound effects
+  QMediaPlayer* gachi_level_sound_;
+  QMediaPlayer* menu_sound_;
+  QMediaPlayer* settings_sound_;
+  QMediaPlayer* casino_sound_;
+  QMediaPlayer* shop_sound_;
+  QMediaPlayer* bsu_level_sound_;
 };

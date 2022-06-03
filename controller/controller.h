@@ -35,6 +35,9 @@ class Controller : public QObject {
   void ConnectBlackJackSignals();
   void ConnectFruitMachineSignals();
   void ConnectChooseGameSignals();
+  void ConnectShopSignals();
+  void StartNewGame();
+  void ContinueGame();
   void Quit();
 
   QString PressedKey(Qt::KeyboardModifier key, const QString& text) {
@@ -44,4 +47,6 @@ class Controller : public QObject {
   bool is_editing_keybinding_{};
   bool is_playing_animation_{};
   std::function<void(const QString& keys)> new_hotkey_;
+
+  bool is_game_pause{false};
 };

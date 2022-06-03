@@ -20,6 +20,7 @@ void Controller::ConnectSignals() {
   ConnectBlackJackSignals();
   ConnectFruitMachineSignals();
   ConnectChooseGameSignals();
+  ConnectShopSignals();
 }
 
 void Controller::keyPressEvent(QKeyEvent* event) {
@@ -90,9 +91,33 @@ void Controller::ConnectGameSignals() {
   connect(
       View::Instance().GetRejectButton(), &QPushButton::released,
       &Model::Instance(), &Model::Reject);
-  connect(
-      View::Instance().GetToMenuFromGameButton(), &QPushButton::released,
-      &Model::Instance(), &Model::DayFailed);
+  connect(View::Instance().GetPauseGameButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseStart();
+      Model::Instance().GetDayTimer()->stop();
+      View::Instance().DisableGameButtons();
+      is_game_pause = true;
+  });
+  connect(View::Instance().GetGameExitButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseFinish();
+      Model::Instance().DayFailed();
+      View::Instance().EnableGameButtons();
+      is_game_pause = false;
+  });
+  connect(View::Instance().GetGameContinueButton(),
+          &QPushButton::released,
+          this,
+          [&]{
+      View::Instance().GamePauseFinish();
+      Model::Instance().GetDayTimer()->start();
+      View::Instance().EnableGameButtons();
+      is_game_pause = false;
+  });
 }
 
 void Controller::ConnectMainMenuSignals() {
@@ -174,6 +199,39 @@ void Controller::ConnectChooseGameSignals() {
   View::Instance().GetContinueButton()->installEventFilter(this);
 }
 
+void Controller::ConnectShopSignals() {
+  QPushButton::connect(View::Instance().GetStandTheWorldBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                        &Model::BuyTimeItem);
+  QPushButton::connect(View::Instance().GetVabankBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyAllInItem);
+  QPushButton::connect(View::Instance().GetPandemicBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyReduceGuestsItem);
+  QPushButton::connect(View::Instance().GetKsivaBuy(),
+                       &QPushButton::released,
+                       &Model::Instance(),
+                       &Model::BuyAddIgnoreFirstMistakeItem);
+}
+
+void Controller::StartNewGame() {
+  Model::Instance().UpdateSettingsDay(1);
+  ContinueGame();
+}
+
+void Controller::ContinueGame() {
+  Model::Instance().StartNewDay();
+  View::Instance().SetGuestsLeft(Model::Instance().GetGuestsLeft());
+  View::Instance().SetDay(Model::Instance().LoadSettingsDay());
+  View::Instance().SetTimeLeft(Model::Instance().GetTimeLeft());
+  View::Instance().SetErrorsCount(0);
+  View::Instance().ShowGame();
+}
+
 void Controller::KeyPressInSettings(QKeyEvent* event) {
   if (is_editing_keybinding_) {
     switch (event->key()) {
@@ -199,11 +257,15 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
   auto& model = Model::Instance();
   switch (event->key()) {
     case Qt::Key_D: {
-      model.Reject();
+      if (!is_game_pause) {
+        model.Reject();
+      }
       break;
     }
     case Qt::Key_A: {
-      model.Permit();
+      if (!is_game_pause) {
+        model.Permit();
+      }
       break;
     }
   }

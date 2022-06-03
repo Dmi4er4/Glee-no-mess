@@ -81,10 +81,14 @@ void Model::AddIgnoreFirstMistakeItem() {
 void Model::InitSettings() {
   auto file = FileLoader::GetFile<QJsonDocument>(kDefaultSettings);
   for (const auto& property_name : {kMoney,
-                                    kSound,
-                                    kDifficulty,
-                                    kExitShortcut}) {
-    InitSetting(file, property_name);
+                                   kSound,
+                                   kDifficulty,
+                                   kExitShortcut,
+                                   kIgnoreFirstMistake,
+                                   kAddTime,
+                                   kAllin,
+                                   kReduceGuest}) {
+    InitSettings(file, property_name);
   }
   View::Instance().SetDifficulty(
       settings_->value(kDifficulty).toString());
@@ -96,6 +100,27 @@ void Model::InitSettings() {
       &View::Instance());
   View::Instance().SetPlayerMoney(settings_->value(kMoney).toInt());
   View::Instance().SetPlayerMaxBid(settings_->value(kMoney).toInt());
+
+  if (settings_->value(kIgnoreFirstMistake).toBool()) {
+    View::Instance().HideKsive();
+    AddIgnoreFirstMistakeItem();
+  }
+  if (settings_->value(kAddTime).toBool()) {
+    View::Instance().HideStandTheWorld();
+    AddTimeItem();
+  }
+  if (settings_->value(kAllin).toBool()) {
+    View::Instance().HideVabank();
+    AddAllInItem();
+  }
+  if (settings_->value(kReduceGuest).toBool()) {
+    View::Instance().HidePandemic();
+    AddReduceGuestsItem();
+  }
+
+  if (IsSoundOn()) {
+    View::Instance().ShowMainMenu();
+  }
 }
 
 void Model::InitSetting(const QJsonDocument& json, const QString& property) {
@@ -125,10 +150,13 @@ void Model::SetExitShortcut(const QString& keys) {
 void Model::ToggleSound() {
   if (settings_->value(kSound) == kOff) {
     settings_->setValue(kSound, kOn);
+    View::Instance().SetSound(settings_->value(kSound).toString());
+    View::Instance().ShowSettings();
   } else {
     settings_->setValue(kSound, kOff);
+    View::Instance().SetSound(settings_->value(kSound).toString());
+    View::Instance().StopAllSounds();
   }
-  View::Instance().SetSound(settings_->value(kSound).toString());
 }
 
 void Model::ResetDefaults() {
@@ -146,6 +174,7 @@ void Model::ResetDefaults() {
   View::Instance().SetDifficulty(default_difficulty);
   View::Instance().SetExitShortcut(default_exit_shortcut);
   View::Instance().SetSound(default_sound);
+  View::Instance().ShowSettings();
   exit_shortcut_->setKey(QKeySequence(default_exit_shortcut));
 }
 
@@ -169,66 +198,138 @@ void Model::UpdateMoney(money_t delta) {
 }
 
 void Model::StartFruitMachineGame() {
+  static constexpr int delay[] = {2000, 3000, 4000};
+
   View::Instance().GetMakeBidFruitMachine()->setEnabled(false);
   auto bid = View::Instance().GetFruitMachineBid();
   if (bid == 0) {
     return;
   }
   UpdateMoney(-bid);
-  for (int i : {0, 1, 2}) {
-    new_slot_pics_[i] = Random::RandomInt(0, 8);
+  for (int& new_slot_pic : new_slot_pics_) {
+    new_slot_pic = Random::RandomInt(0, 8);
   }
 
   static const QString path = ":casino/machine_";
 
-  auto ChangePicture = [&](int slot, int picture) {
-    View::Instance().SetFruitMachineSlot(slot, FileLoader::GetFile<QPixmap>(
-        path + QString::number(picture) + ".png"));
+  auto ChangePicture = [](int slot, int picture) {
+    View::Instance().
+        SetFruitMachineSlot(slot,
+                            FileLoader::GetFile<QPixmap>(
+                                path + QString::number(picture) + ".png"));
+  };
+  auto ChangeBorder = [](int slot, bool is_spinning) {
+    View::Instance().SetFruitMachineSlotBorder(slot, is_spinning);
   };
 
-  spinning_ = 3;
+  for (int i = 0; i < kSlotsCount; i++) {
+    ChangeBorder(i, true);
+  }
+  spinning_ = kSlotsCount;
 
   slot_update_timer_ = new QTimer;
   connect(slot_update_timer_, &QTimer::timeout, this, [ChangePicture, this] {
-    for (int i = 2; i >= 3 - spinning_; --i) {
+    for (int i = kSlotsCount - 1; i >= kSlotsCount - spinning_; --i) {
       ChangePicture(i, Random::RandomInt(0, 8));
     }
   });
   slot_update_timer_->start(100);
 
-  static constexpr int delay[] = {2000, 3000, 4000};
+  for (int i = 0; i < kSlotsCount - 1; ++i) {
+    QTimer::singleShot(std::accumulate(delay, delay + i + 1, 0),
+                       [ChangePicture, ChangeBorder, this, i] {
+                         --spinning_;
+                         ChangeBorder(i, false);
+                         ChangePicture(i, new_slot_pics_[i]);
+                       });
+  }
 
-  QTimer::singleShot(delay[0], [ChangePicture, this] {
-    --spinning_;
-    ChangePicture(0, new_slot_pics_[0]);
-  });
+  QTimer::singleShot(std::accumulate(delay, delay + kSlotsCount, 0),
+                     [ChangePicture, ChangeBorder, bid, this] {
+                       ChangeBorder(kSlotsCount - 1, false);
+                       ChangePicture(kSlotsCount - 1,
+                                     new_slot_pics_[kSlotsCount - 1]);
+                       --spinning_;
+                       delete slot_update_timer_;
 
-  QTimer::singleShot(delay[0] + delay[1], [ChangePicture, this] {
-    --spinning_;
-    ChangePicture(1, new_slot_pics_[1]);
-  });
+                       bool all_equal = true;
+                       bool any_equal = false;
+                       std::sort(new_slot_pics_, new_slot_pics_ + kSlotsCount);
+                       for (int i = 1; i < kSlotsCount; ++i) {
+                         if (new_slot_pics_[i] != new_slot_pics_[i - 1]) {
+                           all_equal = false;
+                         } else {
+                           any_equal = true;
+                         }
+                       }
 
-  QTimer::singleShot(delay[0] + delay[1] + delay[2],
-                     [ChangePicture, this] {
-    --spinning_;
-    delete slot_update_timer_;
+                       if (all_equal) {
+                         UpdateMoney(bid);
+                         if (new_slot_pics_[0] == kBigWinIndex) {
+                           UpdateMoney(kBigWinRewardCoef * bid);
+                         } else {
+                           UpdateMoney(kAllEqualRewardCoef * bid);
+                         }
+                       } else if (any_equal) {
+                         UpdateMoney(bid);
+                         UpdateMoney(kAnyEqualRewardCoef * bid);
+                       }
 
-    auto bid = View::Instance().GetFruitMachineBid();
+                       View::Instance().
+                           GetMakeBidFruitMachine()->setEnabled(true);
+                     });
+}
 
-    if (new_slot_pics_[0] == new_slot_pics_[1] &&
-        new_slot_pics_[0] == new_slot_pics_[2]) {
-      UpdateMoney(5 * bid);
-      return;
-    }
-    if (new_slot_pics_[0] == new_slot_pics_[1] ||
-        new_slot_pics_[0] == new_slot_pics_[2] ||
-        new_slot_pics_[1] == new_slot_pics_[2]) {
-      UpdateMoney(2 * bid);
-    }
+void Model::AddAllInItem() {
+  if (!HasItem(kAllin)) {
+    all_items.emplace_back(new Item(kAllin));
+  }
+}
 
-    ChangePicture(2, new_slot_pics_[2]);
-    View::Instance().GetMakeBidFruitMachine()->setEnabled(true);
-  });
+void Model::AddReduceGuestsItem() {
+  if (!HasItem(kReduceGuest)) {
+    all_items.emplace_back(new Item(kReduceGuest));
+  }
+}
+
+void Model::BuyAddIgnoreFirstMistakeItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddIgnoreFirstMistakeItem();
+    View::Instance().HideKsive();
+    settings_->setValue(kIgnoreFirstMistake, "1");
+  }
+}
+
+void Model::BuyTimeItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddTimeItem();
+    View::Instance().HideStandTheWorld();
+    settings_->setValue(kAddTime, "1");
+  }
+}
+
+void Model::BuyAllInItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddAllInItem();
+    View::Instance().HideVabank();
+    settings_->setValue(kAllin, "1");
+  }
+}
+
+void Model::BuyReduceGuestsItem() {
+  money_t money = settings_->value(kMoney).toInt();
+  if (money >= kCost) {
+    UpdateMoney(-kCost);
+    AddReduceGuestsItem();
+    View::Instance().HidePandemic();
+    settings_->setValue(kReduceGuest, "1");
+  }
 }
 
 void Model::ReadLevels() {

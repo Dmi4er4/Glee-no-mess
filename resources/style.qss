@@ -16,6 +16,10 @@ QPushButton {
     padding: 0 1.5ex;
 }
 
+QPushButton#in-fruit {
+    background: rgba(70, 70, 70, 200);
+}
+
 QPushButton:hover {
     border-left: 0.5ex solid black;
     border-bottom-left-radius: 0;
@@ -23,17 +27,54 @@ QPushButton:hover {
     background: rgba(111, 0, 0, 170);
 }
 
+QPushButton#in-fruit:hover {
+    border-left: 0.5ex solid #444444;
+    background: rgba(111, 0, 0, 200);
+}
+
 QPushButton:pressed {
     background: rgba(143, 114, 249, 200);
+}
+
+QLabel#in-fruit {
+    color: red;
+}
+
+QSpinBox#in-fruit {
+    color: red;
 }
 
 QPushButton#in-game {
     margin-right: 1ex;
 }
 
+
 QPushButton#in-game:hover {
     border: none;
     border-radius: 0.5em;
+}
+
+QPushButton#in-shop {
+    background: rgba(70, 70, 70, 200);
+}
+
+QPushButton#in-shop:hover {
+    border-left: 0.5ex solid black;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background: rgba(111, 0, 0, 170);
+}
+
+QLabel#in-shop {
+    background-color: transparent;
+    color: darkslategrey;
+}
+
+QToolTip {
+    background: url(":/shop/background.png");
+    padding-left: 5px;
+    padding-right: 5px;
+    color: palegoldenrod;
 }
 
 QSpinBox {

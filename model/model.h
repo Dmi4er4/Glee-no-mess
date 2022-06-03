@@ -44,9 +44,14 @@ class Model : public QObject {
 
   auto GetLevel() { return level_.get(); }
 
+  // Items
   void AddIgnoreFirstMistakeItem();
   void AddTimeItem();
+  void AddAllInItem();
+  void AddReduceGuestsItem();
 
+  // TODO(Adamenko-Vladislav) Items must do something
+  void UpdateMistake();
   void UpdateTimeLeft() {
     for (const auto& item : all_items_) {
       item->TimeTrigger();
@@ -55,6 +60,13 @@ class Model : public QObject {
 
   void AddTime(size_t time);
   bool HasItem(const QString& name);
+
+  static constexpr int32_t kCost = 300;
+
+  void BuyAddIgnoreFirstMistakeItem();
+  void BuyTimeItem();
+  void BuyAllInItem();
+  void BuyReduceGuestsItem();
 
   // Sound
   bool IsSoundOn() {
@@ -96,7 +108,17 @@ class Model : public QObject {
 
   std::vector<std::unique_ptr<Item>> all_items_;
 
-  QShortcut* exit_shortcut_{};
+  size_t errors_limit_;
+  size_t guest_limit_;
+  size_t time_limit_;
+
+  Level level_{kLevels, "club_level", 0};
+
+  std::deque<std::shared_ptr<Guest>> queue_;
+  std::shared_ptr<Guest> current_guest_;
+  std::vector<std::shared_ptr<Item>> all_items;
+
+  QShortcut* exit_shortcut_;
   QSettings* settings_;
 
   // Level
@@ -107,7 +129,7 @@ class Model : public QObject {
   std::unique_ptr<QTimer> day_timer_;
 
   // Fruit Machine
-  int spinning_{};
-  QTimer* slot_update_timer_{};
-  int new_slot_pics_[3]{};
+  int spinning_;
+  QTimer* slot_update_timer_;
+  int new_slot_pics_[kSlotsCount];
 };

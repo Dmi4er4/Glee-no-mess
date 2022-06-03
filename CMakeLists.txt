@@ -14,6 +14,7 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Multimedia
         REQUIRED)
 
 include_directories(model)
@@ -54,4 +55,5 @@ add_executable(default-target
 target_link_libraries(default-target
         Qt::Core
         Qt::Gui
-        Qt::Widgets)
+        Qt::Widgets
+        Qt::Multimedia)
