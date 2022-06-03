@@ -27,7 +27,8 @@ class Level {
   bool NextDay();
   auto GetCurrentDay() { return days_[state_.current_day_]; }
   void AddTime(int time);
-  void DecrementTimeLeft() { --state_.seconds_left_; }
+  void DecrementGuestsRemaining() { --state_.guests_left_; }
+  bool DecrementTimeLeft() { return --state_.seconds_left_ > 0; }
   void IncrementMistakes() { ++state_.errors_count_; }
   bool DayFailed() { return state_.errors_count_ >= errors_max_; }
   Guest* GetNextGuest();
@@ -36,7 +37,7 @@ class Level {
   auto GetTimeLeft() { return state_.seconds_left_; }
   auto GetLives() { return errors_max_ - state_.errors_count_; }
   auto GetDayIndex() { return state_.current_day_; }
-  auto GetGuestsLeft() { return state_.current_day_; }
+  auto GetGuestsLeft() { return state_.guests_left_; }
   auto GetQueueThreshold() { return queue_threshold_millis_; }
   auto GetPath() { return path_; }
 

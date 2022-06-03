@@ -7,7 +7,7 @@ Level::Level(const QString& level_name, const QString& difficulty) {
       <QJsonDocument>(path_ + "stats.json");
   auto stats_dependent = stats[difficulty];
   errors_max_ = stats_dependent["errors_max"].toInt();
-  duration_seconds_ = stats_dependent["duration_seconds_"].toInt();
+  duration_seconds_ = stats_dependent["duration_seconds"].toInt();
   guests_max_ = stats_dependent["guests_count"].toInt();
   level_intro_ = stats["intro"].toString();
   queue_threshold_millis_ = stats["queue_threshold_millis"].toInt();
@@ -40,6 +40,7 @@ void Level::InitState(int day) {
   state_.errors_count_ = 0;
   state_.guests_left_ = guests_max_;
   state_.seconds_left_ = duration_seconds_;
+  state_.guests_left_ = guests_max_;
   state_.was_added_time_ = false;
   state_.next_guest_index_ = 0;
 }

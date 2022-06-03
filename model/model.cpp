@@ -8,6 +8,9 @@
 
 Model::Model() {
   settings_ = new QSettings("GameMasters", "Glee-no-mess");
+  day_timer_ = std::make_unique<QTimer>();
+  connect(day_timer_.get(), &QTimer::timeout,
+          this, &Model::DayTimerTick);
   ReadLevels();
   InitSettings();
 }
@@ -35,6 +38,7 @@ void Model::ShiftQueue() {
     return DayPassed();
   }
   Controller::Instance().StartAnimation();
+  level_->DecrementGuestsRemaining();
 }
 
 void Model::IncreaseErrorsCount() {
@@ -274,6 +278,7 @@ void Model::StartDay() {
   Controller::Instance().StartAnimation();
   View::Instance().ShowGame();
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
+  day_timer_->start(1000);
 }
 
 void Model::StartNewGame() {
@@ -304,7 +309,6 @@ bool Model::TryLoadSave() {
 }
 
 void Model::SaveGame(const QString& level_name, int day_index) {
-  qDebug() << day_index;
   auto key_save = "save_" + GetDifficulty();
   QJsonObject json;
   json["level"] = level_name;
@@ -333,5 +337,12 @@ void Model::DoAnimation(int millis) {
     level_->ShiftNextGuest();
     pushed->SetAnimation(level_->GetPath() + "animation_queue.json");
     pushed->GetSprite()->show();
+  }
+}
+
+void Model::DayTimerTick() {
+  if (!level_->DecrementTimeLeft()) {
+    day_timer_->stop();
+    DayFailed();
   }
 }

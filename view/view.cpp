@@ -385,19 +385,3 @@ void View::UpdateLevelStats() {
   time_left_->setText(time);
   day_->setText("Day: " + day);
 }
-
-// void View::SetLivesCount() {
-//   auto lives = Model::Instance().Get
-// }
-//
-// void View::SetGuestsLeft() {
-//
-// }
-//
-// void View::SetTimeLeft() {
-//
-// }
-//
-// void View::SetDay() {
-//
-// }

@@ -40,6 +40,7 @@ class Model : public QObject {
   void DayPassed();
   bool TryLoadSave();
   void ShiftQueue();
+  void DayTimerTick();
 
   auto GetLevel() { return level_.get(); }
 
@@ -103,6 +104,7 @@ class Model : public QObject {
   std::vector<QString> level_names_;
   int current_level_index_{};
   std::deque<Guest*> queue_;
+  std::unique_ptr<QTimer> day_timer_;
 
   // Fruit Machine
   int spinning_{};
