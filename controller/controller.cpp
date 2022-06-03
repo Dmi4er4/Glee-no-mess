@@ -134,6 +134,10 @@ void Controller::ConnectCasinoSignals() {
                        &QPushButton::pressed,
                        &View::Instance(),
                        &View::ShowBlackJack);
+  QPushButton::connect(View::Instance().GetExitCasino(),
+                       &QPushButton::released,
+                       &View::Instance(),
+                       &View::ShowChooseGame);
 }
 
 void Controller::ConnectBlackJackSignals() {
@@ -195,6 +199,14 @@ void Controller::ConnectChooseGameSignals() {
           &QPushButton::released,
           &View::Instance(),
           &View::ShowMainMenu);
+  connect(View::Instance().GetToCasinoFromChooseButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowCasino);
+  connect(View::Instance().GetToShopFromChooseButton(),
+          &QPushButton::released,
+          &View::Instance(),
+          &View::ShowShop);
 
   View::Instance().GetContinueButton()->installEventFilter(this);
 }
@@ -216,6 +228,10 @@ void Controller::ConnectShopSignals() {
                        &QPushButton::released,
                        &Model::Instance(),
                        &Model::BuyAddIgnoreFirstMistakeItem);
+  QPushButton::connect(View::Instance().GetExitShop(),
+                       &QPushButton::released,
+                       &View::Instance(),
+                       &View::ShowChooseGame);
 }
 
 void Controller::KeyPressInSettings(QKeyEvent* event) {

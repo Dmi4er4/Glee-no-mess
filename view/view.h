@@ -89,6 +89,12 @@ class View : public QMainWindow {
   auto GetToMenuFromChooseGameButton() const {
     return to_menu_from_choose_game_button_;
   }
+  auto GetToCasinoFromChooseButton() const {
+    return to_casino_from_choose_button_;
+  }
+  auto GetToShopFromChooseButton() const {
+    return to_shop_from_choose_button_;
+  }
 
   // Settings
   bool IsSettings() const { return view_->scene() == settings_scene_; }
@@ -110,6 +116,7 @@ class View : public QMainWindow {
   auto* GetBlackJackButton() {return black_jack_; }
   auto* GetFruitMachineButton() { return fruit_machine_; }
   auto* GetExitBlackJackButton() { return back_to_casino_; }
+  auto* GetExitCasino() { return casino_exit_; }
 
   void SetPlayerMoney(money_t x) {
     QString text = "Your money: " + QString::number(x);
@@ -176,6 +183,7 @@ class View : public QMainWindow {
   auto* GetKsivaBuy() { return shelves_[kKsivaRow][kKsivaCol]; }
   auto* GetPandemicBuy() { return shelves_[kPandemicRow][kPandemicCol]; }
   auto* GetVabankBuy() { return shelves_[kVabankRow][kVabankCol]; }
+  auto* GetExitShop() { return exit_shop_; }
 
   const QString kBought = "Bought";
 
@@ -263,6 +271,8 @@ class View : public QMainWindow {
   QPushButton* continue_button_{};
   QPushButton* new_game_button_{};
   QPushButton* to_menu_from_choose_game_button_{};
+  QPushButton* to_casino_from_choose_button_{};
+  QPushButton* to_shop_from_choose_button_{};
 
   // Settings
   QGraphicsScene* settings_scene_{};

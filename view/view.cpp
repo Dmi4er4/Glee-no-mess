@@ -210,17 +210,19 @@ void View::InitChooseGame() {
   auto layout = new QVBoxLayout;
   proxy->widget()->setLayout(layout);
   layout->addWidget(continue_button_ = new QPushButton("Continue"));
+  layout->addWidget(to_casino_from_choose_button_ = new QPushButton("Casino"));
+  layout->addWidget(to_shop_from_choose_button_ = new QPushButton("Shop"));
   layout->addWidget(new_game_button_ = new QPushButton("New game"));
   layout->addWidget(to_menu_from_choose_game_button_ =
-                        new QPushButton("Back to menu"));
+                        new QPushButton("Back"));
 
   continue_button_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   proxy->setGeometry(QRectF{
       width() * 0.3,
-      height() * 0.3,
+      height() * 0.2,
       width() * 0.4,
-      height() * 0.4
+      height() * 0.6
   });
 }
 
@@ -277,7 +279,7 @@ void View::InitCasino() {
 
   form->addRow(black_jack_ = new QPushButton("Black Jack"));
   form->addRow(fruit_machine_ = new QPushButton("Fruit machine"));
-  form->addRow(casino_exit_ = new QPushButton("Exit"));
+  form->addRow(casino_exit_ = new QPushButton("Back to menu"));
 }
 
 void View::InitBlackJack() {
@@ -509,7 +511,7 @@ void View::InitShop() {
     });
     auto form = new QHBoxLayout;
     proxy->widget()->setLayout(form);
-    form->addWidget(exit_shop_ = new QPushButton("Exit"));
+    form->addWidget(exit_shop_ = new QPushButton("Back to menu"));
   }
 
   static const size_t kWidth = static_cast<size_t>(width() * 0.3);
@@ -839,6 +841,8 @@ void View::ShowChooseGame() {
   view_->setScene(choose_game_scene_);
   continue_button_->setAttribute(Qt::WA_UnderMouse, false);
   new_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+  to_casino_from_choose_button_->setAttribute(Qt::WA_UnderMouse, false);
+  to_shop_from_choose_button_->setAttribute(Qt::WA_UnderMouse, false);
   to_menu_from_choose_game_button_->setAttribute(Qt::WA_UnderMouse, false);
 
   continue_button_->setText("Continue");
