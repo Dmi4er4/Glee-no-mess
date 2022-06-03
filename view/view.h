@@ -75,8 +75,21 @@ class View : public QMainWindow {
 
   auto GetPermitButton() const { return permit_button_; }
   auto GetRejectButton() const { return reject_button_; }
-  auto GetToMenuFromGameButton() const { return to_menu_from_game_button_;  }
+  auto GetPauseGameButton() const { return game_pause_button;  }
   auto GetScene() const { return game_scene_; }
+
+  void GamePauseStart() { game_pause_overlay->setHidden(false); }
+  void GamePauseFinish() { game_pause_overlay->hide(); }
+
+  void DisableGameButtons() {
+    permit_button_->setEnabled(false);
+    reject_button_->setEnabled(false);
+  }
+
+  void EnableGameButtons() {
+    permit_button_->setEnabled(true);
+    reject_button_->setEnabled(true);
+  }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -128,6 +141,8 @@ class View : public QMainWindow {
   auto GetBid() { return bid_->value(); }
   auto* GetHitMeButton() { return hit_me_; }
   auto* GetStandButton() { return stand_; }
+  auto* GetGameExitButton() { return game_exit_; }
+  auto* GetGameContinueButton() { return game_continue_; }
 
   void ShowBlackJackGame() {
     hit_me_->show();
@@ -199,7 +214,7 @@ class View : public QMainWindow {
   // Show Scene
   void ShowGame() {
     view_->setScene(game_scene_);
-    to_menu_from_game_button_->setAttribute(Qt::WA_UnderMouse, false);
+    game_pause_button->setAttribute(Qt::WA_UnderMouse, false);
     permit_button_->setAttribute(Qt::WA_UnderMouse, false);
     reject_button_->setAttribute(Qt::WA_UnderMouse, false);
   }
@@ -294,7 +309,7 @@ class View : public QMainWindow {
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* errors_{};
-  QPushButton* to_menu_from_game_button_{};
+  QPushButton* game_pause_button{};
   QLabel* guests_left_{};
   QLabel* day_{};
   QLabel* time_left_{};
@@ -303,6 +318,10 @@ class View : public QMainWindow {
   int bg_frame_index_{};
 
   const int32_t kFrameRate = 10;
+
+  QWidget* game_pause_overlay;
+  QPushButton* game_exit_;
+  QPushButton* game_continue_;
 
   // Menu
   QGraphicsScene* menu_scene_{};
