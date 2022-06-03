@@ -81,6 +81,16 @@ class View : public QMainWindow {
   void GamePauseStart() { game_pause_overlay->setHidden(false); }
   void GamePauseFinish() { game_pause_overlay->hide(); }
 
+  void DisableGameButtons() {
+    permit_button_->setEnabled(false);
+    reject_button_->setEnabled(false);
+  }
+
+  void EnableGameButtons() {
+    permit_button_->setEnabled(true);
+    reject_button_->setEnabled(true);
+  }
+
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
   auto GetOpenSettingsButton() const { return open_settings_; }

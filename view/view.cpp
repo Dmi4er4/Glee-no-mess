@@ -144,11 +144,8 @@ void View::InitGameScene() {
     auto layout = new QVBoxLayout;
 
     game_pause_overlay->setLayout(layout);
-    game_exit_ = new QPushButton("Back to main menu");
+    game_exit_ = new QPushButton("   Back to main menu   ");
     game_continue_ = new QPushButton("Continue");
-
-    game_exit_->setMaximumWidth(width() * 0.3);
-    game_continue_->setMaximumWidth(width() * 0.3);
 
     layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
