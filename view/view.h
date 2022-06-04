@@ -94,7 +94,7 @@ class View : public QMainWindow {
     intro_->setText(text + "\nPress space to continue!");
   }
 
-  void ShowIntro() { game_intro_overlay_->setHidden(false); }
+  void ShowIntro() { game_intro_overlay_->show(); }
   void HideIntro() {game_intro_overlay_->hide(); }
 
   auto* GetTimer() { return frame_timer_; }

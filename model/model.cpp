@@ -387,6 +387,10 @@ void Model::DayFailed() {
 }
 
 void Model::StartDay() {
+  auto filename = ":/levels/" +
+      level_names_[current_level_index_] + "/background";
+  View::Instance().LoadBackgroundFrames(filename);
+  View::Instance().ChangeFrame();
   queue_.clear();
   Controller::Instance().StartAnimation();
   View::Instance().ShowGame();

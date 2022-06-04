@@ -7,6 +7,7 @@
 #include "model.h"
 
 View::View() {
+  SetTimer();
   InitView();
   InitGameScene();
   InitMainMenu();
@@ -28,6 +29,9 @@ void View::SetTimer() {
 }
 
 void View::ChangeFrame() {
+  if (background_frames_.empty()) {
+    return;
+  }
   Model::Instance().DoAnimation(kFrameDelay);
   if (++bg_frame_index_ == background_frames_.size()) {
     bg_frame_index_ = 0;
@@ -106,8 +110,7 @@ void View::InitGameScene() {
     static const QString kInGameObjects = "in-game";
     game_scene_ = new QGraphicsScene;
 
-    LoadBackgroundFrames(":/levels/gachi_club/background");
-    game_background_ = game_scene_->addPixmap(background_frames_.first());
+    game_background_ = game_scene_->addPixmap(QPixmap());
 
     dudes_father_ = game_scene_->createItemGroup({});
 
@@ -145,8 +148,6 @@ void View::InitGameScene() {
         height() * 0.1
     });
   }
-
-  SetTimer();
 
   {
     game_pause_overlay = new QWidget;
@@ -721,9 +722,7 @@ void View::keyPressEvent(QKeyEvent* event) {
 }
 
 void View::LoadBackgroundFrames(const QString& folder) {
-  if (frame_timer_) {
-    frame_timer_->stop();
-  }
+  frame_timer_->stop();
   bg_frame_index_ = 0;
   QDirIterator it(folder);
   QList<QString> frames;
@@ -737,9 +736,7 @@ void View::LoadBackgroundFrames(const QString& folder) {
         FileLoader::GetFile<QPixmap>(filename)
             .scaled(width(), height(), Qt::IgnoreAspectRatio));
   }
-  if (frame_timer_) {
-    frame_timer_->start(kFrameDelay);
-  }
+  frame_timer_->start(kFrameDelay);
 }
 
 QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
