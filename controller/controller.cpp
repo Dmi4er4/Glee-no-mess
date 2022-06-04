@@ -313,8 +313,10 @@ void Controller::Quit() {
 
 void Controller::StartAnimation() {
   is_playing_animation_ = true;
+  View::Instance().DisableGameButtons();
 }
 
 void Controller::StopAnimation() {
   is_playing_animation_ = false;
+  View::Instance().EnableGameButtons();
 }

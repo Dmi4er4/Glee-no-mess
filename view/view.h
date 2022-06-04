@@ -141,7 +141,7 @@ class View : public QMainWindow {
   auto* GetExitCasino() { return casino_exit_; }
 
   void SetPlayerMoney(money_t x) {
-    QString text = "Your money: " + QString::number(x);
+    QString text = "Your money: ∰" + QString::number(x);
     player_money_->setText(text);
     money_->setText(text);
     shop_money_->setText(text);

@@ -48,6 +48,7 @@ class Level {
   auto GetDayIndex() { return state_.current_day_; }
   auto GetGuestsLeft() { return state_.guests_left_; }
   auto GetQueueThreshold() { return queue_threshold_millis_; }
+  auto GetLevelIntro() { return level_intro_; }
   auto GetPath() { return path_; }
 
  private:

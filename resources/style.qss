@@ -72,6 +72,7 @@ QLabel#in-shop {
 
 QLabel#in-intro {
     background-color: transparent;
+    padding: 1em;
     color: #ffffff;
 }
 
