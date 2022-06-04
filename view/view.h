@@ -99,6 +99,9 @@ class View : public QMainWindow {
 
   auto* GetTimer() { return frame_timer_; }
 
+  void HideGleeNoMess() { glee_no_mess_->hide(); }
+  void ShowGleeNoMess() { glee_no_mess_->show(); }
+
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
   auto GetOpenSettingsButton() const { return open_settings_; }
@@ -291,6 +294,8 @@ class View : public QMainWindow {
 
   QWidget* game_intro_overlay_;
   QLabel* intro_;
+
+  QGraphicsPixmapItem* glee_no_mess_;
 
   // Menu
   QGraphicsScene* menu_scene_{};

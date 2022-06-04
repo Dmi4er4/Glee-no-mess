@@ -205,6 +205,14 @@ void View::InitGameScene() {
     game_intro_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
     game_intro_overlay_->hide();
   }
+
+  {
+    glee_no_mess_ = new QGraphicsPixmapItem(
+        FileLoader::GetFile<QPixmap>(":/levels/glee_no_mess.png").scaled(
+        width() * 0.15, height() * 0.3, Qt::IgnoreAspectRatio));
+    dudes_father_->addToGroup(glee_no_mess_);
+    glee_no_mess_->setPos(width() * 0.25, height() * 0.6);
+  }
 }
 
 void View::InitMainMenu() {
