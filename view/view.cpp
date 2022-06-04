@@ -22,9 +22,9 @@ View::View() {
 }
 
 void View::SetTimer() {
-  auto timer = new QTimer(this);
-  connect(timer, &QTimer::timeout, this, &View::ChangeFrame);
-  timer->start(kFrameDelay);
+  guests_ = new QTimer(this);
+  connect(guests_, &QTimer::timeout, this, &View::ChangeFrame);
+  guests_->start(kFrameDelay);
 }
 
 void View::ChangeFrame() {
@@ -702,6 +702,9 @@ void View::keyPressEvent(QKeyEvent* event) {
 }
 
 void View::LoadBackgroundFrames(const QString& folder) {
+  if (guests_) {
+    guests_->stop();
+  }
   bg_frame_index_ = 0;
   QDirIterator it(folder);
   QList<QString> frames;
@@ -714,6 +717,9 @@ void View::LoadBackgroundFrames(const QString& folder) {
     background_frames_.emplace_back(
         FileLoader::GetFile<QPixmap>(filename)
             .scaled(width(), height(), Qt::IgnoreAspectRatio));
+  }
+  if (guests_) {
+    guests_->start(kFrameDelay);
   }
 }
 

@@ -5,6 +5,7 @@ Level::Level(const QString& level_name,
              const QString& difficulty,
              int day_index) {
   path_ = ":/levels/" + level_name + "/";
+  View::Instance().LoadBackgroundFrames(path_ + "background");
   auto stats = FileLoader::GetFile
       <QJsonDocument>(path_ + "stats.json");
   auto stats_dependent = stats[difficulty];

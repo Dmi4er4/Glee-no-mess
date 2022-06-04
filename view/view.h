@@ -53,6 +53,7 @@ class View : public QMainWindow {
   bool IsGame() const { return view_->scene() == game_scene_; }
 
   void AddGuestSprite(Guest* guest, const QPixmap& pixmap);
+  void LoadBackgroundFrames(const QString& folder);
 
   void UpdateLevelStats();
 
@@ -242,7 +243,6 @@ class View : public QMainWindow {
 
   static QLabel* QLabelOrientate(const QString& text, Qt::Alignment);
   static void DisableScrollbars(QGraphicsView* graphics);
-  void LoadBackgroundFrames(const QString& folder);
 
   // Global
   QGraphicsView* view_{};
@@ -260,6 +260,7 @@ class View : public QMainWindow {
   QList<QPixmap> background_frames_;
   QGraphicsPixmapItem* game_background_{};
   int bg_frame_index_{};
+  QTimer* guests_{};
 
   const int32_t kFrameRate = 10;
   const int32_t kFrameDelay = 1000 / kFrameRate;
