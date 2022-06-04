@@ -177,6 +177,7 @@ void View::InitGameScene() {
     to_casino_ = new QPushButton("Casino");
     to_shop_ = new QPushButton("Shop");
     status_label_ = new QLabel;
+    status_label_->setAlignment(Qt::AlignCenter);
     layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
     layout->addWidget(status_label_);
