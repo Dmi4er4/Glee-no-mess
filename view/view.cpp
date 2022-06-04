@@ -283,7 +283,7 @@ void View::InitCasino() {
   casino_scene_ = new QGraphicsScene;
   casino_scene_->addPixmap(
       FileLoader::GetFile<QPixmap>(
-          ":casino/casino.jpg").scaled(width(),
+          ":casino/best_casino.jpg").scaled(width(),
                   height(), Qt::IgnoreAspectRatio));
 
   auto proxy = casino_scene_->addWidget(new QWidget);

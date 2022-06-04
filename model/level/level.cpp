@@ -24,7 +24,7 @@ Level::Level(const QString& level_name, const QString& difficulty) {
     days_.emplace_back();
     auto& day = days_.back();
     day.intro_ = entry.toObject()["intro"].toString();
-    for (auto name : entry.toObject()["allow"].toArray()) {
+    for (auto name: entry.toObject()["allow"].toArray()) {
       day.allowed_dudes_.insert(name.toString());
     }
     day.reward_ = rewards[index].toInt();

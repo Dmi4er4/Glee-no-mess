@@ -25,7 +25,7 @@ void Model::Permit() {
 
 void Model::Reject() {
   auto current_dude = queue_.front();
-  if (!current_dude->IsGood()) {
+  if (current_dude->IsGood()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
