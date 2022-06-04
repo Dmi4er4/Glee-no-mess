@@ -282,23 +282,24 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
   auto& model = Model::Instance();
   switch (event->key()) {
     case Qt::Key_D: {
-      if (!is_game_pause) {
+      if (!is_game_pause && !is_intro_) {
         model.Reject();
       }
       break;
     }
     case Qt::Key_A: {
-      if (!is_game_pause) {
+      if (!is_game_pause && !is_intro_) {
         model.Permit();
       }
       break;
     }
     case Qt::Key_Space: {
-      if (!is_game_pause) {
+      if (!is_game_pause && is_intro_) {
         View::Instance().HideIntro();
         Model::Instance().GetDayTimer()->start();
         View::Instance().GetTimer()->start();
         View::Instance().EnableGameButtons();
+        is_intro_ = false;
       }
     }
   }

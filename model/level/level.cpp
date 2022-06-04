@@ -1,5 +1,6 @@
 #include "level.h"
 #include "view.h"
+#include "model.h"
 
 Level::Level(const QString& level_name, const QString& difficulty) {
   path_ = ":/levels/" + level_name + "/";
@@ -68,6 +69,7 @@ void Level::GenerateGuests() {
 void Level::SetDay(int day) {
   guests_.clear();
   state_.current_day_ = day;
+  used_ignore_fist_mistake = false;
   InitState(day);
   GenerateGuests();
 }
@@ -96,4 +98,13 @@ Guest* Level::GetNextGuest() {
 
 void Level::ShiftNextGuest() {
   ++state_.next_guest_index_;
+}
+
+void Level::IncrementMistakes() {
+  ++state_.errors_count_;
+  if (Model::Instance().HasItem(kIgnoreFirstMistake) &&
+      !used_ignore_fist_mistake) {
+    --state_.errors_count_;
+    used_ignore_fist_mistake = true;
+  }
 }

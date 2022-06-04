@@ -28,12 +28,19 @@ class Level {
   void AddTime(int time);
   void DecrementGuestsRemaining() { --state_.guests_left_; }
   bool DecrementTimeLeft() { return --state_.seconds_left_ > 0; }
-  void IncrementMistakes() { ++state_.errors_count_; }
+  void IncrementMistakes();
+
+  void DecrementGuests() {
+    --guests_max_;
+    --state_.guests_left_;
+  }
+
   bool DayFailed() { return state_.errors_count_ >= errors_max_; }
   Guest* GetNextGuest();
   void ShiftNextGuest();
 
   auto GetCurrentDay() { return days_[state_.current_day_]; }
+  auto GetCurrentState() { return state_; }
   auto GetTimeLeft() { return state_.seconds_left_; }
   auto GetLives() { return errors_max_ - state_.errors_count_; }
   auto GetDayIndex() { return state_.current_day_; }
@@ -66,6 +73,7 @@ class Level {
   std::vector<QString> traits_;
   std::vector<QString> dudes_;
   int queue_threshold_millis_;
+  bool used_ignore_fist_mistake{false};
 
   std::vector<Day> days_;
   State state_{};
