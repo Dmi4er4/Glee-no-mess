@@ -34,3 +34,4 @@ jobs:
       working-directory: ${{runner.workspace}}/${{github.event.repository.name}}
       shell: bash
       run: $HOME/.local/bin/cpplint --filter=-legal/copyright,-build/include_subdir,-build/c++11,-build/include_order $(find -name "*.h" -o -name "*.cpp")
+      continue-on-error: true
