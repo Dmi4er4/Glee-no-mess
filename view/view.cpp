@@ -809,7 +809,6 @@ void View::ShowGame() {
   reject_button_->setAttribute(Qt::WA_UnderMouse, false);
 
   if (sound_->text() == kOn) {
-    // TODO(Andrey-Kostianoy): add music for bsu_level
     StopAllSounds();
     gachi_level_sound_->play();
   }
