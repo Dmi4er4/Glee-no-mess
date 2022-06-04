@@ -368,12 +368,14 @@ void Model::DayPassed() {
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   View::Instance().GameOverShow();
   View::Instance().WinGame();
+  View::Instance().GetTimer()->stop();
 }
 
 void Model::DayFailed() {
   UpdateMoney(-level_->GetCurrentDay().penalty_);
   View::Instance().GameOverShow();
   View::Instance().LooseGame();
+  View::Instance().GetTimer()->stop();
 }
 
 void Model::StartDay() {
