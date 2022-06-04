@@ -367,11 +367,13 @@ void Model::DayPassed() {
   }
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   View::Instance().GameOverShow();
+  View::Instance().WinGame();
 }
 
 void Model::DayFailed() {
   UpdateMoney(-level_->GetCurrentDay().penalty_);
   View::Instance().GameOverShow();
+  View::Instance().LooseGame();
 }
 
 void Model::StartDay() {
@@ -380,6 +382,11 @@ void Model::StartDay() {
   View::Instance().ShowGame();
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   day_timer_->start(1000);
+  View::Instance().SetIntro(level_->GetCurrentDay().intro_);
+  View::Instance().ShowIntro();
+  day_timer_->stop();
+  View::Instance().GetTimer()->stop();
+  View::Instance().DisableGameButtons();
 }
 
 void Model::StartNewGame() {

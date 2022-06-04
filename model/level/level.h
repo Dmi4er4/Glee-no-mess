@@ -25,7 +25,6 @@ class Level {
   void GenerateGuests();
   void SetDay(int day);
   bool NextDay();
-  auto GetCurrentDay() { return days_[state_.current_day_]; }
   void AddTime(int time);
   void DecrementGuestsRemaining() { --state_.guests_left_; }
   bool DecrementTimeLeft() { return --state_.seconds_left_ > 0; }
@@ -34,6 +33,7 @@ class Level {
   Guest* GetNextGuest();
   void ShiftNextGuest();
 
+  auto GetCurrentDay() { return days_[state_.current_day_]; }
   auto GetTimeLeft() { return state_.seconds_left_; }
   auto GetLives() { return errors_max_ - state_.errors_count_; }
   auto GetDayIndex() { return state_.current_day_; }

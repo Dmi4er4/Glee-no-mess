@@ -94,34 +94,36 @@ void Controller::ConnectGameSignals() {
   connect(View::Instance().GetPauseGameButton(),
           &QPushButton::released,
           this,
-          [&]{
+          [&] {
       View::Instance().GamePauseStart();
       Model::Instance().GetDayTimer()->stop();
+      View::Instance().GetTimer()->stop();
       View::Instance().DisableGameButtons();
       is_game_pause = true;
   });
   connect(View::Instance().GetGameExitButton(),
           &QPushButton::released,
           this,
-          [&]{
+          [&] {
       View::Instance().GamePauseFinish();
-      Model::Instance().DayFailed();
+      View::Instance().ShowMainMenu();
       View::Instance().EnableGameButtons();
       is_game_pause = false;
   });
   connect(View::Instance().GetGameContinueButton(),
           &QPushButton::released,
           this,
-          [&]{
+          [&] {
       View::Instance().GamePauseFinish();
       Model::Instance().GetDayTimer()->start();
+      View::Instance().GetTimer()->start();
       View::Instance().EnableGameButtons();
       is_game_pause = false;
   });
   connect(View::Instance().GetToMainMenuButton(),
           &QPushButton::released,
           this,
-          [&]{
+          [&] {
       View::Instance().GameOverHide();
       View::Instance().ShowMainMenu();
   });
@@ -290,6 +292,14 @@ void Controller::KeyPressInGame(QKeyEvent* event) {
         model.Permit();
       }
       break;
+    }
+    case Qt::Key_Space: {
+      if (!is_game_pause) {
+        View::Instance().HideIntro();
+        Model::Instance().GetDayTimer()->start();
+        View::Instance().GetTimer()->start();
+        View::Instance().EnableGameButtons();
+      }
     }
   }
 }
