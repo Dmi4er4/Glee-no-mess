@@ -563,7 +563,7 @@ void View::InitShop() {
     });
     auto form = new QHBoxLayout;
     proxy->widget()->setLayout(form);
-    form->addWidget(exit_shop_ = new QPushButton("Back to menu"));
+    form->addWidget(exit_shop_ = new QPushButton("Menu"));
   }
 
   static const size_t kWidth = static_cast<size_t>(width() * 0.3);
