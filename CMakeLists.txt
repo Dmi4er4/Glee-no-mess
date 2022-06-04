@@ -39,8 +39,6 @@ file(GLOB TOOLS tools/*)
 file(GLOB MODEL_ITEMS model/items/*)
 file(GLOB MODEL_CASINO model/casino/*)
 
-qt_add_big_resources(GLOB big_resource.qrc)
-
 add_executable(default-target
         ${CONTROLLER}
         ${RESOURCES}
