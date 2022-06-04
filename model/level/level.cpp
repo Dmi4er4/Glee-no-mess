@@ -2,8 +2,11 @@
 #include "view.h"
 #include "model.h"
 
-Level::Level(const QString& level_name, const QString& difficulty) {
+Level::Level(const QString& level_name,
+             const QString& difficulty,
+             int day_index) {
   path_ = ":/levels/" + level_name + "/";
+  View::Instance().LoadBackgroundFrames(path_ + "background");
   auto stats = FileLoader::GetFile
       <QJsonDocument>(path_ + "stats.json");
   auto stats_dependent = stats[difficulty];
@@ -25,14 +28,14 @@ Level::Level(const QString& level_name, const QString& difficulty) {
     days_.emplace_back();
     auto& day = days_.back();
     day.intro_ = entry.toObject()["intro"].toString();
-    for (auto name : entry.toObject()["allow"].toArray()) {
+    for (auto name: entry.toObject()["allow"].toArray()) {
       day.allowed_dudes_.insert(name.toString());
     }
     day.reward_ = rewards[index].toInt();
     day.penalty_ = penalties[index].toInt();
     ++index;
   }
-  InitState();
+  InitState(day_index);
   GenerateGuests();
 }
 

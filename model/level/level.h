@@ -19,7 +19,9 @@
 
 class Level {
  public:
-  Level(const QString& level_name, const QString& difficulty);
+  Level(const QString& level_name,
+        const QString& difficulty,
+        int day_index = 0);
 
   void InitState(int day = 0);
   void GenerateGuests();

@@ -44,6 +44,32 @@
         <file>levels/gachi_club/stats.json</file>
     </qresource>
     <qresource>
+        <file>levels/Belarusian_SU/background/background_frame_00.png</file>
+
+        <file>levels/Belarusian_SU/dudes/biker.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_black.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/gay.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_black.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/cowboy.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_black.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/visitor.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_black.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/animation_queue.json</file>
+        <file>levels/Belarusian_SU/stats.json</file>
+    </qresource>
+    <qresource>
         <file>style.qss</file>
         <file>Koulen-Regular.ttf</file>
     </qresource>
@@ -57,6 +83,7 @@
     </qresource>
     <qresource>
         <file>casino/casino.jpg</file>
+        <file>casino/best_casino.jpg</file>
         <file>casino/black_jack.jpg</file>
         <file>casino/croupier.png</file>
 

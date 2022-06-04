@@ -25,7 +25,7 @@ void Model::Permit() {
 
 void Model::Reject() {
   auto current_dude = queue_.front();
-  if (!current_dude->IsGood()) {
+  if (current_dude->IsGood()) {
     IncreaseErrorsCount();
   }
   ShiftQueue();
@@ -341,8 +341,6 @@ void Model::ReadLevels() {
   for (auto array_item : array.array()) {
     level_names_.push_back(array_item.toString());
   }
-  level_ = std::make_unique<Level>(level_names_[current_level_index_ = 0],
-                                   GetDifficulty());
 }
 
 QString Model::LoadSettingsLevel() {
@@ -373,6 +371,7 @@ void Model::DayPassed() {
   }
   if (!level_->NextDay()) {
     ++current_level_index_;
+    level_->SetDay(0);
   }
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   View::Instance().GameOverShow();
@@ -431,9 +430,9 @@ bool Model::TryLoadSave() {
   auto level_name = json["level"].toString();
   current_level_index_ = std::find(level_names_.begin(), level_names_.end(),
                                    level_name) - level_names_.begin();
-  level_ = std::make_unique<Level>(level_name, GetDifficulty());
-  level_->InitState(json["day"].toInt());
-  level_->GenerateGuests();
+  level_ = std::make_unique<Level>(level_name,
+                                   GetDifficulty(),
+                                   json["day"].toInt());
   StartDay();
   return true;
 }
