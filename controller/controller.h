@@ -24,6 +24,10 @@ class Controller : public QObject {
   void StopAnimation();
   auto IsPlayingAnimation() { return is_playing_animation_; }
 
+  void SetIntro() {
+    is_intro_ = true;
+  }
+
  private:
   Controller();
 
@@ -49,4 +53,5 @@ class Controller : public QObject {
   std::function<void(const QString& keys)> new_hotkey_;
 
   bool is_game_pause{false};
+  bool is_intro_{false};
 };

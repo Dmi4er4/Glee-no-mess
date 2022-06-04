@@ -91,6 +91,7 @@ void View::InitView() {
       static_cast<int>(screen_size.height() * .03));
   qApp->setStyleSheet("* { font-size: " + font_size + "px; }" +
                       "QToolTip { font-size: " + tooltip_font_size + "px; }" +
+                      "QLabel#in-intro { font-size: " + tooltip_font_size + "px; }" +
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
@@ -174,13 +175,33 @@ void View::InitGameScene() {
     to_main_menu_ = new QPushButton("   Back to main menu   ");
     to_casino_ = new QPushButton("Casino");
     to_shop_ = new QPushButton("Shop");
+    status_label_ = new QLabel;
     layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
+    layout->addWidget(status_label_);
     layout->addWidget(to_main_menu_);
     layout->addWidget(to_casino_);
     layout->addWidget(to_shop_);
     game_over_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
     game_over_overlay_->hide();
+  }
+
+  {
+    game_intro_overlay_ = new QWidget;
+    auto proxy = game_scene_->addWidget(game_intro_overlay_);
+    proxy->setGeometry(QRect{0, 0, width(), height()});
+    auto layout = new QVBoxLayout;
+    game_intro_overlay_->setLayout(layout);
+
+    intro_ = new QLabel;
+    static const QString name = "in-intro";
+    intro_->setObjectName(name);
+    intro_->setWordWrap(true);
+    layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
+
+    layout->addWidget(intro_);
+    game_intro_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
+    game_intro_overlay_->hide();
   }
 }
 

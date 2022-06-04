@@ -51,14 +51,6 @@ class Model : public QObject {
   void AddAllInItem();
   void AddReduceGuestsItem();
 
-  // TODO(Adamenko-Vladislav) Items must do something
-  void UpdateMistake();
-  void UpdateTimeLeft() {
-    for (const auto& item : all_items_) {
-      item->TimeTrigger();
-    }
-  }
-
   void AddTime(size_t time);
   bool HasItem(const QString& name);
 

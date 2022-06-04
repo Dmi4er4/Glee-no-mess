@@ -78,12 +78,26 @@ class View : public QMainWindow {
   void DisableGameButtons() {
     permit_button_->setEnabled(false);
     reject_button_->setEnabled(false);
+    game_pause_button_->setEnabled(false);
   }
 
   void EnableGameButtons() {
     permit_button_->setEnabled(true);
     reject_button_->setEnabled(true);
+    game_pause_button_->setEnabled(true);
   }
+
+  void WinGame() { status_label_->setText("You won!"); }
+  void LooseGame() { status_label_->setText("You loose!"); }
+
+  void SetIntro(const QString& text) {
+    intro_->setText(text + "\nPress enter to continue!");
+  }
+
+  void ShowIntro() { game_intro_overlay_->setHidden(false); }
+  void HideIntro() {game_intro_overlay_->hide(); }
+
+  auto* GetTimer() { return guests_; }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -273,6 +287,12 @@ class View : public QMainWindow {
   QPushButton* to_main_menu_;
   QPushButton* to_casino_;
   QPushButton* to_shop_;
+  QLabel* status_label_;
+
+  QWidget* game_intro_overlay_;
+  QLabel* intro_;
+
+  QTimer* guests_;
 
   // Menu
   QGraphicsScene* menu_scene_{};

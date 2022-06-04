@@ -192,6 +192,9 @@ void Model::StartNewGameBlackJack() {
 void Model::UpdateMoney(money_t delta) {
   money_t money = settings_->value(kMoney).toInt();
   money += delta;
+  if (money < 0) {
+    money = 0;
+  }
   settings_->setValue(kMoney, QString::number(money));
   View::Instance().SetPlayerMoney(money);
   View::Instance().SetPlayerMaxBid(money);
@@ -359,18 +362,28 @@ QJsonObject Model::CurrentSave() {
 }
 
 void Model::DayPassed() {
-  UpdateMoney(+level_->GetCurrentDay().reward_);
+  if (HasItem(kAllin)) {
+    if (level_->GetCurrentState().errors_count_ == 0) {
+      UpdateMoney(+(2 * level_->GetCurrentDay().reward_));
+    }
+  } else {
+    UpdateMoney(+level_->GetCurrentDay().reward_);
+  }
   if (!level_->NextDay()) {
     ++current_level_index_;
     level_->SetDay(0);
   }
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   View::Instance().GameOverShow();
+  View::Instance().WinGame();
+  View::Instance().GetTimer()->stop();
 }
 
 void Model::DayFailed() {
   UpdateMoney(-level_->GetCurrentDay().penalty_);
   View::Instance().GameOverShow();
+  View::Instance().LooseGame();
+  View::Instance().GetTimer()->stop();
 }
 
 void Model::StartDay() {
@@ -379,6 +392,22 @@ void Model::StartDay() {
   View::Instance().ShowGame();
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   day_timer_->start(1000);
+  View::Instance().SetIntro(level_->GetCurrentDay().intro_);
+  View::Instance().ShowIntro();
+  day_timer_->stop();
+  View::Instance().GetTimer()->stop();
+  View::Instance().DisableGameButtons();
+  Controller::Instance().SetIntro();
+  if (HasItem(kAddTime)) {
+    level_->AddTime(9);
+  }
+  if (HasItem(kIgnoreFirstMistake)) {
+    int was = level_->GetGuestsLeft();
+    int now = was * 0.5;
+    for (int i = 0; i < was - now; ++i) {
+      level_->DecrementGuests();
+    }
+  }
 }
 
 void Model::StartNewGame() {
