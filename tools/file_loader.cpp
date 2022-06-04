@@ -4,7 +4,7 @@ std::unordered_map<QString, QJsonDocument> FileLoader::container_json_ = {};
 std::unordered_map<QString, QPixmap> FileLoader::container_image_ = {};
 
 std::variant<QJsonDocument,
-             QPixmap> FileLoader::GetFile(const QString& file_name) {
+             QPixmap> FileLoader::LoadFile(const QString& file_name) {
   if (IsJsonFile(file_name)) {
     return GetJsonFile(file_name);
   } else if (IsImageFile(file_name)) {

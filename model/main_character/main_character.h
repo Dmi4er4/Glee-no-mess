@@ -1,9 +1,9 @@
 #pragma once
 
-#include "typedefs.h"
-
 #include <cstdint>
 #include <vector>
+
+#include "typedefs.h"
 
 class MainCharacter {
  public:

@@ -2,50 +2,28 @@
 
 #include "view.h"
 #include "model.h"
-
-Guest::Guest()
-    : skin_color_(Random::EnumChoose<guest_traits::SkinColor>()),
-      sex_(Random::EnumChoose<guest_traits::Sex>()),
-      eye_color_(Random::EnumChoose<guest_traits::EyeColor>()),
-      neatness_(Random::EnumChoose<guest_traits::Neatness>()),
-      sprite_(new QGraphicsRectItem) {
-  sprite_->setBrush(IsMale()
-                    ? View::kBluePolygonBrush
-                    : View::kYellowPolygonBrush);
-  View::Instance().GetScene()->addItem(sprite_.get());
-}
+#include "level.h"
 
 Guest::~Guest() {
-  View::Instance().GetScene()->removeItem(sprite_.get());
+  View::Instance().GetGameScene()->removeItem(sprite_.get());
 }
 
-bool Guest::IsMale() const {
-  return sex_ == guest_traits::Sex::kMale;
+void Guest::SetAnimation(const QString& filename) {
+  animation_ = std::make_unique<PolylineAnimation>(filename);
+  ReloadPosition();
 }
 
-void Guest::SetActive() {
-  sprite_->setRect(GetRectActive());
+void Guest::SetSprite(QGraphicsPixmapItem* sprite) {
+  sprite_.reset(sprite);
 }
 
-void Guest::SetIndex(int index) {
-  sprite_->setRect(GetRectWaiting(index));
+void Guest::ReloadPosition() {
+  auto [x, y] = animation_->Position();
+  sprite_->setPos(x, y - sprite_->boundingRect().height());
 }
 
-QRect Guest::GetRectWaiting(int index) {
-  return {
-      View::kWidth - (View::kSquareSize + View::kMargin) *
-          (Model::kQueueLength - index),
-      (View::kHeight + View::kSquareSize) / 2,
-      View::kSquareSize,
-      View::kSquareSize,
-  };
-}
-
-QRect Guest::GetRectActive() {
-  return {
-      -View::kMargin,
-      (View::kHeight + View::kSquareSize) / 2,
-      View::kSquareSize,
-      View::kSquareSize,
-  };
+bool Guest::DoAnimation(int millis, int index_in_queue) {
+  auto res = animation_->Do(millis, index_in_queue);
+  ReloadPosition();
+  return res;
 }

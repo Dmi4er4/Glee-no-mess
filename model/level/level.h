@@ -1,11 +1,7 @@
 #pragma once
 
-#include "bad_characteristic.h"
-#include "file_loader.h"
-#include "guest.h"
-#include "typedefs.h"
-
 #include <QFile>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QJsonObject>
@@ -16,43 +12,72 @@
 #include <memory>
 #include <vector>
 
+#include "file_loader.h"
+#include "guest.h"
+#include "typedefs.h"
+#include "settings.h"
+
 class Level {
  public:
-  explicit Level(const QString& file_name);
+  Level(const QString& level_name,
+        const QString& difficulty,
+        int day_index = 0);
 
-  days_t GetDays() const {
-    return days_;
+  void InitState(int day = 0);
+  void GenerateGuests();
+  void SetDay(int day);
+  bool NextDay();
+  void AddTime(int time);
+  void DecrementGuestsRemaining() { --state_.guests_left_; }
+  bool DecrementTimeLeft() { return --state_.seconds_left_ > 0; }
+  void IncrementMistakes();
+
+  void DecrementGuests() {
+    --guests_max_;
+    --state_.guests_left_;
   }
 
-  money_t GetMoneyPerDayCount() const {
-    return money_;
-  }
+  bool DayFailed() { return state_.errors_count_ >= errors_max_; }
+  Guest* GetNextGuest();
+  void ShiftNextGuest();
 
-  const std::vector<std::shared_ptr<Guest>>& GetAllGuestsInDay(int day) const {
-    return all_guests_[day];
-  }
-
-  const std::shared_ptr<Guest>& GetKthGuestInDay(int visitor_number,
-                                                 int day) const {
-    return all_guests_[day][visitor_number];
-  }
-
-  std::shared_ptr<BadCharacteristic> GetBadCharacteristicsInDay(int day) const {
-    return characteristic_[day];
-  }
-
-  const std::vector<std::shared_ptr<BadCharacteristic>>&
-    GetAllBadCharacteristics() const {
-      return characteristic_;
-  }
+  auto GetCurrentDay() { return days_[state_.current_day_]; }
+  auto GetCurrentState() { return state_; }
+  auto GetTimeLeft() { return state_.seconds_left_; }
+  auto GetLives() { return errors_max_ - state_.errors_count_; }
+  auto GetDayIndex() { return state_.current_day_; }
+  auto GetGuestsLeft() { return state_.guests_left_; }
+  auto GetQueueThreshold() { return queue_threshold_millis_; }
+  auto GetPath() { return path_; }
 
  private:
-  void GenerateGuests();
+  struct Day {
+    QString intro_;
+    QSet<QString> allowed_dudes_;
+    int reward_;
+    int penalty_;
+  };
+  struct State {
+    int current_day_;
+    int errors_count_;
+    int seconds_left_;
+    int guests_left_;
+    bool was_added_time_;
+    int next_guest_index_;
+  };
 
-  guests_t guests_count_;
-  characteristics_t characteristics_count_;
-  days_t days_;
-  money_t money_;
-  std::vector<std::vector<std::shared_ptr<Guest>>> all_guests_;
-  std::vector<std::shared_ptr<BadCharacteristic>> characteristic_;
+  QString path_;
+  QString level_name_;
+  QString level_intro_;
+  int errors_max_{};
+  int duration_seconds_{};
+  int guests_max_{};
+  std::vector<QString> traits_;
+  std::vector<QString> dudes_;
+  int queue_threshold_millis_;
+  bool used_ignore_fist_mistake{false};
+
+  std::vector<Day> days_;
+  State state_{};
+  std::vector<std::unique_ptr<Guest>> guests_;
 };

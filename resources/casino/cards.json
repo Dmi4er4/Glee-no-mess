@@ -1,0 +1,62 @@
+{
+  "hearts" : {
+    "2" : ":casino/2_hearts.png",
+    "3" : ":casino/3_hearts.png",
+    "4" : ":casino/4_hearts.png",
+    "5" : ":casino/5_hearts.png",
+    "6" : ":casino/6_hearts.png",
+    "7" : ":casino/7_hearts.png",
+    "8" : ":casino/8_hearts.png",
+    "9" : ":casino/9_hearts.png",
+    "10" : ":casino/10_hearts.png",
+    "Jack" : ":casino/Jack_hearts.png",
+    "Queen" : ":casino/Queen_hearts.png",
+    "King" : ":casino/King_hearts.png",
+    "Ace" : ":casino/Ace_hearts.png"
+  },
+  "spades" : {
+    "2" : ":casino/2_spades.png",
+    "3" : ":casino/3_spades.png",
+    "4" : ":casino/4_spades.png",
+    "5" : ":casino/5_spades.png",
+    "6" : ":casino/6_spades.png",
+    "7" : ":casino/7_spades.png",
+    "8" : ":casino/8_spades.png",
+    "9" : ":casino/9_spades.png",
+    "10" : ":casino/10_spades.png",
+    "Jack" : ":casino/Jack_spades.png",
+    "Queen" : ":casino/Queen_spades.png",
+    "King" : ":casino/King_spades.png",
+    "Ace" : ":casino/Ace_spades.png"
+  },
+  "diamonds" : {
+    "2" : ":casino/2_diamonds.png",
+    "3" : ":casino/3_diamonds.png",
+    "4" : ":casino/4_diamonds.png",
+    "5" : ":casino/5_diamonds.png",
+    "6" : ":casino/6_diamonds.png",
+    "7" : ":casino/7_diamonds.png",
+    "8" : ":casino/8_diamonds.png",
+    "9" : ":casino/9_diamonds.png",
+    "10" : ":casino/10_diamonds.png",
+    "Jack" : ":casino/Jack_diamonds.png",
+    "Queen" : ":casino/Queen_diamonds.png",
+    "King" : ":casino/King_diamonds.png",
+    "Ace" : ":casino/Ace_diamonds.png"
+  },
+  "clubs" : {
+    "2" : ":casino/2_clubs.png",
+    "3" : ":casino/3_clubs.png",
+    "4" : ":casino/4_clubs.png",
+    "5" : ":casino/5_clubs.png",
+    "6" : ":casino/6_clubs.png",
+    "7" : ":casino/7_clubs.png",
+    "8" : ":casino/8_clubs.png",
+    "9" : ":casino/9_clubs.png",
+    "10" : ":casino/10_clubs.png",
+    "Jack" : ":casino/Jack_clubs.png",
+    "Queen" : ":casino/Queen_clubs.png",
+    "King" : ":casino/King_clubs.png",
+    "Ace" : ":casino/Ace_clubs.png"
+  }
+}

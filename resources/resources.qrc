@@ -1,5 +1,170 @@
 <RCC>
     <qresource>
-        <file>club_level.json</file>
+        <file>items.json</file>
+        <file>levels/levels_list.json</file>
+
+        <file>levels/gachi_club/background/background_frame_00.png</file>
+        <file>levels/gachi_club/background/background_frame_01.png</file>
+        <file>levels/gachi_club/background/background_frame_02.png</file>
+        <file>levels/gachi_club/background/background_frame_03.png</file>
+        <file>levels/gachi_club/background/background_frame_04.png</file>
+        <file>levels/gachi_club/background/background_frame_05.png</file>
+        <file>levels/gachi_club/background/background_frame_06.png</file>
+        <file>levels/gachi_club/background/background_frame_07.png</file>
+        <file>levels/gachi_club/background/background_frame_08.png</file>
+        <file>levels/gachi_club/background/background_frame_09.png</file>
+        <file>levels/gachi_club/background/background_frame_10.png</file>
+        <file>levels/gachi_club/background/background_frame_11.png</file>
+        <file>levels/gachi_club/background/background_frame_12.png</file>
+        <file>levels/gachi_club/background/background_frame_13.png</file>
+        <file>levels/gachi_club/background/background_frame_14.png</file>
+        <file>levels/gachi_club/background/background_frame_15.png</file>
+
+        <file>levels/gachi_club/dudes/biker.png</file>
+        <file>levels/gachi_club/dudes/biker_blood.png</file>
+        <file>levels/gachi_club/dudes/biker_black.png</file>
+        <file>levels/gachi_club/dudes/biker_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/gay.png</file>
+        <file>levels/gachi_club/dudes/gay_blood.png</file>
+        <file>levels/gachi_club/dudes/gay_black.png</file>
+        <file>levels/gachi_club/dudes/gay_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/cowboy.png</file>
+        <file>levels/gachi_club/dudes/cowboy_blood.png</file>
+        <file>levels/gachi_club/dudes/cowboy_black.png</file>
+        <file>levels/gachi_club/dudes/cowboy_black_blood.png</file>
+
+        <file>levels/gachi_club/dudes/visitor.png</file>
+        <file>levels/gachi_club/dudes/visitor_blood.png</file>
+        <file>levels/gachi_club/dudes/visitor_black.png</file>
+        <file>levels/gachi_club/dudes/visitor_black_blood.png</file>
+
+        <file>levels/gachi_club/animation_queue.json</file>
+        <file>levels/gachi_club/stats.json</file>
+    </qresource>
+    <qresource>
+        <file>levels/Belarusian_SU/background/background_frame_00.png</file>
+
+        <file>levels/Belarusian_SU/dudes/biker.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_black.png</file>
+        <file>levels/Belarusian_SU/dudes/biker_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/gay.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_black.png</file>
+        <file>levels/Belarusian_SU/dudes/gay_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/cowboy.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_black.png</file>
+        <file>levels/Belarusian_SU/dudes/cowboy_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/dudes/visitor.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_blood.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_black.png</file>
+        <file>levels/Belarusian_SU/dudes/visitor_black_blood.png</file>
+
+        <file>levels/Belarusian_SU/animation_queue.json</file>
+        <file>levels/Belarusian_SU/stats.json</file>
+    </qresource>
+    <qresource>
+        <file>style.qss</file>
+        <file>Koulen-Regular.ttf</file>
+    </qresource>
+    <qresource>
+        <file>settings/default_settings.json</file>
+        <file>settings/settings.gif</file>
+    </qresource>
+    <qresource>
+        <file>menu/main_menu_background.jpg</file>
+        <file>menu/main_menu.gif</file>
+    </qresource>
+    <qresource>
+        <file>casino/casino.jpg</file>
+        <file>casino/best_casino.jpg</file>
+        <file>casino/black_jack.jpg</file>
+        <file>casino/croupier.png</file>
+
+        <file>casino/2_hearts.png</file>
+        <file>casino/3_hearts.png</file>
+        <file>casino/4_hearts.png</file>
+        <file>casino/5_hearts.png</file>
+        <file>casino/6_hearts.png</file>
+        <file>casino/7_hearts.png</file>
+        <file>casino/8_hearts.png</file>
+        <file>casino/9_hearts.png</file>
+        <file>casino/10_hearts.png</file>
+        <file>casino/Ace_hearts.png</file>
+        <file>casino/Jack_hearts.png</file>
+        <file>casino/King_hearts.png</file>
+        <file>casino/Queen_hearts.png</file>
+
+        <file>casino/2_diamonds.png</file>
+        <file>casino/3_diamonds.png</file>
+        <file>casino/4_diamonds.png</file>
+        <file>casino/5_diamonds.png</file>
+        <file>casino/6_diamonds.png</file>
+        <file>casino/7_diamonds.png</file>
+        <file>casino/8_diamonds.png</file>
+        <file>casino/9_diamonds.png</file>
+        <file>casino/10_diamonds.png</file>
+        <file>casino/Ace_diamonds.png</file>
+        <file>casino/Jack_diamonds.png</file>
+        <file>casino/King_diamonds.png</file>
+        <file>casino/Queen_diamonds.png</file>
+
+        <file>casino/2_spades.png</file>
+        <file>casino/3_spades.png</file>
+        <file>casino/4_spades.png</file>
+        <file>casino/5_spades.png</file>
+        <file>casino/6_spades.png</file>
+        <file>casino/7_spades.png</file>
+        <file>casino/8_spades.png</file>
+        <file>casino/9_spades.png</file>
+        <file>casino/10_spades.png</file>
+        <file>casino/Ace_spades.png</file>
+        <file>casino/Jack_spades.png</file>
+        <file>casino/King_spades.png</file>
+        <file>casino/Queen_spades.png</file>
+
+        <file>casino/2_clubs.png</file>
+        <file>casino/3_clubs.png</file>
+        <file>casino/4_clubs.png</file>
+        <file>casino/5_clubs.png</file>
+        <file>casino/6_clubs.png</file>
+        <file>casino/7_clubs.png</file>
+        <file>casino/8_clubs.png</file>
+        <file>casino/9_clubs.png</file>
+        <file>casino/10_clubs.png</file>
+        <file>casino/Ace_clubs.png</file>
+        <file>casino/Jack_clubs.png</file>
+        <file>casino/King_clubs.png</file>
+        <file>casino/Queen_clubs.png</file>
+
+        <file>casino/fruit_machine.jpg</file>
+        <file>casino/machine_0.png</file>
+        <file>casino/machine_1.png</file>
+        <file>casino/machine_2.png</file>
+        <file>casino/machine_3.png</file>
+        <file>casino/machine_4.png</file>
+        <file>casino/machine_5.png</file>
+        <file>casino/machine_6.png</file>
+        <file>casino/machine_7.png</file>
+        <file>casino/machine_8.png</file>
+        <file>casino/stopped_slot_border.png</file>
+        <file>casino/spinning_slot_border.png</file>
+        <file>casino/all_slots_border.png</file>
+        <file>casino/rich_background.gif</file>
+        <file>casino/cards.json</file>
+    </qresource>
+    <qresource>
+        <file>shop/shelves.png</file>
+        <file>shop/stand_the_world.png</file>
+        <file>shop/ksiva.png</file>
+        <file>shop/pandemic.png</file>
+        <file>shop/vabank.png</file>
+        <file>shop/background.png</file>
     </qresource>
 </RCC>

@@ -1,0 +1,10 @@
+{
+  "money": 0,
+  "sound": "on",
+  "difficulty": "medium",
+  "exit_shortcut": "Ctrl+Q",
+  "ignore_first_mistake": "0",
+  "add_time": "0",
+  "all_in": "0",
+  "reduce_guest": "0"
+}
