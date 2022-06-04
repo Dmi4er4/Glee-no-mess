@@ -91,7 +91,8 @@ void View::InitView() {
       static_cast<int>(screen_size.height() * .03));
   qApp->setStyleSheet("* { font-size: " + font_size + "px; }" +
                       "QToolTip { font-size: " + tooltip_font_size + "px; }" +
-                      "QLabel#in-intro { font-size: " + tooltip_font_size + "px; }" +
+                      "QLabel#in-intro { font-size: " +
+                      tooltip_font_size + "px; }" +
                       FileLoader::CastFileToString(":/style.qss"));
   setWindowState(windowState() | Qt::WindowFullScreen);
   view_ = new QGraphicsView;
