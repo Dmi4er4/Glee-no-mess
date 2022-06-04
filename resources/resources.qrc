@@ -166,5 +166,6 @@
         <file>shop/pandemic.png</file>
         <file>shop/vabank.png</file>
         <file>shop/background.png</file>
+        <file>levels/glee_no_mess.png</file>
     </qresource>
 </RCC>

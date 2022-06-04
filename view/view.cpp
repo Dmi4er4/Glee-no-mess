@@ -7,6 +7,7 @@
 #include "model.h"
 
 View::View() {
+  SetTimer();
   InitView();
   InitGameScene();
   InitMainMenu();
@@ -28,6 +29,9 @@ void View::SetTimer() {
 }
 
 void View::ChangeFrame() {
+  if (background_frames_.empty()) {
+    return;
+  }
   Model::Instance().DoAnimation(kFrameDelay);
   if (++bg_frame_index_ == background_frames_.size()) {
     bg_frame_index_ = 0;
@@ -106,8 +110,7 @@ void View::InitGameScene() {
     static const QString kInGameObjects = "in-game";
     game_scene_ = new QGraphicsScene;
 
-    LoadBackgroundFrames(":/levels/gachi_club/background");
-    game_background_ = game_scene_->addPixmap(background_frames_.first());
+    game_background_ = game_scene_->addPixmap(QPixmap());
 
     dudes_father_ = game_scene_->createItemGroup({});
 
@@ -140,13 +143,11 @@ void View::InitGameScene() {
 
     proxy->setGeometry(QRectF{
         0,
-        height() * 0.9,
+        height() * 0.893,
         width() * 1.0,
         height() * 0.1
     });
   }
-
-  SetTimer();
 
   {
     game_pause_overlay = new QWidget;
@@ -177,6 +178,7 @@ void View::InitGameScene() {
     to_casino_ = new QPushButton("Casino");
     to_shop_ = new QPushButton("Shop");
     status_label_ = new QLabel;
+    status_label_->setAlignment(Qt::AlignCenter);
     layout->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
     layout->addWidget(status_label_);
@@ -203,6 +205,14 @@ void View::InitGameScene() {
     layout->addWidget(intro_);
     game_intro_overlay_->setStyleSheet("background: rgba(0, 0, 0, 100)");
     game_intro_overlay_->hide();
+  }
+
+  {
+    glee_no_mess_ = new QGraphicsPixmapItem(
+        FileLoader::GetFile<QPixmap>(":/levels/glee_no_mess.png").scaled(
+        width() * 0.15, height() * 0.3, Qt::IgnoreAspectRatio));
+    dudes_father_->addToGroup(glee_no_mess_);
+    glee_no_mess_->setPos(width() * 0.25, height() * 0.6);
   }
 }
 
@@ -554,7 +564,7 @@ void View::InitShop() {
     });
     auto form = new QHBoxLayout;
     proxy->widget()->setLayout(form);
-    form->addWidget(exit_shop_ = new QPushButton("Back to menu"));
+    form->addWidget(exit_shop_ = new QPushButton("Menu"));
   }
 
   static const size_t kWidth = static_cast<size_t>(width() * 0.3);
@@ -651,8 +661,6 @@ void View::ManageSounds() {
     gachi_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     gachi_level_sound_->setAudioOutput(audioOutput);
-    // connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.ogg"));
     audioOutput->setVolume(50);
     gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -662,8 +670,6 @@ void View::ManageSounds() {
     bsu_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     bsu_level_sound_->setAudioOutput(audioOutput);
-    // connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.ogg"));
     audioOutput->setVolume(50);
     bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -673,8 +679,6 @@ void View::ManageSounds() {
     menu_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     menu_sound_->setAudioOutput(audioOutput);
-    // connect(menu_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.ogg"));
     audioOutput->setVolume(50);
     menu_sound_->setLoops(QMediaPlayer::Infinite);
@@ -684,8 +688,6 @@ void View::ManageSounds() {
     shop_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     shop_sound_->setAudioOutput(audioOutput);
-    // connect(shop_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.ogg"));
     audioOutput->setVolume(50);
     shop_sound_->setLoops(QMediaPlayer::Infinite);
@@ -695,8 +697,6 @@ void View::ManageSounds() {
     casino_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     casino_sound_->setAudioOutput(audioOutput);
-    // connect(casino_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.ogg"));
     audioOutput->setVolume(50);
     casino_sound_->setLoops(QMediaPlayer::Infinite);
@@ -706,8 +706,6 @@ void View::ManageSounds() {
     settings_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     settings_sound_->setAudioOutput(audioOutput);
-    // connect(settings_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.ogg"));
     audioOutput->setVolume(50);
     settings_sound_->setLoops(QMediaPlayer::Infinite);
@@ -724,9 +722,7 @@ void View::keyPressEvent(QKeyEvent* event) {
 }
 
 void View::LoadBackgroundFrames(const QString& folder) {
-  if (frame_timer_) {
-    frame_timer_->stop();
-  }
+  frame_timer_->stop();
   bg_frame_index_ = 0;
   QDirIterator it(folder);
   QList<QString> frames;
@@ -740,9 +736,7 @@ void View::LoadBackgroundFrames(const QString& folder) {
         FileLoader::GetFile<QPixmap>(filename)
             .scaled(width(), height(), Qt::IgnoreAspectRatio));
   }
-  if (frame_timer_) {
-    frame_timer_->start(kFrameDelay);
-  }
+  frame_timer_->start(kFrameDelay);
 }
 
 QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
@@ -808,7 +802,6 @@ void View::ShowGame() {
   reject_button_->setAttribute(Qt::WA_UnderMouse, false);
 
   if (sound_->text() == kOn) {
-    // TODO(Andrey-Kostianoy): add music for bsu_level
     StopAllSounds();
     gachi_level_sound_->play();
   }

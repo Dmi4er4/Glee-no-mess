@@ -6,11 +6,11 @@
 
 QLabel {
     background-color: transparent;
-    color: darkslategrey;
+    color: salmon;
 }
 
 QPushButton {
-    background: rgba(255, 255, 255, 130);
+    background: rgba(255, 255, 255, 180);
     color: salmon;
     border-radius: 0.5em;
     padding: 0 1.5ex;
@@ -72,6 +72,7 @@ QLabel#in-shop {
 
 QLabel#in-intro {
     background-color: transparent;
+    padding: 1em;
     color: #ffffff;
 }
 

@@ -5,8 +5,12 @@
 Level::Level(const QString& level_name,
              const QString& difficulty,
              int day_index) {
+  if (level_name != "gachi_club") {
+    View::Instance().HideGleeNoMess();
+  } else {
+    View::Instance().ShowGleeNoMess();
+  }
   path_ = ":/levels/" + level_name + "/";
-  View::Instance().LoadBackgroundFrames(path_ + "background");
   auto stats = FileLoader::GetFile
       <QJsonDocument>(path_ + "stats.json");
   auto stats_dependent = stats[difficulty];

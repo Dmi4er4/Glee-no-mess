@@ -387,12 +387,21 @@ void Model::DayFailed() {
 }
 
 void Model::StartDay() {
+  auto filename = ":/levels/" +
+      level_names_[current_level_index_] + "/background";
+  View::Instance().LoadBackgroundFrames(filename);
+  View::Instance().ChangeFrame();
   queue_.clear();
   Controller::Instance().StartAnimation();
   View::Instance().ShowGame();
   SaveGame(level_names_[current_level_index_], level_->GetDayIndex());
   day_timer_->start(1000);
-  View::Instance().SetIntro(level_->GetCurrentDay().intro_);
+  auto intro = level_->GetCurrentDay().intro_;
+  if (level_->GetDayIndex() == 0) {
+    intro = level_->GetLevelIntro() + "\n\n" + intro;
+  }
+
+  View::Instance().SetIntro(intro);
   View::Instance().ShowIntro();
   day_timer_->stop();
   View::Instance().GetTimer()->stop();

@@ -91,13 +91,16 @@ class View : public QMainWindow {
   void LooseGame() { status_label_->setText("You loose!"); }
 
   void SetIntro(const QString& text) {
-    intro_->setText(text + "\nPress enter to continue!");
+    intro_->setText(text + "\nPress space to continue!");
   }
 
-  void ShowIntro() { game_intro_overlay_->setHidden(false); }
+  void ShowIntro() { game_intro_overlay_->show(); }
   void HideIntro() {game_intro_overlay_->hide(); }
 
   auto* GetTimer() { return frame_timer_; }
+
+  void HideGleeNoMess() { glee_no_mess_->hide(); }
+  void ShowGleeNoMess() { glee_no_mess_->show(); }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -141,7 +144,7 @@ class View : public QMainWindow {
   auto* GetExitCasino() { return casino_exit_; }
 
   void SetPlayerMoney(money_t x) {
-    QString text = "Your money: " + QString::number(x);
+    QString text = "Your money: ∰" + QString::number(x);
     player_money_->setText(text);
     money_->setText(text);
     shop_money_->setText(text);
@@ -291,6 +294,8 @@ class View : public QMainWindow {
 
   QWidget* game_intro_overlay_;
   QLabel* intro_;
+
+  QGraphicsPixmapItem* glee_no_mess_;
 
   // Menu
   QGraphicsScene* menu_scene_{};
