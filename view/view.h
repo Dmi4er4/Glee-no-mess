@@ -97,7 +97,7 @@ class View : public QMainWindow {
   void ShowIntro() { game_intro_overlay_->setHidden(false); }
   void HideIntro() {game_intro_overlay_->hide(); }
 
-  auto* GetTimer() { return guests_; }
+  auto* GetTimer() { return frame_timer_; }
 
   // Menu
   bool IsMenu() const { return view_->scene() == menu_scene_; }
@@ -274,7 +274,7 @@ class View : public QMainWindow {
   QList<QPixmap> background_frames_;
   QGraphicsPixmapItem* game_background_{};
   int bg_frame_index_{};
-  QTimer* guests_{};
+  QTimer* frame_timer_{};
 
   const int32_t kFrameRate = 10;
   const int32_t kFrameDelay = 1000 / kFrameRate;
@@ -291,8 +291,6 @@ class View : public QMainWindow {
 
   QWidget* game_intro_overlay_;
   QLabel* intro_;
-
-  QTimer* guests_;
 
   // Menu
   QGraphicsScene* menu_scene_{};
