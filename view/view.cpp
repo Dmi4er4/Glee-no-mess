@@ -652,8 +652,6 @@ void View::ManageSounds() {
     gachi_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     gachi_level_sound_->setAudioOutput(audioOutput);
-    // connect(gachi_level_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     gachi_level_sound_->setSource(QUrl("qrc:/sound_effects/gachi_level.ogg"));
     audioOutput->setVolume(50);
     gachi_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -663,8 +661,6 @@ void View::ManageSounds() {
     bsu_level_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     bsu_level_sound_->setAudioOutput(audioOutput);
-    // connect(bsu_level_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     bsu_level_sound_->setSource(QUrl("qrc:/sound_effects/bsu_level.ogg"));
     audioOutput->setVolume(50);
     bsu_level_sound_->setLoops(QMediaPlayer::Infinite);
@@ -674,8 +670,6 @@ void View::ManageSounds() {
     menu_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     menu_sound_->setAudioOutput(audioOutput);
-    // connect(menu_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     menu_sound_->setSource(QUrl("qrc:/sound_effects/menu.ogg"));
     audioOutput->setVolume(50);
     menu_sound_->setLoops(QMediaPlayer::Infinite);
@@ -685,8 +679,6 @@ void View::ManageSounds() {
     shop_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     shop_sound_->setAudioOutput(audioOutput);
-    // connect(shop_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     shop_sound_->setSource(QUrl("qrc:/sound_effects/shop.ogg"));
     audioOutput->setVolume(50);
     shop_sound_->setLoops(QMediaPlayer::Infinite);
@@ -696,8 +688,6 @@ void View::ManageSounds() {
     casino_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     casino_sound_->setAudioOutput(audioOutput);
-    // connect(casino_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     casino_sound_->setSource(QUrl("qrc:/sound_effects/casino.ogg"));
     audioOutput->setVolume(50);
     casino_sound_->setLoops(QMediaPlayer::Infinite);
@@ -707,8 +697,6 @@ void View::ManageSounds() {
     settings_sound_ = new QMediaPlayer(this);
     auto audioOutput = new QAudioOutput(this);
     settings_sound_->setAudioOutput(audioOutput);
-    // connect(settings_sound_, SIGNAL(positionChanged(qint64)),
-    //         this, SLOT(positionChanged(qint64)));
     settings_sound_->setSource(QUrl("qrc:/sound_effects/settings.ogg"));
     audioOutput->setVolume(50);
     settings_sound_->setLoops(QMediaPlayer::Infinite);
