@@ -107,6 +107,8 @@ void View::InitGameScene() {
     LoadBackgroundFrames(":/levels/gachi_club/background");
     game_background_ = game_scene_->addPixmap(background_frames_.first());
 
+    dudes_father_ = game_scene_->createItemGroup({});
+
     auto proxy = game_scene_->addWidget(new QWidget);
     auto layout = new QHBoxLayout;
     proxy->widget()->setLayout(layout);
@@ -722,14 +724,18 @@ QLabel* View::QLabelOrientate(const QString& text, Qt::Alignment align) {
 }
 
 void View::AddGuestSprite(Guest* guest, const QPixmap& pixmap) {
-  auto item = game_scene_->addPixmap(
+  auto item = new QGraphicsPixmapItem(
       pixmap.scaled(width() * 0.1, height() * 0.23, Qt::KeepAspectRatio)
           .transformed(QTransform().scale(-1, 1)));
+  dudes_father_->addToGroup(item);
   guest->SetSprite(item);
 }
 
 void View::UpdateLevelStats() {
   auto level = Model::Instance().GetLevel();
+  if (!level) {
+    return;
+  }
   auto lives = QString::number(level->GetLives());
   auto guests = QString::number(level->GetGuestsLeft());
   auto seconds = level->GetTimeLeft();

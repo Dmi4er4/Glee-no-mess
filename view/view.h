@@ -249,6 +249,7 @@ class View : public QMainWindow {
 
   // Game
   QGraphicsScene* game_scene_{};
+  QGraphicsItemGroup* dudes_father_{};
   QPushButton* permit_button_{};
   QPushButton* reject_button_{};
   QLabel* lives_{};

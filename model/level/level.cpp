@@ -1,7 +1,9 @@
 #include "level.h"
 #include "view.h"
 
-Level::Level(const QString& level_name, const QString& difficulty) {
+Level::Level(const QString& level_name,
+             const QString& difficulty,
+             int day_index) {
   path_ = ":/levels/" + level_name + "/";
   auto stats = FileLoader::GetFile
       <QJsonDocument>(path_ + "stats.json");
@@ -31,7 +33,7 @@ Level::Level(const QString& level_name, const QString& difficulty) {
     day.penalty_ = penalties[index].toInt();
     ++index;
   }
-  InitState();
+  InitState(day_index);
   GenerateGuests();
 }
 
@@ -67,7 +69,6 @@ void Level::GenerateGuests() {
 
 void Level::SetDay(int day) {
   guests_.clear();
-  state_.current_day_ = day;
   InitState(day);
   GenerateGuests();
 }
