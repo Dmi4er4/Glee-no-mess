@@ -91,7 +91,7 @@ class View : public QMainWindow {
   void LooseGame() { status_label_->setText("You loose!"); }
 
   void SetIntro(const QString& text) {
-    intro_->setText(text + "\nPress enter to continue!");
+    intro_->setText(text + "\nPress space to continue!");
   }
 
   void ShowIntro() { game_intro_overlay_->setHidden(false); }
